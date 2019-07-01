@@ -1,4 +1,4 @@
-package cn.aulati.test.leatcode.solution;
+package cn.aulati.test.leetcode.solution;
 
 /**
  * LeetCode Test No 696.

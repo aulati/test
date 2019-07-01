@@ -1,6 +1,6 @@
 package cn.aulati.test;
 
-import cn.aulati.test.leatcode.LeatCodeTest;
+import cn.aulati.test.leetcode.LeetCodeTest;
 
 /**
  * The start class of this test project.
@@ -25,7 +25,7 @@ public class TestMain {
 //		tc = new DynamicDelegateTest();
 
 		// 
-		tc = new LeatCodeTest();
+		tc = new LeetCodeTest();
 		
 //		tc = new SortTestMain();
 		

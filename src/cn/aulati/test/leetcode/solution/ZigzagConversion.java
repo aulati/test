@@ -1,6 +1,4 @@
-package cn.aulati.test.leatcode.solution;
-
-import java.util.ArrayList;
+package cn.aulati.test.leetcode.solution;
 
 public class ZigzagConversion {
     /**
