@@ -20,36 +20,68 @@ public class LongestPalindrome {
 
         // m(i, j) 表示下标从 i 至 j 的子字符串是否是回文的
         boolean[][] m = new boolean[len][len];
+        int left = 0, right = 0, maxLength = 1;
 
-        m[0][0] = true;
-        for (int i = 1; i < len; i++) {
+        // 每个长度为 1 的子字符串均是回文的
+        for (int i = 0; i < len; i++) {
             m[i][i] = true;
-            m[i - 1][i] = s.charAt(i - 1) == s.charAt(i);
         }
 
-        int left = 0, right = 0, maxLength = 1;
-        boolean isOver = false;
+        // 检查长度为 2 的子字符串
+        boolean isOverEven = true;
+        for (int i = 1; i < len; i++) {
+            m[i - 1][i] = s.charAt(i - 1) == s.charAt(i);
+            if (isOverEven && m[i - 1][i]) {
+                // 第一次遇到 aa 子字符串时，更新最长回文子串长度为 2，并记录位置
+                isOverEven = false;
+                maxLength = 2;
+                left = i- 1;
+                right = i;
+            }
+        }
 
+        // 检查长度 >= 3 的子字符串
+        boolean isOver = true;
         for (int l = 3; l <= len; l++) {
-            isOver = true;
-            for (int i = 0; i < len - l + 1; i++) {
-                int j = i + l - 1;
-                m[i][j] = m[i + 1][j - 1] && (s.charAt(i) == s.charAt(j));
-                if (m[i][j]) {
-                    if (j - i + 1 > maxLength) {
-                        isOver = false;
-                        maxLength = j - i + 1;
-                        left = i;
-                        right = j;
+            // 检查长度为 l 的子字符串
+            if (l % 2 == 1) {
+                isOver = true;
+                for (int i = 0; i < len - l + 1; i++) {
+                    // 该子字符串下标： i, j
+                    int j = i + l - 1;
+                    m[i][j] = m[i + 1][j - 1] && (s.charAt(i) == s.charAt(j));
+                    if (m[i][j]) {
+                        if (j - i + 1 > maxLength) {
+                            isOver = false;
+                            maxLength = j - i + 1;
+                            left = i;
+                            right = j;
+                        }
+                    }
+                }
+            } else {
+                isOverEven = true;
+                for (int i = 0; i < len - l + 1; i++) {
+                    // 该子字符串下标： i, j
+                    int j = i + l - 1;
+                    m[i][j] = m[i + 1][j - 1] && (s.charAt(i) == s.charAt(j));
+                    if (m[i][j]) {
+                        if (j - i + 1 > maxLength) {
+                            isOverEven = false;
+                            maxLength = j - i + 1;
+                            left = i;
+                            right = j;
+                        }
                     }
                 }
             }
-            if (isOver) {
+
+            if (isOver && isOverEven) {
                 break;
             }
         }
 
-        return s.substring(left, right);
+        return s.substring(left, right + 1);
     }
 
     /**

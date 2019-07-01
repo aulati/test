@@ -9,26 +9,26 @@ import cn.aulati.test.leetcode.LeetCodeTest;
  */
 public class TestMain {
 
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		
-		
-		// declares the variable.
-		ITest tc = null;
-		
+    /**
+     * @param args
+     */
+    public static void main(String[] args) {
+
+
+        // declares the variable.
+        ITest tc = null;
+
 //		tc = new FunctionOfFinal();
 //		tc = new ExtendsAndImplements();
 
-		// 3. Dynamic delegate test
+        // 3. Dynamic delegate test
 //		tc = new DynamicDelegateTest();
 
-		// 
-		tc = new LeetCodeTest();
-		
+        //
+        tc = new LeetCodeTest();
+
 //		tc = new SortTestMain();
-		
-		tc.runTest();
-	}
+
+        tc.runTest();
+    }
 }
