@@ -4,6 +4,7 @@ import cn.aulati.test.ITest;
 import cn.aulati.test.leetcode.solution.Solution;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -18,30 +19,15 @@ public class LeetCodeTest implements ITest {
 	 */
 	@Override
 	public void runTest() {
-		callMethod();
+		callMethod(new int[] {1,8,6,2,5,4,8,3,7});
 	}
 	
-	private void callMethod() {
-//        System.out.print("Input String: " + s);
-//		System.out.print(System.lineSeparator());
-
-		List<List<Integer>> list = new ArrayList<>();
-		for (int i = 0; i < 4; i++) {
-			list.add(new ArrayList<>());
-		}
-		list.get(0).add(2);
-		list.get(1).add(3);
-		list.get(1).add(4);
-		list.get(2).add(6);
-		list.get(2).add(5);
-		list.get(2).add(7);
-		list.get(3).add(4);
-		list.get(3).add(1);
-		list.get(3).add(8);
-		list.get(3).add(3);
+	private void callMethod(int[] h) {
+		System.out.print("Input: " + Arrays.toString(h));
+		System.out.print(System.lineSeparator());
 
         Solution solution = new Solution();
-		int ret = solution.minimumTotalSpaceTuning(list);
+		int ret = solution.maxArea(h);
 		
 		System.out.print("Output: " + ret);
 		System.out.print(System.lineSeparator());
