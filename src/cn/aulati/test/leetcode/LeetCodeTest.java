@@ -1,10 +1,11 @@
 package cn.aulati.test.leetcode;
 
 import cn.aulati.test.ITest;
-import cn.aulati.test.leetcode.solution.MaxSubArray;
 import cn.aulati.test.leetcode.solution.Solution;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author Aulati
@@ -18,16 +19,15 @@ public class LeetCodeTest implements ITest {
 	 */
 	@Override
 	public void runTest() {
-		callMethod();
+		callMethod(new int[] {1,8,6,2,5,4,8,3,7});
 	}
 	
-	private void callMethod() {
-//        System.out.print("Input String: " + m + ", " + n);
+	private void callMethod(int[] h) {
+		System.out.print("Input: " + Arrays.toString(h));
 		System.out.print(System.lineSeparator());
 
-		int[][] na = {{1, 3, 1}, {1, 5, 1}, {4, 2, 1}};
         Solution solution = new Solution();
-		int ret = solution.minPathSum(na);
+		int ret = solution.maxArea(h);
 		
 		System.out.print("Output: " + ret);
 		System.out.print(System.lineSeparator());
