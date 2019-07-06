@@ -1,12 +1,96 @@
 package cn.aulati.test.leetcode.solution;
 
 import cn.aulati.test.model.TreeNode;
+import com.sun.source.tree.Tree;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class Solution {
+    /**
+     * 105.从前序与中序遍历序列构造二叉树
+     * 标签：树，深度优先搜索，数组
+     */
+    public TreeNode buildTree(int[] preorder, int[] inorder) {
+        _preIdx = 0;
+        _preorder = preorder;
+        _inorder = inorder;
+
+        _inMap = new HashMap<>();
+        for (int i = 0; i < inorder.length; i++) {
+            _inMap.put(inorder[i], i);
+        }
+
+        return buildTreeHelper(0, inorder.length);
+    }
+
+    private int _preIdx;
+    private int[] _preorder;
+    private int[] _inorder;
+    Map<Integer, Integer> _inMap;
+
+    private TreeNode buildTreeHelper(int left, int right) {
+        if (left == right) {
+            return null;
+        }
+
+        int val = _preorder[_preIdx];
+        TreeNode root = new TreeNode(val);
+
+        int inpos = _inMap.get(val);
+
+        _preIdx++;
+        root.left = buildTreeHelper(left, inpos);
+        root.right = buildTreeHelper(inpos + 1, right);
+
+        return root;
+    }
+
+    /**
+     * 94.二叉树的中序遍历（迭代算法）
+     * @param root 二叉树的根
+     * @return 中序遍历的结果
+     */
+    public List<Integer> inorderTraversalII(TreeNode root) {
+        List<Integer> list = new LinkedList<>();
+
+        Stack<TreeNode> st = new Stack<>();
+        TreeNode cur = root;
+        while (cur != null || !st.isEmpty()) {
+
+            // 沿左子树向下，依次将节点入栈，直到叶节点，此循环退出
+            while (cur != null) {
+                st.push(cur);
+                cur = cur.left;
+            }
+
+            // 从栈中取出叶节点，遍历该节点的值，然后进入其右子树
+            cur = st.pop();
+            list.add(cur.val);
+            cur = cur.right;
+        }
+
+        return list;
+    }
+
+    /**
+     * 94.二叉树的中序遍历
+     * @param root 二叉树的根
+     * @return 中序遍历的结果
+     */
+    public List<Integer> inorderTraversal(TreeNode root) {
+        List<Integer> list = new LinkedList<>();
+        inorderTraversalHelper(list, root);
+        return list;
+    }
+
+    private void inorderTraversalHelper(List<Integer> list, TreeNode root) {
+        if (root != null) {
+            inorderTraversalHelper(list, root.left);
+            list.add(root.val);
+            inorderTraversalHelper(list, root.right);
+        }
+    }
+
     /**
      * 34. 在排序数组中查找元素的第一个和最后一个位置
      * 给定一个按照升序排列的整数数组 nums，和一个目标值 target。找出给定目标值在数组中的开始位置和结束位置。
@@ -88,8 +172,6 @@ public class Solution {
 
         return ans;
     }
-
-    private
 
     /**
      * 11. 盛最多水的容器
