@@ -1,6 +1,7 @@
 package cn.aulati.test.algorithm;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * @author Aulati
@@ -212,8 +213,8 @@ public class Sort {
 	}
 	
 	/**
-	 * Quick sort.
-	 * @param a
+	 * 快速排序
+	 * @param a 要排序的数组
 	 */
 	public void quickSort(int[] a) {
 		quickSort(a, 0, a.length - 1);
@@ -242,7 +243,7 @@ public class Sort {
 			quickSort(a, i + 1, right);
 			
 		} else {
-			this.insertionSort(a, left, right);
+			insertionSort(a, left, right);
 		}
 	}
 	
@@ -278,9 +279,9 @@ public class Sort {
 	 * @param right
 	 */
 	public void insertionSort(int[] a, int left, int right) {
-		int j;
+		int tmp, j;
 		for (int p = left + 1; p <= right; p++) {
-			int tmp = a[p];
+			tmp = a[p];
 			for (j = p; j > left && tmp < a[j - 1]; j--) {
 				a[j] = a[j - 1];
 			}

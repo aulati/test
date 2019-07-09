@@ -41,12 +41,9 @@ public class Solution {
             while (i < j) {
                 m = (i + j) / 2;
                 if (nums[m] > target) {
-                    j = m;
+                    j = m - 1;
                 } else if (nums[m] < target) {
-                    if (i == m) {
-                        break;
-                    }
-                    i = m;
+                    i = m + 1;
                 } else {
                     pos = m;
                     break;
@@ -88,8 +85,6 @@ public class Solution {
 
         return ans;
     }
-
-    private
 
     /**
      * 11. 盛最多水的容器
