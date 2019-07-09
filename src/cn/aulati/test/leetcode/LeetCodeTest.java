@@ -2,6 +2,7 @@ package cn.aulati.test.leetcode;
 
 import cn.aulati.test.ITest;
 import cn.aulati.test.leetcode.solution.Solution;
+import cn.aulati.test.model.TreeNode;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,19 +20,18 @@ public class LeetCodeTest implements ITest {
 	 */
 	@Override
 	public void runTest() {
-		callMethod(new int[] {1,8,6,2,5,4,8,3,7});
+		int[] preOrder = new int[] {3,9,20,15,7};
+		int[] inOrder  = new int[] {9,3,15,20,7};
+		callMethod(preOrder, inOrder);
 	}
 	
-	private void callMethod(int[] h) {
-		System.out.print("Input: " + Arrays.toString(h));
-		System.out.print(System.lineSeparator());
+	private void callMethod(int[] preOrder, int[] inorder) {
+		System.out.print("Input: " + Arrays.toString(preOrder) + ", " + Arrays.toString(inorder));
 
         Solution solution = new Solution();
-		int ret = solution.maxArea(h);
+		TreeNode ret = solution.buildTree(preOrder, inorder);
 		
-		System.out.print("Output: " + ret);
-		System.out.print(System.lineSeparator());
+		System.out.println("Output: " + ret);
 		System.out.println("-----------------------------");
-		System.out.print(System.lineSeparator());
 	}
 }
