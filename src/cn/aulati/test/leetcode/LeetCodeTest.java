@@ -24,8 +24,6 @@ public class LeetCodeTest implements ITest {
 
 	/**
 	 * 测试构造二叉树
-	 * @param preOrder 前序遍历序列
-	 * @param inorder 中序遍历序列
 	 */
 	private void testBuildTree() {
 		int[] preOrder = new int[] {3,9,20,15,7};
