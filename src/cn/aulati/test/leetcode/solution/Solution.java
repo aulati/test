@@ -23,11 +23,21 @@ public class Solution {
         return buildTreeHelper(0, inorder.length);
     }
 
+    /** 前序序列当前位置 */
     private int _preIdx;
+    /** 前序遍历序列 */
     private int[] _preorder;
+    /** 中序遍历序列 */
     private int[] _inorder;
+    /** 中序遍历序列中，节点值与位置的Map。用于根据前序遍历当前节点的值，迅速确定其在中序遍历中的位置 */
     Map<Integer, Integer> _inMap;
 
+    /**
+     * 从前序与中序遍历序列构造二叉树的辅助函数
+     * @param left 中序遍历序列中构造子树的子序列启始下标（包含）
+     * @param right 中序遍历序列中构造子树的子序列终点下标（不包含）
+     * @return 该中序遍历序列的子序列构造而成的二叉树
+     */
     private TreeNode buildTreeHelper(int left, int right) {
         if (left == right) {
             return null;
