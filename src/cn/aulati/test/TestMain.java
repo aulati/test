@@ -13,21 +13,14 @@ public class TestMain {
      * @param args
      */
     public static void main(String[] args) {
-
-
         // declares the variable.
-        ITest tc = null;
+        ITest tc;
 
-//		tc = new FunctionOfFinal();
-//		tc = new ExtendsAndImplements();
-
-        // 3. Dynamic delegate test
-//		tc = new DynamicDelegateTest();
-
-        //
+//        tc = new FunctionOfFinal();
+//        tc = new ExtendsAndImplements();
+//        tc = new DynamicDelegateTest();
+//        tc = new SortTestMain();
         tc = new LeetCodeTest();
-
-//		tc = new SortTestMain();
 
         tc.runTest();
     }

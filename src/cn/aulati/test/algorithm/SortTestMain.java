@@ -1,5 +1,6 @@
 package cn.aulati.test.algorithm;
 
+import java.util.Arrays;
 import java.util.Random;
 
 import cn.aulati.test.ITest;
@@ -18,9 +19,24 @@ public class SortTestMain implements ITest {
 	 */
 	@Override
 	public void runTest() {
+		test2();
+	}
+
+	private void test1() {
+		int[] a = { 10, 5, 6, 2, 9, 8, 1, 4, 3, 7 };
+		System.out.println("Input: " + Arrays.toString(a));
+
+		Sort s = Sort.getInstance();
+		s.mergeSortII(a);
+
+		System.out.println("Output: " + Arrays.toString(a));
+		System.out.println();
+	}
+
+	private void test2() {
 		int[] numOfElements = {25, 50, 100, 200, 400, 800, 1600, 3200, 6400, 12800, 25600, 51200, 102400};
-		long[][] useTime = new long[numOfElements.length][4];
-		long[] t = new long[5];
+		long[][] useTime = new long[numOfElements.length][5];
+		long[] t = new long[6];
 		
 		Sort s = Sort.getInstance();
 		
@@ -30,7 +46,8 @@ public class SortTestMain implements ITest {
 			int[] arr2 = arr1.clone();
 			int[] arr3 = arr1.clone();
 			int[] arr4 = arr1.clone();
-			
+			int[] arr5 = arr1.clone();
+
 //			int[] ga1 = s.getHibbardArray(numOfElements[i]);
 //			int[] ga2 = s.getSedgewickArray(numOfElements[i]);
 			
@@ -42,24 +59,27 @@ public class SortTestMain implements ITest {
 			s.shellSort(arr2);
 			
 			t[2] = System.nanoTime();
-//			s.shellSort(arr3, ga1);
 			s.mergeSort(arr3);
 			
 			t[3] = System.nanoTime();
-//			s.shellSort(arr4, ga2);
-			s.quickSort(arr4);
-			
+			s.mergeSortII(arr4);
+
 			t[4] = System.nanoTime();
+			s.quickSort(arr5);
+			
+			t[5] = System.nanoTime();
 			
 			useTime[i][0] = t[1] - t[0];
 			useTime[i][1] = t[2] - t[1];
 			useTime[i][2] = t[3] - t[2];
 			useTime[i][3] = t[4] - t[3];
+			useTime[i][4] = t[5] - t[4];
 		}
 		
-		// 3 
+		// 3 输出各项排序所用时间
 		for (int i = 0; i < numOfElements.length; i++) {
-			System.out.printf("Round %2d, Elements:%7d, insSort:%,15d, shellSort:%,15d, mergeSort:%,15d, quickSort:%,15d%n", i, numOfElements[i], useTime[i][0], useTime[i][1], useTime[i][2], useTime[i][3]);
+			System.out.printf("Round %2d, Elements:%7d, insSort:%,15d, shellSort:%,15d, mergeSort:%,15d, mergeSortII:%,15d, quickSort:%,15d%n"
+					, i, numOfElements[i], useTime[i][0], useTime[i][1], useTime[i][2], useTime[i][3], useTime[i][4]);
 		}
 	}
 
@@ -70,10 +90,6 @@ public class SortTestMain implements ITest {
 	 * @return a random array.
 	 */
 	private int[] generateRandomArray(int n) {
-		if (n <= 0) {
-			return new int[0];
-		}
-		
 		int[] ret = new int[n];
 		
 		Random rnd = new Random();

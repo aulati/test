@@ -1,7 +1,6 @@
 package cn.aulati.test.leetcode.solution;
 
 import cn.aulati.test.model.TreeNode;
-import com.sun.source.tree.Tree;
 
 import java.util.*;
 
@@ -319,10 +318,6 @@ public class Solution {
             }
         }
         return ans;
-    }
-
-    public List<TreeNode> generateTrees(int n) {
-        return null;
     }
 
     /**
