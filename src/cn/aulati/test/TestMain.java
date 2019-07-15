@@ -3,14 +3,16 @@ package cn.aulati.test;
 import cn.aulati.test.leetcode.LeetCodeTest;
 
 /**
- * The start class of this test project.
- * @author Aulati
+ * The main class of this test project.
  *
+ * @author Aulati
  */
 public class TestMain {
 
     /**
-     * @param args
+     * 项目启动函数
+     *
+     * @param args 启动参数
      */
     public static void main(String[] args) {
         // declares the variable.
