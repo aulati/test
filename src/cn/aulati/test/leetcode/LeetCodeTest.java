@@ -20,18 +20,18 @@ public class LeetCodeTest implements ITest {
 	 */
 	@Override
 	public void runTest() {
-		int[] preOrder = new int[] {3,9,20,15,7};
-		int[] inOrder  = new int[] {9,3,15,20,7};
-		callMethod(preOrder, inOrder);
+		String[] s = {"abcd", "accd", "acad", "adad"};
+		callMethod(s, 4);
 	}
 	
-	private void callMethod(int[] preOrder, int[] inorder) {
-		System.out.print("Input: " + Arrays.toString(preOrder) + ", " + Arrays.toString(inorder));
+	private void callMethod(String[] s, int strLen) {
+		System.out.println("Input: " + Arrays.toString(s));
 
         Solution solution = new Solution();
-		TreeNode ret = solution.buildTree(preOrder, inorder);
+		String[] ret = solution.radixSort(s, strLen);
 		
-		System.out.println("Output: " + ret);
+		System.out.println("Output(s)  : " + Arrays.toString(s));
+		System.out.println("Output(ret): " + Arrays.toString(ret));
 		System.out.println("-----------------------------");
 	}
 }

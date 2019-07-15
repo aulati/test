@@ -6,6 +6,46 @@ import com.sun.source.tree.Tree;
 import java.util.*;
 
 public class Solution {
+    /** 给字母字符串进行基数排序时，所需的桶大小。 */
+    private static final int STRING_BUCKETS = 256;
+
+    /**
+     * 用基数排序，给固定长度的字符串数组排序
+     * @param s 要排序的字符串数组
+     * @param strLen 字符串的长度
+     * @return 排序好的字符串数组
+     */
+    public String[] radixSort(String[] s, int strLen) {
+        if (s.length <= 1) {
+            return s;
+        }
+
+        int n = s.length;
+        ArrayList<ArrayList<String>> buckets = new ArrayList<>(STRING_BUCKETS);
+        for (int i = 0; i < STRING_BUCKETS; i++) {
+            buckets.add(new ArrayList<>());
+        }
+
+        int sp;
+        for (int j = strLen - 1; j >= 0; j--) {
+            // 按当前位置的字符，分别入桶
+            for (int k = 0; k < n; k++) {
+                buckets.get(s[k].charAt(j)).add(s[k]);
+            }
+
+            sp = 0;
+            for (int i = 0; i < STRING_BUCKETS; i++) {
+                for (String item : buckets.get(i)) {
+                    s[sp++] = item;
+                }
+
+                buckets.get(i).clear();
+            }
+        }
+
+        return s;
+    }
+
     /**
      * 105.从前序与中序遍历序列构造二叉树
      * 标签：树，深度优先搜索，数组
