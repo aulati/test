@@ -22,7 +22,24 @@ public class LeetCodeTest implements ITest {
     @Override
     public void runTest() {
         _solution = new Solution();
-        testRadixSort();
+        testLongestSubstring();
+    }
+
+    /**
+     * 寻找最长公共子字符串
+     */
+    private void testLongestSubstring() {
+        String x = "I believe that something is wrong!";
+        String y = "Everything OK?";
+        System.out.println("Input: " + x + ", " + y);
+
+        long t1 = System.nanoTime();
+        String ret = _solution.longestSubstring(x, y);
+        long t2 = System.nanoTime();
+
+        System.out.println("Output: " + ret);
+        System.out.println("Time cost: " + (t2 - t1));
+        System.out.println("-----------------------------");
     }
 
     /**

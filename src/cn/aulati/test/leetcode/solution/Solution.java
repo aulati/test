@@ -5,12 +5,66 @@ import cn.aulati.test.model.TreeNode;
 import java.util.*;
 
 public class Solution {
-    /** 给字母字符串进行基数排序时，所需的桶大小。 */
+    /**
+     * 最长公共子字符串
+     *
+     * @param x 字符串1
+     * @param y 字符串2
+     * @return 字符串1、2的最长公共子字符串
+     */
+    public String longestSubstring(String x, String y) {
+        if (x == null || x.length() == 0 || y == null || y.length() == 0) {
+            return "";
+        }
+
+        int m = x.length(), n = y.length();
+
+        int[][] c = new int[m][n];
+        int maxLen = 0, maxPos = -1;
+
+        for (int i = 1; i < m; i++) {
+            c[i][0] = x.charAt(i) == y.charAt(0) ? 1 : 0;
+            if (c[i][0] > maxLen) {
+                maxLen = c[i][0];
+                maxPos = i + 1;
+            }
+        }
+
+        for (int i = 0; i < n; i++) {
+            c[0][i] = x.charAt(0) == y.charAt(i) ? 1 : 0;
+            if (c[0][i] > maxLen) {
+                maxLen = c[0][i];
+                maxPos = 1;
+            }
+        }
+
+        // x, y 长度均 >= 2 的情况
+        for (int i = 1; i < m; i++) {
+            for (int j = 1; j < n; j++) {
+                if (x.charAt(i) == y.charAt(j)) {
+                    c[i][j] = c[i - 1][j - 1] + 1;
+                    if (c[i][j] > maxLen) {
+                        maxLen = c[i][j];
+                        maxPos = i + 1;
+                    }
+                } else {
+                    c[i][j] = 0;
+                }
+            }
+        }
+
+        return x.substring(maxPos - maxLen, maxPos);
+    }
+
+    /**
+     * 给字母字符串进行基数排序时，所需的桶大小。
+     */
     private static final int STRING_BUCKETS = 256;
 
     /**
      * 用基数排序，给固定长度的字符串数组排序
-     * @param s 要排序的字符串数组
+     *
+     * @param s      要排序的字符串数组
      * @param strLen 字符串的长度
      * @return 排序好的字符串数组
      */
@@ -62,18 +116,27 @@ public class Solution {
         return buildTreeHelper(0, inorder.length);
     }
 
-    /** 前序序列当前位置 */
+    /**
+     * 前序序列当前位置
+     */
     private int _preIdx;
-    /** 前序遍历序列 */
+    /**
+     * 前序遍历序列
+     */
     private int[] _preorder;
-    /** 中序遍历序列 */
+    /**
+     * 中序遍历序列
+     */
     private int[] _inorder;
-    /** 中序遍历序列中，节点值与位置的Map。用于根据前序遍历当前节点的值，迅速确定其在中序遍历中的位置 */
+    /**
+     * 中序遍历序列中，节点值与位置的Map。用于根据前序遍历当前节点的值，迅速确定其在中序遍历中的位置
+     */
     Map<Integer, Integer> _inMap;
 
     /**
      * 从前序与中序遍历序列构造二叉树的辅助函数
-     * @param left 中序遍历序列中构造子树的子序列启始下标（包含）
+     *
+     * @param left  中序遍历序列中构造子树的子序列启始下标（包含）
      * @param right 中序遍历序列中构造子树的子序列终点下标（不包含）
      * @return 该中序遍历序列的子序列构造而成的二叉树
      */
@@ -96,6 +159,7 @@ public class Solution {
 
     /**
      * 94.二叉树的中序遍历（迭代算法）
+     *
      * @param root 二叉树的根
      * @return 中序遍历的结果
      */
@@ -123,6 +187,7 @@ public class Solution {
 
     /**
      * 94.二叉树的中序遍历
+     *
      * @param root 二叉树的根
      * @return 中序遍历的结果
      */
@@ -221,6 +286,7 @@ public class Solution {
 
     /**
      * 11. 盛最多水的容器
+     *
      * @param height 容器高度数组
      * @return 最多的盛水量
      */
