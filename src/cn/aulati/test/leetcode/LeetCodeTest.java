@@ -22,7 +22,7 @@ public class LeetCodeTest implements ITest {
     @Override
     public void runTest() {
         _solution = new Solution();
-        testLongestSubstring();
+        testBuildTreeII();
     }
 
     /**
@@ -53,6 +53,21 @@ public class LeetCodeTest implements ITest {
         _solution.radixSort(s, 4);
 
         System.out.println("Output: " + Arrays.toString(s));
+        System.out.println("-----------------------------");
+    }
+
+    /**
+     * 测试构造二叉树
+     */
+    private void testBuildTreeII() {
+        int[] inorder = new int[]{ 9, 3, 15, 20, 7 };
+        int[] postorder = new int[]{ 9, 15, 7, 20, 3 };
+        System.out.println("Input(inorder, postorder): " + Arrays.toString(inorder) + ", " + Arrays.toString(postorder));
+
+        TreeNode ret = _solution.buildTreeII(inorder, postorder);
+        List<Integer> list = _solution.inorderTraversal(ret);
+
+        System.out.println("Output: " + Arrays.toString(list.toArray(new Integer[0])));
         System.out.println("-----------------------------");
     }
 

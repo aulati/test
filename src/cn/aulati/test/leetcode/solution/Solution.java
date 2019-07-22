@@ -100,6 +100,61 @@ public class Solution {
     }
 
     /**
+     * 前序序列当前位置
+     */
+    private int _preIdx;
+    /**
+     * 后序遍历序列当前位置
+     */
+    private int _posIdx;
+    /**
+     * 前序遍历序列
+     */
+    private int[] _preorder;
+    /**
+     * 中序遍历序列
+     */
+    private int[] _inorder;
+    /**
+     * 后序遍历序列
+     */
+    private int[] _postorder;
+    /**
+     * 中序遍历序列中，节点值与位置的Map。用于根据前序遍历当前节点的值，迅速确定其在中序遍历中的位置
+     */
+    Map<Integer, Integer> _inMap;
+
+    public TreeNode buildTreeII(int[] inorder, int[] postorder) {
+        _inorder = inorder;
+        _postorder = postorder;
+        _posIdx = postorder.length - 1;
+
+        _inMap = new HashMap<>();
+        for (int i = 0; i < inorder.length; i++) {
+            _inMap.put(inorder[i], i);
+        }
+
+        return buildTreeHelperII(0, inorder.length - 1);
+    }
+
+    private TreeNode buildTreeHelperII(int left, int right) {
+        if (left > right) {
+            return null;
+        }
+
+        int val = _postorder[_posIdx];
+        TreeNode root = new TreeNode(val);
+
+        _posIdx--;
+
+        int inPos = _inMap.get(val);
+        root.right = buildTreeHelperII(inPos + 1, right);
+        root.left = buildTreeHelperII(left, inPos - 1);
+
+        return root;
+    }
+
+    /**
      * 105.从前序与中序遍历序列构造二叉树
      * 标签：树，深度优先搜索，数组
      */
@@ -115,23 +170,6 @@ public class Solution {
 
         return buildTreeHelper(0, inorder.length);
     }
-
-    /**
-     * 前序序列当前位置
-     */
-    private int _preIdx;
-    /**
-     * 前序遍历序列
-     */
-    private int[] _preorder;
-    /**
-     * 中序遍历序列
-     */
-    private int[] _inorder;
-    /**
-     * 中序遍历序列中，节点值与位置的Map。用于根据前序遍历当前节点的值，迅速确定其在中序遍历中的位置
-     */
-    Map<Integer, Integer> _inMap;
 
     /**
      * 从前序与中序遍历序列构造二叉树的辅助函数
