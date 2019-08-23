@@ -22,7 +22,55 @@ public class LeetCodeTest implements ITest {
     @Override
     public void runTest() {
         _solution = new Solution();
-        testBuildTreeII();
+        testNumRollsToTarget();
+    }
+
+    private void testNumRollsToTarget() {
+        int d = 30;
+        int f = 30;
+        int t = 500;
+        System.out.println("Input: (d, f, t) = (" + d + ", " + f + ", " + t + ")");
+
+        int ret = _solution.numRollsToTarget(d, f, t);
+
+        System.out.println("Output: " + ret);
+        System.out.println("-----------------------------");
+    }
+
+    private void testMaxRepOpt1() {
+        String s = "ababa";
+        System.out.println("Input: " + s);
+
+        int ret = _solution.maxRepOpt1(s);
+
+        System.out.println("Output: " + ret);
+        System.out.println("-----------------------------");
+    }
+
+    private void testLargest1BorderedSquare() {
+//        int[][] x = {{1, 1, 1}, {1, 0, 1}, {1, 1, 1}};
+        int[][] x = {{1, 1, 0, 0}};
+        for (int i = 0; i < x.length; i++) {
+            System.out.println("Input: " + Arrays.toString(x[i]));
+        }
+
+        int ret = _solution.largest1BorderedSquare(x);
+
+        System.out.println("Output: " + ret);
+        System.out.println("-----------------------------");
+    }
+
+    /**
+     * 字母石板
+     */
+    private void testAlphabetBoardPath() {
+        String x = "leet";
+        System.out.println("Input: " + x);
+
+        String ret = _solution.alphabetBoardPath(x);
+
+        System.out.println("Output: " + ret);
+        System.out.println("-----------------------------");
     }
 
     /**

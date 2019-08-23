@@ -6,6 +6,366 @@ import java.util.*;
 
 public class Solution {
     /**
+     * 1160. 拼写单词
+     * 给你一份『词汇表』（字符串数组） words 和一张『字母表』（字符串） chars。
+     *
+     * 假如你可以用 chars 中的『字母』（字符）拼写出 words 中的某个『单词』（字符串），那么我们就认为你掌握了这个单词。
+     *
+     * 注意：每次拼写时，chars 中的每个字母都只能用一次。
+     *
+     * 返回词汇表 words 中你掌握的所有单词的 长度之和。
+     *
+     * 示例 1：
+     * 输入：words = ["cat","bt","hat","tree"], chars = "atach"
+     * 输出：6
+     * 解释：
+     * 可以形成字符串 "cat" 和 "hat"，所以答案是 3 + 3 = 6。
+     *
+     * 示例 2：
+     * 输入：words = ["hello","world","leetcode"], chars = "welldonehoneyr"
+     * 输出：10
+     * 解释：
+     * 可以形成字符串 "hello" 和 "world"，所以答案是 5 + 5 = 10。
+     *
+     * 来源：力扣（LeetCode）
+     * 链接：https://leetcode-cn.com/problems/find-words-that-can-be-formed-by-characters
+     * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+     *
+     * @param words 词汇表
+     * @param chars 字母表
+     * @return 可拼出的所有单词的长度之和
+     */
+    public int countCharacters(String[] words, String chars) {
+        HashSet t = new HashSet();
+        for (char c: chars.toCharArray()) {
+            t.add(c);
+        }
+
+        int ret = 0, i, wordLen;
+
+        // 题目要求 chars 中的每个字母都只能使用一次
+        for (String word: words) {
+            i = 0;
+            wordLen = word.length();
+
+            while (i < wordLen && t.contains(word.charAt(i))) {
+                i++;
+            }
+
+            if (i == wordLen) {
+                ret += wordLen;
+            }
+        }
+
+
+        return ret;
+    }
+
+    public int numRollsToTarget3ms(int d, int f, int target) {
+        if (d == 1) {
+            return target <= f ? 1: 0;
+        }
+        else if (d > target || d * f < target) {
+            return 0;
+        }
+        else if (d == target || d * f == target) {
+            return 1;
+        }
+
+        int[] lastCache = new int[target + 1];
+        Arrays.fill(lastCache, 1, Math.min(target, f) + 1, 1);
+
+        int mod = (int) (Math.pow(10, 9) + 7);
+        int[] curCache = new int[target + 1];
+        for (int i = 2; i <= d; i++) {
+            curCache[i - 2] = curCache[i - 1] = 0;
+            for (int j = i, maxJ = Math.min(target, i * f); j <= maxJ; j++) {
+                // f(d, f, target) = sum(f(d - 1, f, target - k)), 1 <= k <= f
+                // curCache 的计算方式，在 lastCache 上从左往右平移一个大小为f的窗口，计算窗口内数字的和
+                // curCache[j] = lastCache[j - 1 -f + 1] + lastCache[j - 1 -f + 1] + ... + lastCache[j - 1]
+                //             = (lastCache[j - 1 -f] + ... + lastCache[j - 1 - 1]) + lastCache[j - 1] - lastCache[j - 1 -f]
+                //             = curCache[j - 1] + lastCache[j - 1] - lastCache[j - 1 - f]
+                curCache[j] = (lastCache[j - 1] + curCache[j - 1] - (j - 1 - f >= 0 ? lastCache[j - 1 - f] : 0)) % mod;
+                if (curCache[j] < 0) {
+                    curCache[j] += mod;
+                }
+            }
+            int[] temp = lastCache;
+            lastCache = curCache;
+            curCache = temp;
+        }
+        return lastCache[target];
+    }
+
+    /**
+     * 1155. 掷骰子的N种方法
+     * 这里有 d 个一样的骰子，每个骰子上都有 f 个面，分别标号为 1, 2, ..., f。
+     *
+     * 我们约定：掷骰子的得到总点数为各骰子面朝上的数字的总和。
+     *
+     * 如果需要掷出的总点数为 target，请你计算出有多少种不同的组合情况（所有的组合情况总共有 f^d 种），模 10^9 + 7 后返回。
+     *
+     * 示例 1：
+     * 输入：d = 1, f = 6, target = 3
+     * 输出：1
+     *
+     * 示例 2：
+     * 输入：d = 2, f = 6, target = 7
+     * 输出：6
+     *
+     * 示例 3：
+     * 输入：d = 2, f = 5, target = 10
+     * 输出：1
+     *
+     * 示例 4：
+     * 输入：d = 1, f = 2, target = 3
+     * 输出：0
+     *
+     * 示例 5：
+     * 输入：d = 30, f = 30, target = 500
+     * 输出：222616187
+     *
+     * @param d 骰子数量
+     * @param f 骰子的面数量
+     * @param target 总点数
+     * @return 掷出该总点数的组合数量
+     */
+    public int numRollsToTarget(int d, int f, int target) {
+        int[][] n = new int[d + 1][target + 1];
+
+        // 使用 1 个骰子，能掷出 1 ~ f 点的组合均为 1 种，其它点数组合为 0 种
+        for (int j = Math.min(f, target); j >= 1; j--) {
+            n[1][j] = 1;
+        }
+
+        /*
+         * 使用 i(2 <= i <= d) 个骰子，掷出 t(i <= t <= target || (f * i)) 点的组合数量 n(i, t)
+         * n(i, t) = n(i-1, t-1) + n(i-1, t-2) + ... + n(i-1, t-f)
+         */
+        int j;
+        for (int i = 2; i <= d; i++) {
+            for (int t = i; t <= target; t++) {
+                n[i][t] = 0;
+                j = t > f ? (t - f) : 0;
+                for (; j < t; j++) {
+                    n[i][t] += n[i - 1][j];
+
+                    // 模 10^9 + 7
+                    n[i][t] = n[i][t] % 1000000007;
+                }
+            }
+        }
+
+        return n[d][target];
+    }
+
+    /**
+     *
+     * @param text
+     * @return
+     */
+    public int maxRepOpt1(String text) {
+        if (text == null || text.length() == 0) {
+            return 0;
+        }
+
+        int len = text.length();
+        char[] tc = text.toCharArray();
+        HashMap<Character, LinkedList<TextRange>> a = new HashMap<>();
+        int cnt;
+        for (int i = 0; i < len;) {
+            TextRange tr = new TextRange();
+            tr.c = tc[i];
+            tr.pos = i;
+
+            cnt = 0;
+            do {
+                i++;
+                cnt++;
+            } while (i < len && tc[i] == tc[i - 1]);
+
+            tr.len = cnt;
+
+            if (!a.containsKey(tr.c)) {
+                LinkedList<TextRange> list = new LinkedList<>();
+                list.add(tr);
+                a.put(tr.c, list);
+            } else {
+                LinkedList<TextRange> list = a.get(tr.c);
+                list.add(tr);
+            }
+        }
+
+        //
+        int max = 0;
+        for (Character c: a.keySet()) {
+            LinkedList<TextRange> list = a.get(c);
+            cnt = list.size();
+            if (cnt == 1) {
+                max = Math.max(max, list.get(0).len);
+            } else if (cnt == 2) {
+                TextRange tr1 = list.get(0);
+                TextRange tr2 = list.get(1);
+                if (tr1.pos + tr1.len + 1 == tr2.pos) {
+                    // 前后两个相同字符的串间隔一个不同的字母
+                    max = Math.max(max, tr1.len + tr2.len);
+                } else {
+                    max = Math.max(max
+                            , Math.max(tr1.len, tr2.len) + 1);
+                }
+            } else {
+                // 该字符有3个子串
+                for (int i = 1; i < cnt; i++) {
+                    TextRange tr1 = list.get(i - 1);
+                    TextRange tr2 = list.get(i);
+                    if (tr1.pos + tr1.len + 1 == tr2.pos) {
+                        max = Math.max(max, tr1.len + tr2.len + 1);
+                    } else {
+                        max = Math.max(max
+                                , Math.max(tr1.len, tr2.len) + 1);
+                    }
+                }
+            }
+        }
+
+        return max;
+    }
+
+    class TextRange {
+        char c;
+        int pos;
+        int len;
+    }
+    /**
+     * 5141. 最大的以 1 为边界的正方形
+     * 给你一个由若干 0 和 1 组成的二维网格 grid，请你找出边界全部由 1 组成的最大 正方形 子网格，并返回该子网格中的元素数量。如果不存在，则返回 0。
+     *
+     * @param grid 网格数组
+     * @return 最大正方形中的元素数量
+     */
+    public int largest1BorderedSquare(int[][] grid) {
+        int m = grid.length;
+        int n = grid[0].length;
+
+        // 两个二维数组，分别记录位置(i, j)的向左的以1为边的最大边长，向上的以1为边的最大边长
+        int[][] left = new int[m][n];
+        int[][] up = new int[m][n];
+        int aMax = 0;
+
+        // 第一个元素
+        if (grid[0][0] == 1) {
+            left[0][0] = 1;
+            up[0][0] = 1;
+            aMax = 1;
+        }
+
+        // 第一列初始化
+        for (int i = 1; i < m; i++) {
+            if (grid[i][0] == 1) {
+                left[i][0] = 1;
+                up[i][0] = up[i - 1][0] + 1;
+                aMax = 1;
+            }
+        }
+
+        // 第一行初始化
+        for (int i = 1; i < n; i++) {
+            if (grid[0][i] == 1) {
+                up[0][i] = 1;
+                left[0][i] = left[0][i -1] + 1;
+                aMax = 1;
+            }
+        }
+
+        // 按行计算 left[i][j] 和 up[i][j]
+        for (int i = 1; i < m; i++) {
+            for (int j = 1; j < n; j++) {
+                if (grid[i][j] == 1) {
+                    left[i][j] = left[i][j - 1] + 1;
+                    up[i][j] = up[i - 1][j] + 1;
+
+                    // 计算以此位置为右下顶点的正方形的最大边长
+                    for (int k = Math.min(left[i][j], up[i][j]); k > aMax; k--) {
+                        if (up[i][j - k + 1] >= k && left[i -k + 1][j] >= k) {
+                            aMax = k;
+                            break;
+                        }
+                    }
+                } else {
+                    left[i][j] = 0;
+                    up[i][j] = 0;
+                }
+            }
+        }
+
+        return aMax * aMax;
+    }
+
+    /**
+     * 5140. 字母板上的路径
+     * 我们从一块字母板上的位置 (0, 0) 出发，该坐标对应的字符为 board[0][0]。
+     *
+     * 在本题里，字母板为board = ["abcde", "fghij", "klmno", "pqrst", "uvwxy", "z"].
+     *
+     * 我们可以按下面的指令规则行动：
+     *
+     * 如果方格存在，'U' 意味着将我们的位置上移一行；
+     * 如果方格存在，'D' 意味着将我们的位置下移一行；
+     * 如果方格存在，'L' 意味着将我们的位置左移一列；
+     * 如果方格存在，'R' 意味着将我们的位置右移一列；
+     * '!' 会把在我们当前位置 (r, c) 的字符 board[r][c] 添加到答案中。
+     * 返回指令序列，用最小的行动次数让答案和目标 target 相同。你可以返回任何达成目标的路径。
+     *
+     * @param target
+     * @return
+     */
+    public String alphabetBoardPath(String target) {
+        StringBuilder sb = new StringBuilder();
+        int iPre = 0, jPre = 0, iCur, jCur;
+        int abIdx = 0;
+
+        for (char c : target.toCharArray()) {
+            // ASCII: a = 97
+            abIdx = c - 97;
+            iCur = abIdx / 5;
+            jCur = abIdx % 5;
+
+            if (iCur == 5) {
+                // 先水平向左移动
+                repeatString(sb, "L", jPre - jCur);
+                repeatString(sb, "D", iCur - iPre);
+            } else if (iPre == 5) {
+                repeatString(sb, "U", iPre - iCur);
+                repeatString(sb, "R", jCur - jPre);
+            } else {
+                if (iCur >= iPre) {
+                    repeatString(sb, "D", iCur - iPre);
+                } else {
+                    repeatString(sb, "U", iPre - iCur);
+                }
+
+                if (jCur >= jPre) {
+                    repeatString(sb, "R", jCur - jPre);
+                } else {
+                    repeatString(sb, "L", jPre - jCur);
+                }
+            }
+
+            sb.append("!");
+            iPre = iCur;
+            jPre = jCur;
+        }
+
+        return sb.toString();
+    }
+
+    private void repeatString(StringBuilder sb, String s, int cnt) {
+        for (int i = 0; i < cnt; i++) {
+            sb.append(s);
+        }
+    }
+
+    /**
      * 最长公共子字符串
      *
      * @param x 字符串1
