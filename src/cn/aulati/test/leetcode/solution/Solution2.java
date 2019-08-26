@@ -1,10 +1,201 @@
 package cn.aulati.test.leetcode.solution;
 
+import cn.aulati.test.model.ListNode;
 import cn.aulati.test.model.TreeNode;
 
-import java.util.Stack;
+import java.util.*;
 
 public class Solution2 {
+    /**
+     * 21. 合并两个有序链表
+     *
+     * @param l1 有序链表1
+     * @param l2 有序链表2
+     * @return 合并后的有序链表首节点
+     */
+    public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
+        if (l1 == null) {
+            return l2;
+        }
+        if (l2 == null) {
+            return l1;
+        }
+
+        ListNode root, cur;
+
+        if (l1.val < l2.val) {
+            cur = root = l1;
+            l1 = l1.next;
+        } else {
+            cur = root = l2;
+            l2 = l2.next;
+        }
+
+        while (l1 != null && l2 != null) {
+            if (l1.val < l2.val) {
+                cur.next = l1;
+                cur = cur.next;
+                l1 = l1.next;
+            } else {
+                cur.next = l2;
+                cur = cur.next;
+                l2 = l2.next;
+            }
+        }
+
+        if (l1 == null) {
+            cur.next = l2;
+        } else {
+            cur.next = l1;
+        }
+
+        return root;
+    }
+
+    /**
+     * 20. 有效的括号
+     * 给定一个只包括 '('，')'，'{'，'}'，'['，']' 的字符串，判断字符串是否有效。
+     *
+     * 有效字符串需满足：
+     *
+     * 左括号必须用相同类型的右括号闭合。
+     * 左括号必须以正确的顺序闭合。
+     * 注意空字符串可被认为是有效字符串。
+     *
+     * 来源：力扣（LeetCode）
+     * 链接：https://leetcode-cn.com/problems/valid-parentheses
+     * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+     *
+     * @param s 只包括括号字符的字符串
+     * @return 字符串是否有效
+     */
+    public boolean isValid(String s) {
+        Stack<Character> st = new Stack<>();
+        char pre;
+
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            switch (c) {
+                case '(':
+                case '[':
+                case '{':
+                    st.push(c);
+                    break;
+                case ')':
+                    if (st.isEmpty() || '(' != st.pop()) {
+                        return false;
+                    }
+                    break;
+                case ']':
+                    if (st.isEmpty() || '[' != st.pop()) {
+                        return false;
+                    }
+                    break;
+                case '}':
+                    if (st.isEmpty() || '{' != st.pop()) {
+                        return false;
+                    }
+                    break;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * 16. 最接近的三数之和
+     * 给定一个包括 n 个整数的数组 nums 和 一个目标值 target。找出 nums 中的三个整数，使得它们的和与 target 最接近。返回这三个数的和。假定每组输入只存在唯一答案。
+     *
+     * 例如，给定数组 nums = [-1，2，1，-4], 和 target = 1.
+     *
+     * 与 target 最接近的三个数的和为 2. (-1 + 2 + 1 = 2).
+     *
+     * 来源：力扣（LeetCode）
+     * 链接：https://leetcode-cn.com/problems/3sum-closest
+     * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+     *
+     * @param nums
+     * @param target
+     * @return
+     */
+    public int threeSumClosest(int[] nums, int target) {
+        Arrays.sort(nums);
+
+        return 0;
+    }
+
+    /**
+     * 15. 三数之和
+     * 给定一个包含 n 个整数的数组 nums，判断 nums 中是否存在三个元素 a，b，c ，使得 a + b + c = 0 ？找出所有满足条件且不重复的三元组。
+     *
+     * 注意：答案中不可以包含重复的三元组。
+     *
+     * 例如, 给定数组 nums = [-1, 0, 1, 2, -1, -4]，
+     *
+     * 满足要求的三元组集合为：
+     * [
+     *   [-1, 0, 1],
+     *   [-1, -1, 2]
+     * ]
+     *
+     * 来源：力扣（LeetCode）
+     * 链接：https://leetcode-cn.com/problems/3sum
+     * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+     *
+     * @param nums 给定整数数组
+     * @return 和为0的三元组集合
+     */
+    public List<List<Integer>> threeSum(int[] nums) {
+        // 先排序
+        Arrays.sort(nums);
+
+        List<List<Integer>> ret = new LinkedList<>();
+        List<Integer> list;
+        int len = nums.length;
+
+        for (int i = 0; i < len - 2; i++) {
+            if (i > 0 && nums[i] == nums[i - 1]) {
+                // 如果某个数与前一个数相同，那么跳过这个数。这样可以避免找出一些重复的三元组
+                continue;
+            }
+
+            // 另外两数之和
+            int sum = - nums[i];
+            int l = i + 1, r = len - 1;
+            int curSum;
+
+            while (l < r) {
+                curSum = nums[l] + nums[r];
+                if (curSum < sum) {
+                    do {
+                        l++;
+                    } while (l < r && nums[l] == nums[l - 1]);
+                } else if (curSum > sum) {
+                    do {
+                        r--;
+                    } while (l < r && nums[r] == nums[r + 1]);
+                } else {
+                    // 找到一个三数之和为 0 的组合 (i, l, r)
+                    list = new ArrayList<>(3);
+                    list.add(nums[i]);
+                    list.add(nums[l]);
+                    list.add(nums[r]);
+                    ret.add(list);
+
+                    do {
+                        l++;
+                    } while (l < r && nums[l] == nums[l - 1]);
+
+                    do {
+                        r--;
+                    } while (l < r && nums[r] == nums[r + 1]);
+                }
+            }
+        }
+
+        return ret;
+    }
+
     /**
      * 494.目标和
      * 给定一个非负整数数组，a1, a2, ..., an, 和一个目标数，S。现在你有两个符号 + 和 -。对于数组中的任意一个整数，你都可以从 + 或 -中选择一个符号添加在前面。
