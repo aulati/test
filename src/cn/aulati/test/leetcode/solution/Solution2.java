@@ -7,6 +7,205 @@ import java.util.*;
 
 public class Solution2 {
     /**
+     * 493. 翻转对
+     * 给定一个数组 nums ，如果 i < j 且 nums[i] > 2*nums[j] 我们就将 (i, j) 称作一个重要翻转对。
+     * <p>
+     * 你需要返回给定数组中的重要翻转对的数量。
+     * <p>
+     * 示例 1:
+     * <p>
+     * 输入: [1,3,2,3,1]
+     * 输出: 2
+     * 示例 2:
+     * <p>
+     * 输入: [2,4,3,5,1]
+     * 输出: 3
+     * 注意:
+     * <p>
+     * 给定数组的长度不会超过50000。
+     * 输入数组中的所有数字都在32位整数的表示范围内。
+     * <p>
+     * 来源：力扣（LeetCode）
+     * 链接：https://leetcode-cn.com/problems/reverse-pairs
+     * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+     *
+     * @param nums 整数数组
+     * @return 给定数组中的翻转对数量
+     */
+    public int reversePairsII(int[] nums) {
+        
+        return 0;
+    }
+    
+    public int reversePairs(int[] nums) {
+        int ret = 0;
+
+        for (int j = nums.length - 1; j > 0; j--) {
+            if (nums[j] > Integer.MAX_VALUE >>> 1) {
+                // 2 * nums[j] 超过int的最大值，不会有超过此值的数组元素
+                continue;
+            }
+            if (nums[j] < Integer.MIN_VALUE >> 1) {
+                // 2 * nums[j] 比int最小值还小，不会有比此更小的数组元素了
+                ret += j;
+                continue;
+            }
+
+            int threshold = nums[j] << 1;
+
+            for (int i = j - 1; i >= 0; i--) {
+                if (nums[i] > threshold) {
+                    ret++;
+                }
+            }
+        }
+
+        return ret;
+    }
+    
+    /**
+     * 541. 反转字符串 II
+     * 给定一个字符串和一个整数 k，你需要对从字符串开头算起的每个 2k 个字符的前k个字符进行反转。如果剩余少于 k 个字符，则将剩余的所有全部反转。如果有小于 2k 但大于或等于 k 个字符，则反转前 k 个字符，并将剩余的字符保持原样。
+     *
+     * 示例:
+     *
+     * 输入: s = "abcdefg", k = 2
+     * 输出: "bacdfeg"
+     * 要求:
+     *
+     * 该字符串只包含小写的英文字母。
+     * 给定字符串的长度和 k 在[1, 10000]范围内。
+     *
+     * 来源：力扣（LeetCode）
+     * 链接：https://leetcode-cn.com/problems/reverse-string-ii
+     * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+     * 
+     * @param s 给定字符串
+     * @param k 反转长度
+     * @return 反转后的字符串
+     */
+    public String reverseStr(String s, int k) {
+        int len = s.length();
+        StringBuilder sb = new StringBuilder(len);
+        
+        // 当前段要反转的子串开始下标，无须反转的k个字符的开始下标，当前段的结束下标（不包含）
+        int l = 0, m = k, r = 2 * k;
+        do {
+            if (m >= len) {
+                // 反转 [l, len) 的字符
+                m = len;
+                r = len;
+            } else if (r > len) {
+                r = len;
+            }
+
+            // 反转的部分
+            for (int i = m - 1; i >= l; i--) {
+                sb.append(s.charAt(i));
+            }
+            
+            // 不反转的部分
+            sb.append(s, m, r);
+            
+            l = r;
+            m = l + k;
+            r = l + 2 * k;
+            
+        } while (l < len);
+        
+        return sb.toString();
+    }
+    
+    /**
+     * 32. 最长有效括号
+     * 给定一个只包含 '(' 和 ')' 的字符串，找出最长的包含有效括号的子串的长度。
+     *
+     * 示例 1:
+     *
+     * 输入: "(()"
+     * 输出: 2
+     * 解释: 最长有效括号子串为 "()"
+     * 示例 2:
+     *
+     * 输入: ")()())"
+     * 输出: 4
+     * 解释: 最长有效括号子串为 "()()"
+     *
+     * 来源：力扣（LeetCode）
+     * 链接：https://leetcode-cn.com/problems/longest-valid-parentheses
+     * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+     *
+     * @param s 只包含 '(' 和 ')' 的字符串
+     * @return 最长有效括号的子串长度
+     */
+    public int longestValidParenthesesII(String s) {
+        int len = s.length();
+        int[] c = new int[len];
+        int maxLen = 0;
+        
+        for (int i = 1; i < len; i++) {
+            if (s.charAt(i) == ')') {
+                if (s.charAt(i - 1) == '(') {
+                    c[i] = (i >= 2 ? c[i - 2] : 0) + 2;
+                } else if (i - c[i - 1] > 0 && s.charAt(i - c[i - 1] -1) == '(') {
+                    c[i] = (i - c[i - 1] >= 2 ? c[i - c[i - 1] - 2] : 0) + c[i - 1] + 2;
+                }
+
+                if (c[i] > maxLen) {
+                    maxLen = c[i];
+                }
+            }
+        }
+        
+        return maxLen;
+    }
+
+    public int longestValidParentheses(String s) {
+        int len = s.length();
+        if (len <= 1) {
+            return 0;
+        }
+
+        // c[i][j] 表示 [i, j)的子串是否是有效括号子串
+        boolean[][] c = new boolean[len + 1][len + 1];
+
+        int maxLen = 0;
+
+        // 长度为0的子串
+        for (int i = 0; i <= len; i++) {
+            c[i][i] = true;
+        }
+
+        // 对于长度 >= 2 的子串，分两种情况检查
+        for (int l = 2; l <= len; l += 2) {
+            for (int i = 0; i <= len - l; i++) {
+
+                int j = i + l;
+
+                // 情形1：(substring)
+                if ('(' == s.charAt(i)
+                        && ')' == s.charAt(j - 1)
+                        && c[i + 1][j - 1]) {
+                    c[i][j] = true;
+                    maxLen = l > maxLen ? l : maxLen;
+                    continue;
+                }
+
+                // 情形2：substring + substring
+                for (int k = i + 2; k <= j - 2; k += 2) {
+                    if (c[i][k] && c[k][j]) {
+                        c[i][j] = true;
+                        maxLen = l > maxLen ? l : maxLen;
+                        break;
+                    }
+                }
+            }
+        }
+
+        return maxLen;
+    }
+
+    /**
      * 21. 合并两个有序链表
      *
      * @param l1 有序链表1
