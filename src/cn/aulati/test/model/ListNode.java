@@ -1,5 +1,7 @@
 package cn.aulati.test.model;
 
+import java.util.Comparator;
+
 /**
  * singly-linked list node.
  */
@@ -32,4 +34,5 @@ public class ListNode {
 
         return sb.toString();
     }
+
 }

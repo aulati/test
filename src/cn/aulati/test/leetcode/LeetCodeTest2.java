@@ -17,9 +17,91 @@ public class LeetCodeTest2 implements ITest {
     @Override
     public void runTest() {
         _solution = new Solution2();
-        testReverseStr();
+        testNumSmallerByFrequency();
     }
     
+    private void testNumSmallerByFrequency() {
+        String[] s1 = {"baaaaa","abbaaaab","bbbaabaaba"};
+        String[] s2 = {"bbbbaaa","bb","aaaab","abbabbbbab","bbb","a","aa","aabaaabab","aababab","baa","aaaba","aabaab"
+                ,"aa","bbabba","baa","abaaaabbb","babaa","aababaabab","baaaa","baaabbb","aabaab","bbabbab","b","aab"};
+        System.out.println("Input:");
+        System.out.println(Arrays.toString(s1));
+        System.out.println(Arrays.toString(s2));
+
+        int[] ret = _solution.numSmallerByFrequency(s1, s2);
+
+        System.out.println("Output: " + Arrays.toString(ret));
+        System.out.println("-----------------------------");
+    }
+    
+    private void testCountNumbersWithUniqueDigits() {
+        int n = 10;
+        System.out.println("Input: n = " + n);
+
+        int ret = _solution.countNumbersWithUniqueDigits(n);
+
+        System.out.println("Output: " + ret);
+        System.out.println("-----------------------------");
+    }
+
+    /**
+     * 264. 丑数 II
+     */
+    private void testNthUglyNumber() {
+        int n = 7;
+        System.out.println("Input: n = " + n);
+
+        int ret = _solution.nthUglyNumber(n);
+
+        System.out.println("Output: " + ret);
+        System.out.println("-----------------------------");
+    }
+
+    /**
+     * 23. 合并K个排序链表
+     */
+    private void testMergeKLists() {
+        ListNode[] lists = new ListNode[3];
+        
+//        int[] a0 = {-8,-7,-6,-3,-2,-2,0,3};
+//        lists[0] = createListNode(a0);
+//        int[] a1 = {-10,-6,-4,-4,-4,-2,-1,4};
+//        lists[1] = createListNode(a1);
+//        int[] a2 = {-10,-9,-8,-8,-6};
+//        lists[2] = createListNode(a2);
+//        int[] a3 = {-10,0,4};
+//        lists[3] = createListNode(a3);
+
+        int[] a0 = {-1, 1};
+        lists[0] = createListNode(a0);
+        int[] a1 = {-3,1,4};
+        lists[1] = createListNode(a1);
+        int[] a2 = {-2,-1,0,2};
+        lists[2] = createListNode(a2);
+
+        System.out.println("Input: [" + Arrays.toString(a0)
+                + ", " + Arrays.toString(a1)
+                + ", " + Arrays.toString(a2) + "]");
+
+        ListNode ret = _solution.mergeKLists(lists);
+
+        System.out.println("Output: " + ListNode.printString(ret));
+        System.out.println("-----------------------------");
+    }
+    
+    private ListNode createListNode(int[] nums) {
+        ListNode root, cur;
+        root = cur = new ListNode(nums[0]);
+        for (int i = 1; i < nums.length; i++) {
+            cur.next = new ListNode(nums[i]);
+            cur = cur.next;
+        }
+        return root;
+    }
+
+    /**
+     * 541. 反转字符串 II
+     */
     private void testReverseStr() {
         String s = "abcdefg";
         int k = 2;
@@ -62,15 +144,13 @@ public class LeetCodeTest2 implements ITest {
      * 21. 合并两个有序链表
      */
     private void testMergeTwoLists() {
-        ListNode l1 = new ListNode(1);
-        l1.next = new ListNode(2);
-        l1.next.next = new ListNode(4);
+        int[] a1 = {1, 2, 4};
+        ListNode l1 = createListNode(a1);
+        
+        int[] a2 = {1, 3, 4};
+        ListNode l2 = createListNode(a2);
 
-        ListNode l2 = new ListNode(1);
-        l2.next = new ListNode(3);
-        l2.next.next = new ListNode(4);
-
-        System.out.println("Input: " + ListNode.printString(l1) + ", " + ListNode.printString(l2));
+        System.out.println("Input: " + Arrays.toString(a1) + ", " + Arrays.toString(a2));
 
         ListNode ret = _solution.mergeTwoLists(l1, l2);
 

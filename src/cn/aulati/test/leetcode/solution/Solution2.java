@@ -7,6 +7,325 @@ import java.util.*;
 
 public class Solution2 {
     /**
+     * 1171. 从链表中删去总和值为零的连续节点
+     * 给你一个链表的头节点 head，请你编写代码，反复删去链表中由 总和 值为 0 的连续节点组成的序列，直到不存在这样的序列为止。
+     *
+     * 删除完毕后，请你返回最终结果链表的头节点。
+     *
+     *  
+     * 你可以返回任何满足题目要求的答案。
+     *
+     * （注意，下面示例中的所有序列，都是对 ListNode 对象序列化的表示。）
+     *
+     * 示例 1：
+     * 输入：head = [1,2,-3,3,1]
+     * 输出：[3,1]
+     * 提示：答案 [1,2,1] 也是正确的。
+     * 
+     * 示例 2：
+     * 输入：head = [1,2,3,-3,4]
+     * 输出：[1,2,4]
+     * 
+     * 示例 3：
+     * 输入：head = [1,2,3,-3,-2]
+     * 输出：[1]
+     *
+     * 来源：力扣（LeetCode）
+     * 链接：https://leetcode-cn.com/problems/remove-zero-sum-consecutive-nodes-from-linked-list
+     * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+     * 
+     * @param head 链表头
+     * @return 删除和为0的连续节点后的链表的头节点
+     */
+    public ListNode removeZeroSumSublists(ListNode head) {
+        if (head == null) {
+            return null;
+        }
+        while (head.val == 0) {
+            head = head.next;
+        }
+
+        // 删除值为 0 的节点，顺便统计剩余节点的数量 len
+        ListNode pre, cur = head;
+        LinkedList<ListNode> list = new LinkedList<>();
+        int len = 0;
+        while (cur != null) {
+            if (cur.val != 0) {
+                len++;
+                list.add(cur);
+                pre = cur;
+            } else {
+                pre.next = cur.next;
+            }
+            cur = cur.next;
+        }
+        
+        return head;
+    }
+
+    private int deleteZeroSumHelper(LinkedList<ListNode> list) {
+        int delCnt;
+        int len = list.size();
+        int[][] s = new int[len][len];
+
+        for (int i = 0; i < len; i++) {
+            s[i][i] = list.get(i).val;
+        }
+
+        for (int l = 2; l <= len; l++) {
+            for (int i = 0; i < len + 1 - l; i++) {
+                int j = i + l - 1;
+                s[i][j] = s[i][j - 1] + list.get(j).val;
+                if (s[i][j] == 0) {
+                    delCnt = j - i + 1;
+                    if (i > 0) {
+                        list.get(i - 1).next = list.get(j).next;
+                    } else {
+                        
+                    }
+                }
+            }
+        }
+
+        return len;
+    }
+    
+    /**
+     * 1170. 比较字符串最小字母出现频次
+     * 我们来定义一个函数 f(s)，其中传入参数 s 是一个非空字符串；该函数的功能是统计 s  中（按字典序比较）最小字母的出现频次。
+     *
+     * 例如，若 s = "dcce"，那么 f(s) = 2，因为最小的字母是 "c"，它出现了 2 次。
+     *
+     * 现在，给你两个字符串数组待查表 queries 和词汇表 words，请你返回一个整数数组 answer 作为答案，其中每个 answer[i] 是满足 f(queries[i]) < f(W) 的词的数目，W 是词汇表 words 中的词。
+     *
+     *
+     * 示例 1：
+     * 输入：queries = ["cbd"], words = ["zaaaz"]
+     * 输出：[1]
+     * 解释：查询 f("cbd") = 1，而 f("zaaaz") = 3 所以 f("cbd") < f("zaaaz")。
+     * 
+     * 示例 2：
+     * 输入：queries = ["bbb","cc"], words = ["a","aa","aaa","aaaa"]
+     * 输出：[1,2]
+     * 解释：第一个查询 f("bbb") < f("aaaa")，第二个查询 f("aaa") 和 f("aaaa") 都 > f("cc")。
+     *  
+     *
+     * 提示：
+     * 1 <= queries.length <= 2000
+     * 1 <= words.length <= 2000
+     * 1 <= queries[i].length, words[i].length <= 10
+     * queries[i][j], words[i][j] 都是小写英文字母
+     *
+     * 来源：力扣（LeetCode）
+     * 链接：https://leetcode-cn.com/problems/compare-strings-by-frequency-of-the-smallest-character
+     * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+     * 
+     * @param queries
+     * @param words
+     * @return
+     */
+    public int[] numSmallerByFrequency(String[] queries, String[] words) {
+        int[] answer = new int[queries.length];
+        if (words.length == 0) {
+            return answer;
+        }
+
+        int[] iws = new int[words.length];
+        for (int i = 0; i < words.length; i++) {
+            iws[i] = f(words[i]);
+        }
+
+        Arrays.sort(iws);
+
+        for (int i = 0; i < queries.length; i++) {
+            answer[i] = countGreaterElements(iws, iws.length, f(queries[i]));
+        }
+
+        return answer;
+    }
+
+    private int f(String s) {
+        char pre = 'z', cur, cnt = 0;
+        for (int i = 0; i < s.length(); i++) {
+            cur = s.charAt(i);
+            if (cur < pre) {
+                pre = cur;
+                cnt = 1;
+            } else if (cur == pre) {
+                cnt++;
+            }
+        }
+        return cnt;
+    }
+
+    private int countGreaterElements(int[] a, int len, int key) {
+        // a 是递增数组，找出 a 中大于 key 的元素数量
+        if (key < a[0]) {
+            return len;
+        } else if (key >= a[len - 1]) {
+            return 0;
+        }
+
+        int left = 0, right = len - 1, mid = 0;
+        while (left < right) {
+            mid = (left + right) >>> 1;
+            if (key < a[mid]) {
+                right = mid - 1;
+            } else if (key > a[mid]) {
+                left = mid + 1;
+            } else {
+                break;
+            }
+        }
+
+        if (left == right) {
+            while (a[left] <= key) {
+                left++;
+            }
+            return len - left;
+        } else {
+            while (a[mid] == key) {
+                mid++;
+            }
+            return len - mid;
+        }
+    }
+    
+    /**
+     * 357. 计算各个位数不同的数字个数
+     * 给定一个非负整数 n，计算各位数字都不同的数字 x 的个数，其中 0 ≤ x < 10n 。
+     *
+     * 示例:
+     * 输入: 2
+     * 输出: 91 
+     * 解释: 答案应为除去 11,22,33,44,55,66,77,88,99 外，在 [0,100) 区间内的所有数字。
+     *
+     * 来源：力扣（LeetCode）
+     * 链接：https://leetcode-cn.com/problems/count-numbers-with-unique-digits
+     * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+     * 
+     * @param n 数字长度
+     * @return 各位数字都不同的数字 x 的个数
+     */
+    public int countNumbersWithUniqueDigits(int n) {
+        int cnt = 10, curCnt = 9;
+        int digitToSelectFrom = 9;
+        int maxLen = n <= 10 ? n : 10;
+
+        for (int i = 1; i < maxLen; i++) {
+            curCnt = curCnt * digitToSelectFrom;
+            digitToSelectFrom--;
+            cnt += curCnt;
+        }
+
+        return cnt;
+    }
+    
+    /**
+     * 264. 丑数 II
+     * 编写一个程序，找出第 n 个丑数。
+     *
+     * 丑数就是只包含质因数 2, 3, 5 的正整数。
+     *
+     * 示例:
+     *
+     * 输入: n = 10
+     * 输出: 12
+     * 解释: 1, 2, 3, 4, 5, 6, 8, 9, 10, 12 是前 10 个丑数。
+     * 说明:  
+     *
+     * 1 是丑数。
+     * n 不超过1690。
+     *
+     * 来源：力扣（LeetCode）
+     * 链接：https://leetcode-cn.com/problems/ugly-number-ii
+     * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+     * 
+     * @param n 需要返回的丑数序号（从1开始）
+     * @return 第 n 个丑数
+     */
+    public int nthUglyNumber(int n) {
+        int[] ret = new int[n];
+        int ia = 0, ib = 0, ic = 0;
+        int mula = 2, mulb = 3, mulc = 5, cur;
+        ret[0] = 1;
+
+        for (int i = 1; i < n; i++) {
+            cur = Math.min(mula, mulb);
+            cur = Math.min(cur, mulc);
+            ret[i] = cur;
+            if (cur == mula) {
+                mula = ret[++ia] * 2;
+            }
+            if (cur == mulb) {
+                mulb = ret[++ib] * 3;
+            }
+            if (cur == mulc) {
+                mulc = ret[++ic] * 5;
+            }
+        }
+
+        return ret[n - 1];
+    }
+
+    /**
+     * 313. 超级丑数
+     * 编写一段程序来查找第 n 个超级丑数。
+     *
+     * 超级丑数是指其所有质因数都是长度为 k 的质数列表 primes 中的正整数。
+     *
+     * 示例:
+     *
+     * 输入: n = 12, primes = [2,7,13,19]
+     * 输出: 32 
+     * 解释: 给定长度为 4 的质数列表 primes = [2,7,13,19]，前 12 个超级丑数序列为：[1,2,4,7,8,13,14,16,19,26,28,32] 。
+     * 
+     * 说明:
+     * - 1 是任何给定 primes 的超级丑数。
+     * - 给定 primes 中的数字以升序排列。
+     * - 0 < k ≤ 100, 0 < n ≤ 106, 0 < primes[i] < 1000 。
+     * - 第 n 个超级丑数确保在 32 位有符整数范围内。
+     *
+     * 来源：力扣（LeetCode）
+     * 链接：https://leetcode-cn.com/problems/super-ugly-number
+     * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+     * 
+     * @param n 第 N 个超级丑数
+     * @param primes 质数列表
+     * @return 第 N 个超级丑数
+     */
+    public int nthSuperUglyNumber(int n, int[] primes) {
+        int[] ret = new int[n];
+        ret[0] = 1;
+        int k = primes.length;
+        int[] indexes = new int[k];
+        int[] mul = new int[k];
+        int minMul;
+        for (int i = 0; i < k; i++) {
+            indexes[i] = 0;
+            mul[i] = primes[i];
+        }
+
+        for (int i = 1; i < n; i++) {
+            minMul = mul[0];
+            for (int j = 1; j < k; j++) {
+                minMul = minMul <= mul[j] ? minMul : mul[j];
+            }
+            
+            ret[i] = minMul;
+
+            for (int j = 0; j < k; j++) {
+                if (minMul == mul[j]) {
+                    indexes[j]++;
+                    mul[j] = ret[indexes[j]] * primes[j];
+                }
+            }
+        }
+
+        return ret[n-1];
+    }
+    
+    /**
      * 493. 翻转对
      * 给定一个数组 nums ，如果 i < j 且 nums[i] > 2*nums[j] 我们就将 (i, j) 称作一个重要翻转对。
      * <p>
@@ -204,6 +523,123 @@ public class Solution2 {
 
         return maxLen;
     }
+
+    /**
+     * 23. 合并K个排序链表
+     * 合并 k 个排序链表，返回合并后的排序链表。请分析和描述算法的复杂度。
+     *
+     * 示例:
+     *
+     * 输入:
+     * [
+     *   1->4->5,
+     *   1->3->4,
+     *   2->6
+     * ]
+     * 输出: 1->1->2->3->4->4->5->6
+     *
+     * 来源：力扣（LeetCode）
+     * 链接：https://leetcode-cn.com/problems/merge-k-sorted-lists
+     * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+     *
+     * @param lists 有序链表数组
+     * @return 合并后的单一有序链表
+     */
+    public ListNode mergeKLists(ListNode[] lists) {
+        if (lists == null || lists.length == 0) {
+            return null;
+        }
+        
+        int len = lists.length;
+        
+        for (int i = 0; i < len;) {
+            // 神经病吧，居然会有lists中元素是null的情形。。。
+            if (lists[i] == null) {
+                lists[i] = lists[--len];
+            } else {
+                i++;
+            }
+        }
+        
+        // 1 最小堆化
+        int minIdx;
+        for (int i = (len >>> 1) - 1; i >= 0; i--) {
+            for (int j = i; j < len >>> 1;) {
+                int left = (j << 1) + 1;
+                int right = (j << 1) + 2;
+                
+                if (right >= len) {
+                    // 这种情况只会出现在第一次
+                    right = left;
+                }
+
+                if (lists[left].val <= lists[right].val) {
+                    minIdx = left;
+                } else {
+                    minIdx = right;
+                }
+
+                if (lists[minIdx].val < lists[j].val) {
+                    // 交换节点i和较小的子节点的位置
+                    ListNode node = lists[j];
+                    lists[j] = lists[minIdx];
+                    lists[minIdx] = node;
+
+                    j = minIdx;
+                } else {
+                    break;
+                }
+            }
+        }
+        
+        // 2 合并链表
+        ListNode root, cur;
+        root = cur = lists[0];
+
+        while (len > 1) {
+            lists[0] = lists[0].next;
+            if (lists[0] == null) {
+                // 与最后一个数组元素交换
+                lists[0] = lists[--len];
+                lists[len] = null;
+            }
+
+            // 把 lists[0] 下沉到合适位置
+            for (int i = 0; i < (len >>> 1); ) {
+                int left = (i << 1) + 1;
+                int right = (i << 1) + 2;
+
+                if (right >= len) {
+                    // 只可能在i指向数组最后一个元素的父节点时出现
+                    right = left;
+                }
+
+                if (lists[left].val <= lists[right].val) {
+                    minIdx = left;
+                } else {
+                    minIdx = right;
+                }
+
+                if (lists[minIdx].val < lists[i].val) {
+                    // 交换节点i和较小的子节点的位置
+                    ListNode node = lists[i];
+                    lists[i] = lists[minIdx];
+                    lists[minIdx] = node;
+                    i = minIdx;
+                } else {
+                    // lists[0] 已下沉到合适位置，跳出内层循环
+                    break;
+                }
+            }
+
+            cur.next = lists[0];
+            cur = cur.next;
+        }
+        
+        return root;
+    }
+    
+    
 
     /**
      * 21. 合并两个有序链表
