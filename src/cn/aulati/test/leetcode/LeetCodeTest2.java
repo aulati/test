@@ -17,7 +17,17 @@ public class LeetCodeTest2 implements ITest {
     @Override
     public void runTest() {
         _solution = new Solution2();
-        testNumSmallerByFrequency();
+        testCanJump();
+    }
+    
+    private void testCanJump() {
+        int[] a = {3, 2, 1, 0, 4};
+        System.out.println("Input:" + Arrays.toString(a));
+        
+        boolean ret = _solution.canJump(a);
+
+        System.out.println("Output: " + ret);
+        System.out.println("-----------------------------");
     }
     
     private void testNumSmallerByFrequency() {

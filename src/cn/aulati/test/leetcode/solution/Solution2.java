@@ -7,6 +7,153 @@ import java.util.*;
 
 public class Solution2 {
     /**
+     * 45. 跳跃游戏 II
+     * 给定一个非负整数数组，你最初位于数组的第一个位置。
+     * 数组中的每个元素代表你在该位置可以跳跃的最大长度。
+     * 你的目标是使用最少的跳跃次数到达数组的最后一个位置。
+     *
+     * 示例:
+     * 输入: [2,3,1,1,4]
+     * 输出: 2
+     * 解释: 跳到最后一个位置的最小跳跃数是 2。
+     *      从下标为 0 跳到下标为 1 的位置，跳 1 步，然后跳 3 步到达数组的最后一个位置。
+     *
+     * 说明:
+     * 假设你总是可以到达数组的最后一个位置。
+     *
+     * 来源：力扣（LeetCode）
+     * 链接：https://leetcode-cn.com/problems/jump-game-ii
+     * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+     * 
+     * @param nums 跳跃距离数组
+     * @return 跳跃至最后一个位置的最小步数
+     */
+    public int jump(int[] nums) {
+        int steps = 0;
+        int len = nums.length;
+
+        for (int i = 0; i < len - 1;) {
+            int nextIdx = i + nums[i];
+
+            if (nextIdx >= len - 1) {
+                steps++;
+                break;
+            }
+
+            int maxIdx = nextIdx;
+
+            for (int j = i + 1; j < len && j <= i + nums[i]; j++) {
+                if (j + nums[j] > maxIdx) {
+                    nextIdx = j;
+                    maxIdx = j + nums[j];
+                }
+            }
+            
+            i = nextIdx;
+            steps++;
+        }
+
+        return steps;
+    }
+    
+    /**
+     * 55. 跳跃游戏
+     * 给定一个非负整数数组，你最初位于数组的第一个位置。
+     *
+     * 数组中的每个元素代表你在该位置可以跳跃的最大长度。
+     *
+     * 判断你是否能够到达最后一个位置。
+     *
+     * 示例 1:
+     * 输入: [2,3,1,1,4]
+     * 输出: true
+     * 解释: 从位置 0 到 1 跳 1 步, 然后跳 3 步到达最后一个位置。
+     *
+     * 示例 2:
+     * 输入: [3,2,1,0,4]
+     * 输出: false
+     * 解释: 无论怎样，你总会到达索引为 3 的位置。但该位置的最大跳跃长度是 0 ， 所以你永远不可能到达最后一个位置。
+     *
+     * 来源：力扣（LeetCode）
+     * 链接：https://leetcode-cn.com/problems/jump-game
+     * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+     * 
+     * @param nums 跳跃距离数组
+     * @return 能否到达最后一个位置
+     */
+    public boolean canJump(int[] nums) {
+        int len = nums.length;
+        if (len <= 1) {
+            return true;
+        }
+
+        // i: current index; maxi: max index reached.
+        int i = 0, maxi = 0;
+        i += nums[0];
+        if (i >= len - 1) {
+            return true;
+        }
+        maxi = i;
+        
+        while (0 < i && i < len - 1) {
+            int j = i;
+            j += nums[j];
+            
+            if (j > maxi) {
+                maxi = i = j;
+            } else {
+                i--;
+            }
+        }
+
+        return i >= len - 1;
+    }
+    
+    /**
+     * 1094. 拼车
+     * 假设你是一位顺风车司机，车上最初有 capacity 个空座位可以用来载客。由于道路的限制，车 只能 向一个方向行驶（也就是说，不允许掉头或改变方向，你可以将其想象为一个向量）。
+     *
+     * 这儿有一份行程计划表 trips[][]，其中 trips[i] = [num_passengers, start_location, end_location] 包含了你的第 i 次行程信息：
+     *
+     * 必须接送的乘客数量；
+     * 乘客的上车地点；
+     * 以及乘客的下车地点。
+     * 这些给出的地点位置是从你的 初始 出发位置向前行驶到这些地点所需的距离（它们一定在你的行驶方向上）。
+     *
+     * 请你根据给出的行程计划表和车子的座位数，来判断你的车是否可以顺利完成接送所用乘客的任务（当且仅当你可以在所有给定的行程中接送所有乘客时，返回 true，否则请返回 false）。
+     *
+     *  
+     * 示例 1：
+     * 输入：trips = [[2,1,5],[3,3,7]], capacity = 4
+     * 输出：false
+     *
+     * 示例 2：
+     * 输入：trips = [[2,1,5],[3,3,7]], capacity = 5
+     * 输出：true
+     *
+     * 示例 3：
+     * 输入：trips = [[2,1,5],[3,5,7]], capacity = 3
+     * 输出：true
+     *
+     * 示例 4：
+     * 输入：trips = [[3,2,7],[3,7,9],[8,3,9]], capacity = 11
+     * 输出：true
+     *
+     * 来源：力扣（LeetCode）
+     * 链接：https://leetcode-cn.com/problems/car-pooling
+     * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+     * 
+     * @param trips
+     * @param capacity
+     * @return
+     */
+    public boolean carPooling(int[][] trips, int capacity) {
+        
+        
+        return false;
+    }
+    
+    /**
      * 1171. 从链表中删去总和值为零的连续节点
      * 给你一个链表的头节点 head，请你编写代码，反复删去链表中由 总和 值为 0 的连续节点组成的序列，直到不存在这样的序列为止。
      *
@@ -41,53 +188,37 @@ public class Solution2 {
         if (head == null) {
             return null;
         }
-        while (head.val == 0) {
-            head = head.next;
-        }
 
-        // 删除值为 0 的节点，顺便统计剩余节点的数量 len
-        ListNode pre, cur = head;
-        LinkedList<ListNode> list = new LinkedList<>();
-        int len = 0;
+        // 前序和：从第一个元素到当前节点的所有元素之和
+        // 将每一个节点的前序和存于Map中，当某个前序和已经存在于Map中时，则表明两个相同的前序和之间有个总和为0的连续节点序列
+        HashMap<Integer, ListNode> map = new HashMap<>();
+        int sum = 0;
+        ListNode cur = head;
+
         while (cur != null) {
-            if (cur.val != 0) {
-                len++;
-                list.add(cur);
-                pre = cur;
+            sum += cur.val;
+            if (sum == 0) {
+                // 前序和为0，则弃掉从开始至当前节点的序列
+                head = cur.next;
+                cur = cur.next;
+                map.clear();
             } else {
-                pre.next = cur.next;
-            }
-            cur = cur.next;
-        }
-        
-        return head;
-    }
+                if (map.containsKey(sum)) {
+                    // 遇到一个总和为0的连续节点序列，移除它；
+                    map.get(sum).next = cur.next;
 
-    private int deleteZeroSumHelper(LinkedList<ListNode> list) {
-        int delCnt;
-        int len = list.size();
-        int[][] s = new int[len][len];
-
-        for (int i = 0; i < len; i++) {
-            s[i][i] = list.get(i).val;
-        }
-
-        for (int l = 2; l <= len; l++) {
-            for (int i = 0; i < len + 1 - l; i++) {
-                int j = i + l - 1;
-                s[i][j] = s[i][j - 1] + list.get(j).val;
-                if (s[i][j] == 0) {
-                    delCnt = j - i + 1;
-                    if (i > 0) {
-                        list.get(i - 1).next = list.get(j).next;
-                    } else {
-                        
-                    }
+                    // 然后重头再来
+                    cur = head;
+                    map.clear();
+                    sum = 0;
+                } else {
+                    map.put(sum, cur);
+                    cur = cur.next;
                 }
             }
         }
 
-        return len;
+        return head;
     }
     
     /**
@@ -440,12 +571,11 @@ public class Solution2 {
      * 给定一个只包含 '(' 和 ')' 的字符串，找出最长的包含有效括号的子串的长度。
      *
      * 示例 1:
-     *
      * 输入: "(()"
      * 输出: 2
      * 解释: 最长有效括号子串为 "()"
+     * 
      * 示例 2:
-     *
      * 输入: ")()())"
      * 输出: 4
      * 解释: 最长有效括号子串为 "()()"
