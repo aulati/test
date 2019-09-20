@@ -17,7 +17,18 @@ public class LeetCodeTest2 implements ITest {
     @Override
     public void runTest() {
         _solution = new Solution2();
-        testReverseAlphabets();
+        testReverseLists();
+    }
+    
+    private void testReverseLists() {
+        int[] a = {1, 2, 3, 4, 5};
+        ListNode h = createListNode(a);
+        System.out.println("Input: " + ListNode.printString(h));
+        
+        ListNode ret = _solution.reverseLists(h);
+
+        System.out.println("Output: " + ListNode.printString(ret));
+        System.out.println("-----------------------------");
     }
     
     private void testReverseAlphabets() {
@@ -111,12 +122,14 @@ public class LeetCodeTest2 implements ITest {
     
     private ListNode createListNode(int[] nums) {
         ListNode root, cur;
-        root = cur = new ListNode(nums[0]);
-        for (int i = 1; i < nums.length; i++) {
+        root = cur = new ListNode(0);
+        
+        for (int i = 0; i < nums.length; i++) {
             cur.next = new ListNode(nums[i]);
             cur = cur.next;
         }
-        return root;
+        
+        return root.next;
     }
 
     /**
