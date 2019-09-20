@@ -7,6 +7,49 @@ import java.util.*;
 
 public class Solution2 {
     /**
+     * Microsoft | Phone Screen | Reverse Only Alphabet Characters in a String
+     * Question encountered while interviewing for a contract software engineering position. Interviewer gave 15 Minutes to solve it.
+     *
+     * Reverse Only Alphabet Characters in a String
+     *
+     *
+     * Example 1:
+     * Input: "ab-cd-ef" 
+     * Output: "fe-dc-ba"
+     *
+     * Example 2:
+     * Input: "abcd-EF-ga"
+     * Output: "agFE-dc-ba"
+     *
+     * Related problems:
+     * https://leetcode.com/problems/reverse-vowels-of-a-string/
+     * 
+     * @param s
+     * @return
+     */
+    public String reverseAlphabets(String s) {
+        char[] cs = s.toCharArray();
+        int left = 0, right = cs.length - 1;
+        while (left < right) {
+            if (cs[left] == '-') {
+                left++;
+                continue;
+            }
+            if (cs[right] == '-') {
+                right--;
+                continue;
+            }
+            char tmp = cs[left];
+            cs[left] = cs[right];
+            cs[right] = tmp;
+            left++;
+            right--;
+        }
+        
+        return new String(cs);
+    }
+    
+    /**
      * 45. 跳跃游戏 II
      * 给定一个非负整数数组，你最初位于数组的第一个位置。
      * 数组中的每个元素代表你在该位置可以跳跃的最大长度。

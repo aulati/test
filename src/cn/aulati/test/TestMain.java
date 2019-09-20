@@ -1,5 +1,6 @@
 package cn.aulati.test;
 
+import cn.aulati.test.T001.ClassInsideAnotherClassTest;
 import cn.aulati.test.leetcode.LeetCodeTest2;
 
 /**
@@ -23,7 +24,8 @@ public class TestMain {
 //        tc = new DynamicDelegateTest();
 //        tc = new SortTestMain();
         tc = new LeetCodeTest2();
-
+//        tc = new ClassInsideAnotherClassTest();
+        
         tc.runTest();
     }
 }

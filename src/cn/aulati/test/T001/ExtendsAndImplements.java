@@ -1,6 +1,8 @@
 package cn.aulati.test.T001;
 
 import cn.aulati.test.ITest;
+import cn.aulati.test.model.Beetle;
+import cn.aulati.test.model.RoundGlyph;
 import cn.aulati.test.model.SonClass;
 
 /**
@@ -16,7 +18,7 @@ public class ExtendsAndImplements implements ITest {
 	 */
 	@Override
 	public void runTest() {
-		test01();
+		test03();
 	}
 
 	/**
@@ -24,5 +26,13 @@ public class ExtendsAndImplements implements ITest {
 	 */
 	private void test01() {
 		new SonClass();
+	}
+	
+	private void test02() {
+		new Beetle();
+	}
+	
+	private void test03() {
+		new RoundGlyph(5);
 	}
 }

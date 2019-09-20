@@ -17,7 +17,17 @@ public class LeetCodeTest2 implements ITest {
     @Override
     public void runTest() {
         _solution = new Solution2();
-        testCanJump();
+        testReverseAlphabets();
+    }
+    
+    private void testReverseAlphabets() {
+        String s = "abcd-EF-ga";
+        System.out.println("Input:" + s);
+
+        String ret = _solution.reverseAlphabets(s);
+
+        System.out.println("Output: " + ret);
+        System.out.println("-----------------------------");
     }
     
     private void testCanJump() {
