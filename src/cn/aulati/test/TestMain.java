@@ -1,6 +1,7 @@
 package cn.aulati.test;
 
 import cn.aulati.test.T001.ClassInsideAnotherClassTest;
+import cn.aulati.test.algorithm.AlgorithmTest;
 import cn.aulati.test.leetcode.LeetCodeTest2;
 
 /**
@@ -25,6 +26,7 @@ public class TestMain {
 //        tc = new SortTestMain();
         tc = new LeetCodeTest2();
 //        tc = new ClassInsideAnotherClassTest();
+//        tc = new AlgorithmTest();
         
         tc.runTest();
     }
