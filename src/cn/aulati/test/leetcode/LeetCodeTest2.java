@@ -17,7 +17,56 @@ public class LeetCodeTest2 implements ITest {
     @Override
     public void runTest() {
         _solution = new Solution2();
-        testReverseLists();
+        testLetterCombinations();
+    }
+    
+    private void testLetterCombinations() {
+        String[] ss = {"23", "79"};
+
+        System.out.println("-----------------------------");
+        for (String s : ss) {
+            System.out.println("Input: " + s);
+            
+            List<String> ret = _solution.letterCombinations(s);
+            
+            System.out.println("Output: " + ret);
+            System.out.println("-----------------------------");
+        }
+    }
+    
+    private void testHuaweiOnlineTest() {
+        int[] a = {1000000000, 2, 217983653, 336916467};
+        System.out.println("Input: " + Arrays.toString(a));
+
+        int ret = _solution.nthUglyNumber(a[0], a[1], a[2], a[3]);
+
+        System.out.println("Output: " + ret);
+        System.out.println("-----------------------------");
+    }
+    
+    private void testNthUglyNumberContest() {
+        int[] a = {1000000000, 2, 217983653, 336916467};
+        System.out.println("Input: " + Arrays.toString(a));
+        
+        int ret = _solution.nthUglyNumber(a[0], a[1], a[2], a[3]);
+
+        System.out.println("Output: " + ret);
+        System.out.println("-----------------------------");
+    }
+    
+    private void testMinimumAbsDifference() {
+        int[] a = {1, 2, 3, 4};
+        System.out.println("Input: " + Arrays.toString(a));
+
+        List<List<Integer>> ret = _solution.minimumAbsDifference(a);
+
+        System.out.print("[");
+        for (List<Integer> i : ret) {
+            System.out.print(i.toString());
+        }
+        System.out.println("]");
+
+        System.out.println("-----------------------------");
     }
     
     private void testReverseLists() {

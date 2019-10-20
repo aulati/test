@@ -7,6 +7,143 @@ import java.util.*;
 
 public class Solution2 {
     /**
+     * 电话按键的数字 2 - 9 对应的字母数组
+     */
+    private String[] data = {"abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
+
+    /**
+     * 17. 电话号码的字母组合
+     * 给定一个仅包含数字 2-9 的字符串，返回所有它能表示的字母组合。
+     * 给出数字到字母的映射如下（与电话按键相同）。注意 1 不对应任何字母。
+     *
+     * 示例:
+     * 输入："23"
+     * 输出：["ad", "ae", "af", "bd", "be", "bf", "cd", "ce", "cf"].
+     *
+     *  说明:
+     * 尽管上面的答案是按字典序排列的，但是你可以任意选择答案输出的顺序。
+     *
+     * 来源：力扣（LeetCode）
+     * 链接：https://leetcode-cn.com/problems/letter-combinations-of-a-phone-number
+     * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+     * 
+     * @param digits 一串仅包含2-9的字符串
+     * @return 所有的字母组合
+     */
+    public List<String> letterCombinations(String digits) {
+        List<String> ret = new ArrayList<>();
+
+        letterCombinationsHelper(ret, new StringBuilder(), digits, 0);
+
+        return ret;
+    }
+
+    private void letterCombinationsHelper(List<String> list, StringBuilder prefix, String digits, int i) {
+        if (i < digits.length()) {
+            int idx = Integer.parseInt(digits.substring(i, i + 1), 10) - 2;
+
+            for (int j = 0; j < data[idx].length(); j++) {
+                StringBuilder sb = new StringBuilder(prefix);
+                sb.append(data[idx].charAt(j));
+                letterCombinationsHelper(list, sb, digits, i + 1);
+            }
+
+        } else {
+            list.add(prefix.toString());
+        }
+    }
+    
+    /**
+     * Test if a binary tree is binary search tree.
+     * @param root root
+     * @return true if it is a binary search tree.
+     */
+    public boolean isBST(TreeNode root) {
+        if (!isBSTNode(root)) {
+            return false;
+        }
+
+        if (!isBST(root.left)) {
+            return false;
+        }
+
+        if (!isBST(root.right)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    private boolean isBSTNode(TreeNode r) {
+        if (r == null) {
+            return true;
+        }
+
+        if (r.left != null && r.left.val > r.val) {
+            return false;
+        }
+
+        if (r.right != null && r.right.val < r.val) {
+            return false;
+        }
+        
+        return true;
+    }
+    
+    public String smallestStringWithSwaps(String s, List<List<Integer>> pairs) {
+        return "";
+    }
+    
+    public int nthUglyNumber(int n, int a, int b, int c) {
+        long ret = 0;
+
+        long pa = 1, pb = 1, pc = 1;
+        for (int i = 0; i < n; i++) {
+            long ma = a * pa;
+            long mb = b * pb;
+            long mc = c * pc;
+            ret = Math.min(Math.min(ma, mb), mc);
+            if (ret == ma) {
+                pa++;
+            }
+            if (ret == mb) {
+                pb++;
+            }
+            if (ret == mc) {
+                pc++;
+            }
+        }
+
+        return ((Long)ret).intValue();
+    }
+    
+    public List<List<Integer>> minimumAbsDifference(int[] arr) {
+        Arrays.sort(arr);
+
+        int diff_min = Integer.MAX_VALUE;
+        List<List<Integer>> ret = new LinkedList<List<Integer>>();
+        List<Integer> list;
+        for (int i = 0; i < arr.length - 1; i++) {
+            int diff_cur = arr[i + 1] - arr[i];
+            if (diff_cur == diff_min) {
+                list = new ArrayList<Integer>(2);
+                list.add(arr[i]);
+                list.add(arr[i + 1]);
+                ret.add(list);
+            } else if (diff_cur < diff_min) {
+                diff_min = diff_cur;
+                ret.clear();
+                list = new ArrayList<Integer>(2);
+                list.add(arr[i]);
+                list.add(arr[i + 1]);
+                ret.add(list);
+            }
+        }
+
+        return ret;
+    }
+    
+    /**
      * reverse the ListNode.
      * 
      * @param head
