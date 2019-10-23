@@ -1,7 +1,7 @@
 package cn.aulati.test.model;
 
 public class Wrapping {
-    private int i;
+    protected int i;
 
     public Wrapping(int x) {
         i = x;
