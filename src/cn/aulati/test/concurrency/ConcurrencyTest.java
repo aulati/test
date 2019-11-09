@@ -10,10 +10,35 @@ public class ConcurrencyTest implements ITest {
     @Override
     public void runTest() {
         try {
-            test04();
+            test06();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * synchronized ArrayList and CopyOnWriteArrayList
+     * @throws InterruptedException
+     */
+    private void test06() throws InterruptedException {
+        ListComparison.test(10, 1000, 1000);
+    }
+
+    /**
+     * compare different kinds of synchronization methods
+     * @throws InterruptedException exception
+     */
+    private void test05() throws InterruptedException{
+        int iterations = 7;
+        System.out.println("Warm up");
+        SynchronizationComparison.base.timeTested();
+
+        for (int i = 0; i < iterations; i++) {
+            SynchronizationComparison.test();
+            Accumulator.cycles *= 2;
+        }
+        
+        Accumulator.exec.shutdown();
     }
     
     private void test04() throws InterruptedException {
