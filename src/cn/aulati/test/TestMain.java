@@ -29,11 +29,11 @@ public class TestMain {
 //        tc = new ExtendsAndImplements();
 //        tc = new DynamicDelegateTest();
 //        tc = new SortTestMain();
-//        tc = new LeetCodeTest2();
+        tc = new LeetCodeTest2();
 //        tc = new ClassInsideAnotherClassTest();
 //        tc = new AlgorithmTest();
 //        tc = new InnerClassTest();
-        tc = new ConcurrencyTest();
+//        tc = new ConcurrencyTest();
 
         tc.runTest();
 

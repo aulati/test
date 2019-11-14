@@ -4,8 +4,93 @@ import cn.aulati.test.model.ListNode;
 import cn.aulati.test.model.TreeNode;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Solution2 {
+    public List<List<Integer>> reconstructMatrix(int upper, int lower, int[] colsum) {
+        int n = colsum.length;
+        Integer[] u = new Integer[n];
+        Integer[] d = new Integer[n];
+        List<List<Integer>> ret = new ArrayList<>();
+
+        int i = 0;
+        for (; i < n; i++) {
+            if (colsum[i] == 2) {
+                u[i] = 1;
+                d[i] = 1;
+                upper--;
+                lower--;
+            }
+        }
+
+        if (upper < 0 || lower < 0) {
+            return ret;
+        }
+
+        for (i = 0; i < n; i++) {
+            if (colsum[i] == 1) {
+                if (upper > 0) {
+                    u[i] = 1;
+                    d[i] = 0;
+                    upper--;
+                } else if (lower > 0) {
+                    u[i] = 0;
+                    d[i] = 1;
+                    lower--;
+                } else {
+                    break;
+                }
+            } else {
+                u[i] = 0;
+                d[i] = 0;
+            }
+        }
+
+        if (i < n || upper > 0 || lower > 0) {
+        } else {
+            ret.add(Arrays.asList(u));
+            ret.add(Arrays.asList(d));
+        }
+        return ret;
+    }
+
+    /**
+     *
+     * @param n
+     * @param m
+     * @param indices
+     * @return
+     */
+    public int oddCells(int n, int m, int[][] indices) {
+        boolean[][] isOdd = new boolean[n][m];
+        for (int i = 0; i < indices.length; i++) {
+            int row = indices[i][0];
+            int col = indices[i][1];
+
+            // do the row
+            for (int j = 0; j < m; j++) {
+                isOdd[row][j] = !isOdd[row][j];
+            }
+
+            // do the column
+            for (int j = 0; j < n; j++) {
+                isOdd[j][col] = !isOdd[j][col];
+            }
+        }
+
+        // count
+        int ret = 0;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                if (isOdd[i][j]) {
+                    ret++;
+                }
+            }
+        }
+
+        return ret;
+    }
+
     /**
      * 电话按键的数字 2 - 9 对应的字母数组
      */
