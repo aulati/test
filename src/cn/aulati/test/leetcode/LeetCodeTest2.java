@@ -17,7 +17,51 @@ public class LeetCodeTest2 implements ITest {
     @Override
     public void runTest() {
         _solution = new Solution2();
-        testLetterCombinations();
+        testNumWays();
+    }
+
+    private void testNumWays() {
+        int[] i = { 27, 7 };
+        System.out.println("Input: " + i[0] + ", " + i[1]);
+
+        int ret = _solution.numWays(i[0], i[1]);
+
+        System.out.println("Output: " + ret);
+    }
+
+    private void testMaxSumDivThree() {
+        int[] nums = {1, 2, 3, 4, 4};
+
+        System.out.println("Input: " + nums);
+
+        int ret = _solution.maxSumDivThree(nums);
+
+        System.out.println("Output: " + ret);
+    }
+
+    private void testShiftGrid() {
+        int[][] grid = {{1}};
+        int k = 100;
+
+        System.out.println("grid: " + grid + ", k: " + k);
+
+        List<List<Integer>> ret = _solution.shiftGrid(grid, k);
+
+        System.out.println("Output: " + ret);
+    }
+
+    private void testMyAtoi() {
+        String[] inputs = {"-91283472332", "91283472332", "-2147483647", "-2147483648", "2147483647", "2147483648"
+                , "+000000123456", "   403 with word", "word and 922", "42"};
+        System.out.println("-----------------------------");
+        for (String s : inputs) {
+            System.out.println("Input: " + s);
+
+            int ret = _solution.myAtoi(s);
+
+            System.out.println("Output: " + ret);
+            System.out.println("-----------------------------");
+        }
     }
     
     private void testLetterCombinations() {

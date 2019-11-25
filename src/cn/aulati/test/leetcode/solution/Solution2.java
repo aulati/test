@@ -4,13 +4,290 @@ import cn.aulati.test.model.ListNode;
 import cn.aulati.test.model.TreeNode;
 
 import java.util.*;
+import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
 public class Solution2 {
+    /**
+     * 1269. 停在原地的方案数
+     * 有一个长度为 arrLen 的数组，开始有一个指针在索引 0 处。
+     * 每一步操作中，你可以将指针向左或向右移动 1 步，或者停在原地（指针不能被移动到数组范围外）。
+     * 给你两个整数 steps 和 arrLen ，请你计算并返回：在恰好执行 steps 次操作以后，指针仍然指向索引 0 处的方案数。
+     *
+     * 由于答案可能会很大，请返回方案数 模 10^9 + 7 后的结果。
+     *
+     * 来源：力扣（LeetCode）
+     * 链接：https://leetcode-cn.com/problems/number-of-ways-to-stay-in-the-same-place-after-some-steps
+     * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+     *
+     * @param steps 操作步数
+     * @param arrLen 数组长度
+     * @return 停在原地的方案数
+     */
+    public int numWays(int steps, int arrLen) {
+        if (arrLen == 1) {
+            return 1;
+        }
+
+        /*
+         * 解题思路：移动 k 步后，指针停在位置 i 处的方案数，
+         * 等于移动(k - 1)步时，指针停在 i - 1, i, i + 1 处的方案数之和
+         */
+        long[] ans = new long[arrLen];
+        long[] tmp = new long[arrLen];
+
+        // 移动1次时，停在位置0、位置1处的方案数均为1
+        ans[0] = 1;
+        ans[1] = 1;
+
+        for (int i = 1; i < steps; i++) {
+            tmp[0] = ans[0] + ans[1];
+            tmp[0] = tmp[0] % 1000000007;
+
+            for (int j = 1; j < arrLen - 1; j++) {
+                tmp[j] = ans[j - 1] + ans[j] + ans[j + 1];
+                tmp[j] = tmp[j] % 1000000007;
+            }
+
+            tmp[arrLen - 1] = ans[arrLen - 2] + ans[arrLen - 1];
+            tmp[arrLen - 1] = tmp[arrLen - 1] % 1000000007;
+
+            long[] t = tmp;
+            tmp = ans;
+            ans = t;
+        }
+
+
+        return (int)ans[0];
+    }
+
+    /**
+     * 5273. 搜索推荐系统
+     * 给你一个产品数组 products 和一个字符串 searchWord ，products  数组中每个产品都是一个字符串。
+     *
+     * 请你设计一个推荐系统，在依次输入单词 searchWord 的每一个字母后，推荐 products 数组中前缀与 searchWord 相同的最多三个产品。如果前缀相同的可推荐产品超过三个，请按字典序返回最小的三个。
+     *
+     * 请你以二维列表的形式，返回在输入 searchWord 每个字母后相应的推荐产品的列表。
+     *
+     * @param products 产品
+     * @param searchWord 检索关键字
+     * @return 推荐产品列表
+     */
+    public List<List<String>> suggestedProducts(String[] products, String searchWord) {
+        Arrays.sort(products);
+
+        List<List<String>> ret = new ArrayList<>(searchWord.length());
+        List<String> cur;
+
+        int i, pos = 0;
+        for (i = 1; i <= searchWord.length(); i++) {
+            String pre = searchWord.substring(0, i);
+            while (pos < products.length && !products[pos].startsWith(pre)) {
+                pos++;
+            }
+
+            if (pos == products.length) {
+                // 没有推荐词
+                break;
+            }
+
+            cur = new ArrayList<>();
+            ret.add(cur);
+
+            int end = Math.min(products.length, pos + 3);
+
+            for (int j = pos; j < end && products[j].startsWith(pre); j++) {
+                cur.add(products[j]);
+            }
+        }
+
+        for (; i <= searchWord.length(); i++) {
+            cur = new ArrayList<>();
+            ret.add(cur);
+        }
+
+        return ret;
+    }
+
+    /**
+     * 1262. 可被三整除的最大和
+     * 给你一个整数数组 nums，请你找出并返回能被三整除的元素最大和。
+     *
+     * 示例 1：
+     * 输入：nums = [3,6,5,1,8]
+     * 输出：18
+     * 解释：选出数字 3, 6, 1 和 8，它们的和是 18（可被 3 整除的最大和）。
+     *
+     * 示例 2：
+     * 输入：nums = [4]
+     * 输出：0
+     * 解释：4 不能被 3 整除，所以无法选出数字，返回 0。
+     *
+     * 示例 3：
+     * 输入：nums = [1,2,3,4,4]
+     * 输出：12
+     * 解释：选出数字 1, 3, 4 以及 4，它们的和是 12（可被 3 整除的最大和）。
+     *
+     * 提示：
+     * 1 <= nums.length <= 4 * 10^4
+     * 1 <= nums[i] <= 10^4
+     *
+     * 来源：力扣（LeetCode）
+     * 链接：https://leetcode-cn.com/problems/greatest-sum-divisible-by-three
+     * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+     *
+     * @param nums 正整数数组
+     * @return 可被三整除的最大和
+     */
+    public int maxSumDivThree(int[] nums) {
+        int len = nums.length;
+        ArrayList<Integer> list1 = new ArrayList<>();
+        ArrayList<Integer> list2 = new ArrayList<>();
+
+        int sumAll = 0;
+        for (int i = 0; i < len; i++) {
+            sumAll += nums[i];
+            switch (nums[i] % 3) {
+                case 0:
+                    break;
+                case 1:
+                    list1.add(nums[i]);
+                    break;
+                case 2:
+                    list2.add(nums[i]);
+                    break;
+            }
+        }
+
+
+        int tmp = sumAll % 3;
+        if (tmp == 0) {
+            return sumAll;
+        } else {
+            Collections.sort(list1);
+            Collections.sort(list2);
+
+            int off = sumAll;
+            if (tmp == 1) {
+                if (list1.size() > 0) {
+                    off = list1.get(0);
+                }
+                if (list2.size() > 1) {
+                    off = Math.min(off, list2.get(0) + list2.get(1));
+                }
+            } else {
+                if (list2.size() > 0) {
+                    off = list2.get(0);
+                }
+                if (list1.size() > 1) {
+                    off = Math.min(off, list1.get(0) + list1.get(1));
+                }
+            }
+
+            return sumAll - off;
+        }
+    }
+
+    /**
+     * 5263. 二维网格迁移
+     * 给你一个 n 行 m 列的二维网格 grid 和一个整数 k。你需要将 grid 迁移 k 次。
+     *
+     * 每次「迁移」操作将会引发下述活动：
+     *
+     * 位于 grid[i][j] 的元素将会移动到 grid[i][j + 1]。
+     * 位于 grid[i][m - 1] 的元素将会移动到 grid[i + 1][0]。
+     * 位于 grid[n - 1][m - 1] 的元素将会移动到 grid[0][0]。
+     * 请你返回 k 次迁移操作后最终得到的 二维网格。
+     *
+     * @param grid
+     * @param k
+     * @return
+     */
+    public List<List<Integer>> shiftGrid(int[][] grid, int k) {
+        int n = grid.length;
+        int m = grid[0].length;
+
+        List<List<Integer>> ret = new ArrayList<>(n);
+
+        int i = n - 1 - ((k - 1) / m % n);
+        int j = m - 1 - (k - 1) % m;
+
+        List<Integer> row = new ArrayList<>(m);
+        for (int l = 0; l < n * m; l++) {
+            if (l % m == 0) {
+                row = new ArrayList<>(m);
+                ret.add(row);
+            }
+
+            row.add(grid[i][j]);
+
+            j++;
+            if (j == m) {
+                j = 0;
+                i++;
+                if (i == n) {
+                    i = 0;
+                }
+            }
+        }
+
+        return ret;
+    }
+
+    public int myAtoi(String str) {
+        if (str == null) {
+            return 0;
+        }
+
+        char[] c = str.trim().toCharArray();
+        if (c.length == 0) {
+            return 0;
+        }
+
+        long ret = 0;
+        boolean isNegative = false;
+        int digits = 0;
+
+        int i = 0;
+
+        if (c[i] == '+') {
+            i++;
+        } else if (c[i] == '-') {
+            isNegative = true;
+            i++;
+        }
+
+        // jump '0'
+        while (i < c.length && c[i] == '0') {
+            i++;
+        }
+
+        for (; i < c.length; i++) {
+            if (c[i] >= '0' && c[i] <= '9') {
+                // still digits
+                if (digits == 10) {
+                    ret = (long)Integer.MAX_VALUE + 2;
+                    break;
+                } else {
+                    ret = ret * 10 + ((long)c[i] - (long)'0');
+                    digits++;
+                }
+            } else {
+                break;
+            }
+        }
+
+        if (ret > Integer.MAX_VALUE) {
+            return isNegative ? Integer.MIN_VALUE : Integer.MAX_VALUE;
+        } else {
+            return isNegative ? Long.valueOf(-ret).intValue() : Long.valueOf(ret).intValue();
+        }
+    }
+
     public List<List<Integer>> reconstructMatrix(int upper, int lower, int[] colsum) {
         int n = colsum.length;
-        Integer[] u = new Integer[n];
         Integer[] d = new Integer[n];
+        Integer[] u = new Integer[n];
         List<List<Integer>> ret = new ArrayList<>();
 
         int i = 0;
