@@ -9,6 +9,211 @@ import java.util.stream.Collectors;
 
 public class Solution2 {
     /**
+     * 1293. 网格中的最短路径
+     * 给你一个 m * n 的网格，其中每个单元格不是 0（空）就是 1（障碍物）。每一步，您都可以在空白单元格中上、下、左、右移动。
+     *
+     * 如果您 最多 可以消除 k 个障碍物，请找出从左上角 (0, 0) 到右下角 (m-1, n-1) 的最短路径，并返回通过该路径所需的步数。如果找不到这样的路径，则返回 -1。
+     *
+     * 来源：力扣（LeetCode）
+     * 链接：https://leetcode-cn.com/problems/shortest-path-in-a-grid-with-obstacles-elimination
+     * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+     *
+     * @param grid 网格
+     * @param k 穿墙道具数量
+     * @return 最短路径长度
+     */
+    public int shortestPath(int[][] grid, int k) {
+        int m = grid.length;
+        int n = grid[0].length;
+        if (m == 1 && n == 1) {
+            return 0;
+        }
+
+        k = Math.min(k, m + n - 3);
+
+        // 移动的四个方向
+        int[][] moves = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
+
+        LinkedList<Node> list = new LinkedList<>();
+        list.add(new Node(0, 0, k));
+
+        // 每个点在剩余k个穿墙道具时是否已经访问过
+        boolean[][][] visited = new boolean[m][n][k + 1];
+        visited[0][0][k] = true;
+
+        int steps = 0;
+        while (!list.isEmpty()) {
+            steps++;
+            int cnt = list.size();
+
+            for (int t = 0; t < cnt; t++) {
+
+                Node cur = list.poll();
+
+                for (int i = 0; i < 4; i++) {
+                    int nx = cur.x + moves[i][0];
+                    int ny = cur.y + moves[i][1];
+
+                    if (0 <= nx && nx < m && 0 <= ny && ny < n) {
+                        if (grid[nx][ny] == 0 && !visited[nx][ny][cur.k]) {
+                            if (nx == m - 1 && ny == n - 1) {
+                                return steps;
+                            }
+
+                            list.add(new Node(nx, ny, cur.k));
+                            visited[nx][ny][cur.k] = true;
+                        } else if (grid[nx][ny] == 1 && cur.k > 0 && !visited[nx][ny][cur.k - 1]) {
+                            list.add(new Node(nx, ny, cur.k - 1));
+                            visited[nx][ny][cur.k - 1] = true;
+                        }
+                    }
+                }
+            }
+        }
+
+        return -1;
+    }
+
+    class Node {
+        int x;
+        int y;
+        int k;
+        public Node(int x, int y, int k){
+            this.x = x;
+            this.y = y;
+            this.k = k;
+        }
+    }
+
+    /**
+     * 1292. 元素和小于等于阈值的正方形的最大边长
+     * 给你一个大小为 m x n 的矩阵 mat 和一个整数阈值 threshold。
+     *
+     * 请你返回元素总和小于或等于阈值的正方形区域的最大边长；如果没有这样的正方形区域，则返回 0 。
+     *
+     * 来源：力扣（LeetCode）
+     * 链接：https://leetcode-cn.com/problems/maximum-side-length-of-a-square-with-sum-less-than-or-equal-to-threshold
+     * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+     *
+     * @param mat 矩形
+     * @param threshold 阈值
+     * @return 最大边长
+     */
+    public int maxSideLength(int[][] mat, int threshold) {
+        int m = mat.length;
+        int n = mat[0].length;
+
+        // 长度 + 1，就不用考虑第一行、第一列的特殊情况了，真棒！
+        // 矩形元素和：以(0, 0), (i - 1, j - 1)为顶点的矩形的元素之和
+        int[][] sum  = new int[m + 1][n + 1];
+        int minLen = 0;
+
+        for (int i = 1; i <= m; i++) {
+            for (int j = 1; j <= n; j++) {
+                sum[i][j] = sum[i - 1][j] + sum[i][j - 1] - sum[i - 1][j - 1] + mat[i - 1][j - 1];
+
+                if (mat[i - 1][j - 1] <= threshold) {
+                    minLen = 1;
+                }
+            }
+        }
+
+        // 矩形中的每一个元素均大于阈值，故不存在元素和小于阈值的正方形
+        if (minLen == 0) {
+            return 0;
+        }
+
+        int maxLen = Math.min(m, n);
+        boolean has = false;
+
+        while (minLen < maxLen) {
+            int chkLen = (minLen + maxLen + 1) / 2;
+
+            has = false;
+
+            // 考察所有边长为 chkLen 的正方形元素和
+            outLoop:
+            for (int i = chkLen; i <= m; i++) {
+                for (int j = chkLen; j <= n; j++) {
+                    // 计算以 mat[i-1][j-1] 为右下角、边长为 chkLen 的正方形元素和
+                    int area = sum[i][j] - sum[i][j - chkLen] - sum[i - chkLen][j] + sum[i - chkLen][j - chkLen];
+
+                    if (area <= threshold) {
+                        has = true;
+                        break outLoop;
+                    }
+                }
+            }
+
+            if (has) {
+                minLen = chkLen;
+            } else {
+                maxLen = chkLen - 1;
+            }
+        }
+
+        return minLen;
+    }
+    /**
+     * 1291. 顺次数
+     * 我们定义「顺次数」为：每一位上的数字都比前一位上的数字大 1 的整数。
+     * 请你返回由 [low, high] 范围内所有顺次数组成的 有序 列表（从小到大排序）。
+     *
+     * 示例 1：
+     * 输出：low = 100, high = 300
+     * 输出：[123,234]
+     *
+     * 示例 2：
+     * 输出：low = 1000, high = 13000
+     * 输出：[1234,2345,3456,4567,5678,6789,12345]
+     *
+     * 来源：力扣（LeetCode）
+     * 链接：https://leetcode-cn.com/problems/sequential-digits
+     * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+     *
+     * @param low 下限
+     * @param high 上限
+     * @return 区间内的所有顺次数
+     */
+    public List<Integer> sequentialDigits(int low, int high) {
+        int l = low;
+        int startLen = 0, startDigit = 0;
+        while (l > 0) {
+            startLen++;
+            startDigit = l % 10;
+            l /= 10;
+        }
+
+        int endLen = 0;
+        for (l = high; l > 0; l /= 10) {
+            endLen++;
+        }
+
+        List<Integer> ret = new ArrayList<>();
+
+        for (int curLen = startLen; curLen <= endLen; curLen++) {
+            for (int i = startDigit; i <= 9 - curLen + 1; i++) {
+                int num = getSeqNum(curLen, i);
+                if (low <= num && num <= high) {
+                    ret.add(num);
+                }
+            }
+
+            startDigit = 1;
+        }
+
+        return ret;
+    }
+
+    private int getSeqNum(int len, int startDigit) {
+        int ret = 0;
+        for (int i = 0; i < len; i++) {
+            ret = ret * 10 + startDigit++;
+        }
+        return ret;
+    }
+
+    /**
      * 1269. 停在原地的方案数
      * 有一个长度为 arrLen 的数组，开始有一个指针在索引 0 处。
      * 每一步操作中，你可以将指针向左或向右移动 1 步，或者停在原地（指针不能被移动到数组范围外）。

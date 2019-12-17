@@ -3,6 +3,7 @@ package cn.aulati.test.leetcode;
 import cn.aulati.test.ITest;
 import cn.aulati.test.leetcode.solution.Solution2;
 import cn.aulati.test.model.ListNode;
+import cn.aulati.test.util.Utils;
 
 import java.util.Arrays;
 import java.util.List;
@@ -17,7 +18,40 @@ public class LeetCodeTest2 implements ITest {
     @Override
     public void runTest() {
         _solution = new Solution2();
-        testNumWays();
+        testShortestPath();
+    }
+
+    private void testShortestPath() {
+        int[][] grid = {{0}};
+        int k = 1;
+
+        System.out.println("grid: " + Utils.matrixToString(grid, false));
+        System.out.println("   k: " + k);
+
+        int ret = _solution.shortestPath(grid, k);
+
+        System.out.println("Output: " + ret);
+    }
+
+    private void testMaxSideLength() {
+        int[][] input = {{2,2,2,2,2},{2,2,2,2,2},{2,2,2,2,2},{2,2,2,2,2},{2,2,2,2,2}};
+        int threshold = 18000;
+
+        System.out.println("Input: mat:" + Utils.matrixToString(input, false));
+        System.out.println("threshold: " + threshold);
+
+        int ret = _solution.maxSideLength(input, threshold);
+
+        System.out.println("Output: " + ret);
+    }
+
+    private void testSequentialDigits() {
+        int low = 58, high = 155;
+        System.out.println("Input: [" + low + ", " + high + "]");
+
+        List<Integer> ret = _solution.sequentialDigits(low, high);
+
+        System.out.println("Output: " + ret);
     }
 
     private void testNumWays() {
@@ -63,21 +97,21 @@ public class LeetCodeTest2 implements ITest {
             System.out.println("-----------------------------");
         }
     }
-    
+
     private void testLetterCombinations() {
         String[] ss = {"23", "79"};
 
         System.out.println("-----------------------------");
         for (String s : ss) {
             System.out.println("Input: " + s);
-            
+
             List<String> ret = _solution.letterCombinations(s);
-            
+
             System.out.println("Output: " + ret);
             System.out.println("-----------------------------");
         }
     }
-    
+
     private void testHuaweiOnlineTest() {
         int[] a = {1000000000, 2, 217983653, 336916467};
         System.out.println("Input: " + Arrays.toString(a));
@@ -87,17 +121,17 @@ public class LeetCodeTest2 implements ITest {
         System.out.println("Output: " + ret);
         System.out.println("-----------------------------");
     }
-    
+
     private void testNthUglyNumberContest() {
         int[] a = {1000000000, 2, 217983653, 336916467};
         System.out.println("Input: " + Arrays.toString(a));
-        
+
         int ret = _solution.nthUglyNumber(a[0], a[1], a[2], a[3]);
 
         System.out.println("Output: " + ret);
         System.out.println("-----------------------------");
     }
-    
+
     private void testMinimumAbsDifference() {
         int[] a = {1, 2, 3, 4};
         System.out.println("Input: " + Arrays.toString(a));
@@ -112,18 +146,18 @@ public class LeetCodeTest2 implements ITest {
 
         System.out.println("-----------------------------");
     }
-    
+
     private void testReverseLists() {
         int[] a = {1, 2, 3, 4, 5};
         ListNode h = createListNode(a);
         System.out.println("Input: " + ListNode.printString(h));
-        
+
         ListNode ret = _solution.reverseLists(h);
 
         System.out.println("Output: " + ListNode.printString(ret));
         System.out.println("-----------------------------");
     }
-    
+
     private void testReverseAlphabets() {
         String s = "abcd-EF-ga";
         System.out.println("Input:" + s);
@@ -133,17 +167,17 @@ public class LeetCodeTest2 implements ITest {
         System.out.println("Output: " + ret);
         System.out.println("-----------------------------");
     }
-    
+
     private void testCanJump() {
         int[] a = {3, 2, 1, 0, 4};
         System.out.println("Input:" + Arrays.toString(a));
-        
+
         boolean ret = _solution.canJump(a);
 
         System.out.println("Output: " + ret);
         System.out.println("-----------------------------");
     }
-    
+
     private void testNumSmallerByFrequency() {
         String[] s1 = {"baaaaa","abbaaaab","bbbaabaaba"};
         String[] s2 = {"bbbbaaa","bb","aaaab","abbabbbbab","bbb","a","aa","aabaaabab","aababab","baa","aaaba","aabaab"
@@ -157,7 +191,7 @@ public class LeetCodeTest2 implements ITest {
         System.out.println("Output: " + Arrays.toString(ret));
         System.out.println("-----------------------------");
     }
-    
+
     private void testCountNumbersWithUniqueDigits() {
         int n = 10;
         System.out.println("Input: n = " + n);
@@ -186,7 +220,7 @@ public class LeetCodeTest2 implements ITest {
      */
     private void testMergeKLists() {
         ListNode[] lists = new ListNode[3];
-        
+
 //        int[] a0 = {-8,-7,-6,-3,-2,-2,0,3};
 //        lists[0] = createListNode(a0);
 //        int[] a1 = {-10,-6,-4,-4,-4,-2,-1,4};
@@ -212,16 +246,16 @@ public class LeetCodeTest2 implements ITest {
         System.out.println("Output: " + ListNode.printString(ret));
         System.out.println("-----------------------------");
     }
-    
+
     private ListNode createListNode(int[] nums) {
         ListNode root, cur;
         root = cur = new ListNode(0);
-        
+
         for (int i = 0; i < nums.length; i++) {
             cur.next = new ListNode(nums[i]);
             cur = cur.next;
         }
-        
+
         return root.next;
     }
 
@@ -272,7 +306,7 @@ public class LeetCodeTest2 implements ITest {
     private void testMergeTwoLists() {
         int[] a1 = {1, 2, 4};
         ListNode l1 = createListNode(a1);
-        
+
         int[] a2 = {1, 3, 4};
         ListNode l2 = createListNode(a2);
 
