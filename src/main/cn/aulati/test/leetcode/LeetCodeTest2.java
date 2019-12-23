@@ -18,7 +18,29 @@ public class LeetCodeTest2 implements ITest {
     @Override
     public void runTest() {
         _solution = new Solution2();
-        testShortestPath();
+        testMaxFreq();
+    }
+
+    private void testMaxFreq() {
+        String s = "bekdfggeafgajehfjkeaifchakbhfkgbegbghdfihkigdiiaichckkjfhcicejciegdbhejbfcjccaiehhdbaeaikjgjdfefiheegbh";
+        int[] a = {7, 4, 23};
+        System.out.printf("s: %s, maxLetters = %d, minSize = %d, maxSize = %d\r\n", s, a[0], a[1], a[2]);
+
+        int ret = _solution.maxFreq(s, a[0], a[1], a[2]);
+
+        System.out.println("Output: " + ret);
+    }
+
+    private void testIsPossibleDivide() {
+        int[] nums = {3,2,1,2,3,1};
+        int k = 3;
+
+        System.out.println("nums: " + Arrays.toString(nums));
+        System.out.println("   k: " + k);
+
+        boolean ret = _solution.isPossibleDivide(nums, k);
+
+        System.out.println("Output: " + ret);
     }
 
     private void testShortestPath() {

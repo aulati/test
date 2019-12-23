@@ -7,6 +7,119 @@ import java.util.*;
 
 public class Solution2 {
     /**
+     * 子串的最大出现次数
+     * 给你一个字符串 s ，请你返回满足以下条件且出现次数最大的 任意 子串的出现次数：
+     * 子串中不同字母的数目必须小于等于 maxLetters 。
+     * 子串的长度必须大于等于 minSize 且小于等于 maxSize 。
+     *  
+     *
+     * 示例 1：
+     * 输入：s = "aababcaab", maxLetters = 2, minSize = 3, maxSize = 4
+     * 输出：2
+     * 解释：子串 "aab" 在原字符串中出现了 2 次。
+     * 它满足所有的要求：2 个不同的字母，长度为 3 （在 minSize 和 maxSize 范围内）。
+     *
+     * 示例 2：
+     * 输入：s = "aaaa", maxLetters = 1, minSize = 3, maxSize = 3
+     * 输出：2
+     * 解释：子串 "aaa" 在原字符串中出现了 2 次，且它们有重叠部分。
+     *
+     * 示例 3：
+     * 输入：s = "aabcabcab", maxLetters = 2, minSize = 2, maxSize = 3
+     * 输出：3
+     *
+     * 示例 4：
+     * 输入：s = "abcde", maxLetters = 2, minSize = 3, maxSize = 3
+     * 输出：0
+     *  
+     * 提示：
+     * 1 <= s.length <= 10^5
+     * 1 <= maxLetters <= 26
+     * 1 <= minSize <= maxSize <= min(26, s.length)
+     * s 只包含小写英文字母。
+     *
+     * 来源：力扣（LeetCode）
+     * 链接：https://leetcode-cn.com/problems/maximum-number-of-occurrences-of-a-substring
+     * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+     * @param s 字符串
+     * @param maxLetters 不同字母的最大数量
+     * @param minSize 子串最小长度
+     * @param maxSize 子串最大长度
+     * @return 满足条件子串的出现数目最大值
+     */
+    public int maxFreq(String s, int maxLetters, int minSize, int maxSize) {
+        int maxCnt = 0;
+        HashMap<String, Integer> map = new HashMap<>();
+
+        int end = s.length() - minSize;
+        for (int i = 0; i <= end; i++) {
+            String curStr = getMinimalSubStr(s, i, maxLetters, minSize);
+            if (curStr == null) {
+                continue;
+            }
+
+            int cnt = map.getOrDefault(curStr, 0);
+            map.put(curStr, ++cnt);
+
+            maxCnt = Math.max(maxCnt, cnt);
+        }
+
+        return maxCnt;
+    }
+
+    private String getMinimalSubStr(String s, int i, int maxLetters, int minSize) {
+        HashSet<Character> t = new HashSet<>();
+
+        int j = i;
+        while (maxLetters >= 0 && minSize > 0 && j <= i + maxSize) {
+            char c = s.charAt(j);
+            if (!t.contains(c)) {
+                t.add(c);
+                maxLetters--;
+            }
+            j++;
+            minSize--;
+        }
+
+        if (maxLetters >= 0 && minSize == 0) {
+            return s.substring(i, j);
+        }
+
+        return null;
+    }
+
+
+    public boolean isPossibleDivide(int[] nums, int k) {
+        if (k == 1) {
+            return true;
+        }
+
+        if (nums.length % k != 0) {
+            return false;
+        }
+
+        TreeMap<Integer, Integer> map = new TreeMap<>();
+        for (int num : nums) {
+            map.put(num, map.getOrDefault(num, 0) + 1);
+        }
+
+        for (Integer i : map.keySet()) {
+            while (map.get(i) > 0) {
+                for (int j = 0; j < k; j++) {
+                    int val = i + j;
+
+                    if (!map.containsKey(val) || map.get(val) <= 0) {
+                        return false;
+                    }
+
+                    map.put(val, map.get(val) - 1);
+                }
+            }
+        }
+
+        return true;
+    }
+    /**
      * 1293. 网格中的最短路径
      * 给你一个 m * n 的网格，其中每个单元格不是 0（空）就是 1（障碍物）。每一步，您都可以在空白单元格中上、下、左、右移动。
      *
