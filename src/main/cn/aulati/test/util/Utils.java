@@ -8,6 +8,10 @@ public class Utils {
     }
 
     public static String matrixToString(int[][] mat, boolean oneRowOneLine) {
+        if (mat == null) {
+            return "";
+        }
+
         int len = mat.length;
         StringBuilder sb = new StringBuilder();
         sb.append("[");
@@ -17,7 +21,7 @@ public class Utils {
                 if (oneRowOneLine) {
                     sb.append(System.lineSeparator());
                 }
-                sb.append(",");
+                sb.append(", ");
                 sb.append(Arrays.toString(mat[i]));
             }
         } else {

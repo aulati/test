@@ -4,8 +4,6 @@ import cn.aulati.test.model.ListNode;
 import cn.aulati.test.model.TreeNode;
 
 import java.util.*;
-import java.util.function.BiConsumer;
-import java.util.stream.Collectors;
 
 public class Solution2 {
     /**
