@@ -71,7 +71,7 @@ public class Solution2 {
         HashSet<Character> t = new HashSet<>();
 
         int j = i;
-        while (maxLetters >= 0 && minSize > 0 && j <= i + maxSize) {
+        while (maxLetters >= 0 && minSize > 0) {
             char c = s.charAt(j);
             if (!t.contains(c)) {
                 t.add(c);
