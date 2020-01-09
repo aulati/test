@@ -7,27 +7,314 @@ import java.util.*;
 
 public class Solution2 {
     /**
+     * 1300. 转变数组后最接近目标值的数组和
+     *
+     * @param arr
+     * @param target
+     * @return
+     */
+    public int findBestValue(int[] arr, int target) {
+        Arrays.sort(arr);
+        int n = arr.length;
+        int sum = 0;
+        int[] presum = new int[n];
+        for (int i = 0; i < n; i++) {
+            presum[i] = sum;
+            sum += arr[i];
+        }
+
+        if (sum <= target) {
+            return arr[n - 1];
+        }
+
+        int left = target / n - 1, right = arr[n - 1];
+        int ms = 0;
+        while (left < right) {
+            int m = (left + right) / 2;
+            ms = calcSum(arr, presum, m);
+
+            if (ms < target) {
+                left = m + 1;
+            } else {
+                right = m;
+            }
+        }
+
+        int sumLeft = calcSum(arr, presum, left - 1);
+        ms = calcSum(arr, presum, left);
+        if (target - sumLeft <= ms - target) {
+            return left - 1;
+        }
+
+        return left;
+    }
+
+    private int calcSum(int[] arr, int[] presum, int value) {
+        int n = arr.length;
+        int i = 0;
+        for (; i < n; i++) {
+            if (arr[i] > value) {
+                break;
+            }
+        }
+
+        if (i == n) {
+            return presum[n - 1] + arr[i - 1];
+        } else {
+            return presum[i] + value * (n - i);
+        }
+    }
+
+    String[] _words;
+    String _result;
+
+    public boolean isSolvable(String[] words, String result) {
+        HashSet<Character> initChars = new HashSet<>();
+        for (String w : words) {
+            initChars.add(w.charAt(0));
+        }
+        initChars.add(result.charAt(0));
+
+        HashSet<Character> otherChars = new HashSet<>();
+        for (String w : words) {
+            for (int i = 1; i < w.length(); i++) {
+                otherChars.add(w.charAt(i));
+            }
+        }
+        for (int i = 1; i < result.length(); i++) {
+            otherChars.add(result.charAt(i));
+        }
+
+        HashMap<Character, Integer> map = new HashMap<>();
+
+        LinkedList<Integer> d = new LinkedList<Integer>();
+        for (int i = 9; i > 0; i--) {
+            d.add(i);
+        }
+
+        this._words = words;
+        this._result = result;
+        if (assignCharToDigit(initChars, otherChars, d, map)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    private boolean assignCharToDigit(HashSet<Character> chars, HashSet<Character> otherChars, LinkedList<Integer> digits, HashMap<Character, Integer> map) {
+        for (Character c : chars) {
+            for (Integer i : digits) {
+                map.put(c, i);
+
+                HashSet<Character> nextChars = new HashSet<>(chars);
+                nextChars.remove(c);
+                LinkedList<Integer> nextDigits = new LinkedList<>(digits);
+                nextDigits.remove(i);
+
+                if (assignCharToDigit(nextChars, otherChars, nextDigits, map)) {
+                    return true;
+                }
+            }
+        }
+
+        digits.add(0);
+        for (Character c : otherChars) {
+            for (Integer i : digits) {
+                map.put(c, i);
+
+                HashSet<Character> nextChars = new HashSet<>(otherChars);
+                nextChars.remove(c);
+                LinkedList<Integer> nextDigits = new LinkedList<>(digits);
+                nextDigits.remove(i);
+
+                if (assignCharToDigit(chars, nextChars, nextDigits, map)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private int getVal(String s, HashMap<Character, Integer> map) {
+        int ret = 0;
+        for (char c : s.toCharArray()) {
+            ret = ret * 10 + map.get(c);
+        }
+        return ret;
+    }
+
+    private boolean checkEquation(String[] words, String result, HashMap<Character, Integer> map) {
+        int left = 0;
+        for (String s : words) {
+            left += getVal(s, map);
+        }
+
+        return left == getVal(result, map);
+    }
+
+    public boolean canReach(int[] arr, int start) {
+        int len = arr.length;
+
+        HashSet<Integer> path = new HashSet<Integer>();
+        LinkedList<Integer> list = new LinkedList<>();
+        list.add(start);
+
+        while (!list.isEmpty()) {
+            int size = list.size();
+            for (int i = 0; i < size; i++) {
+                int cur = list.poll();
+                if (arr[cur] == 0) {
+                    return true;
+                }
+
+                path.add(cur);
+
+                int next = cur + arr[cur];
+                if (next < len && !path.contains(next)) {
+                    list.add(next);
+                }
+                int pre = cur - arr[cur];
+                if (pre >= 0 && !path.contains(pre)) {
+                    list.add(pre);
+                }
+            }
+        }
+
+        return false;
+    }
+
+    public List<Integer> getAllElements(TreeNode root1, TreeNode root2) {
+        List<Integer> list1 = new ArrayList<>();
+        inorder(root1, list1);
+
+        List<Integer> list2 = new ArrayList<>();
+        inorder(root2, list2);
+
+        List<Integer> ret = new ArrayList<>();
+        int idx1 = 0, idx2 = 0;
+        int len1 = list1.size(), len2 = list2.size();
+        while (idx1 < len1 && idx2 < len2) {
+            if (list1.get(idx1) < list2.get(idx2)) {
+                ret.add(list1.get(idx1++));
+            } else {
+                ret.add(list2.get(idx2++));
+            }
+        }
+
+        ret.addAll(list1.subList(idx1, len1));
+        ret.addAll(list2.subList(idx2, len2));
+
+        return ret;
+    }
+
+    private void inorder(TreeNode r, List<Integer> list) {
+        if (r != null) {
+            inorder(r.left, list);
+            list.add(r.val);
+            inorder(r.right, list);
+        }
+    }
+
+    /**
+     * 1298. 你能从盒子里获得的最大糖果数
+     * 给你 n 个盒子，每个盒子的格式为 [status, candies, keys, containedBoxes] ，其中：
+     * <p>
+     * 状态字 status[i]：整数，如果 box[i] 是开的，那么是 1 ，否则是 0 。
+     * 糖果数 candies[i]: 整数，表示 box[i] 中糖果的数目。
+     * 钥匙 keys[i]：数组，表示你打开 box[i] 后，可以得到一些盒子的钥匙，每个元素分别为该钥匙对应盒子的下标。
+     * 内含的盒子 containedBoxes[i]：整数，表示放在 box[i] 里的盒子所对应的下标。
+     * 给你一个 initialBoxes 数组，表示你现在得到的盒子，你可以获得里面的糖果，也可以用盒子里的钥匙打开新的盒子，还可以继续探索从这个盒子里找到的其他盒子。
+     * <p>
+     * 请你按照上述规则，返回可以获得糖果的 最大数目 。
+     * <p>
+     * 来源：力扣（LeetCode）
+     * 链接：https://leetcode-cn.com/problems/maximum-candies-you-can-get-from-boxes
+     * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+     *
+     * @param status         盒子状态
+     * @param candies        盒子中的糖果数量
+     * @param keys           盒子中的钥匙
+     * @param containedBoxes 盒子中的盒子
+     * @param initialBoxes   初始的盒子
+     * @return
+     */
+    public int maxCandies(int[] status, int[] candies, int[][] keys, int[][] containedBoxes, int[] initialBoxes) {
+        int n = status.length;
+        LinkedList<Integer> list = new LinkedList<>();
+        LinkedList<Integer> list2 = new LinkedList<>();
+        boolean[] hasKey = new boolean[n];
+
+        for (int i : initialBoxes) {
+            list.add(i);
+        }
+
+        int ret = 0;
+
+        boolean flg = true;
+        while (flg && !list.isEmpty()) {
+            flg = false;
+
+            for (int i : list) {
+                if (status[i] == 1 || hasKey[i]) {
+                    // 盒子是开的，或可以打开
+
+                    // 取糖果、取钥匙、取新的盒子
+                    ret += candies[i];
+
+                    int j = 0;
+                    while (j < keys[i].length && keys[i][j] >= 0) {
+                        hasKey[keys[i][j]] = true;
+                        j++;
+                    }
+
+                    int k = 0;
+                    while (k < containedBoxes[i].length && containedBoxes[i][k] >= 0) {
+                        list2.add(containedBoxes[i][k]);
+                        k++;
+                    }
+
+                    flg = true;
+                } else {
+                    // 盒子关闭着
+                    list2.add(i);
+                }
+            }
+
+            list.clear();
+            list.addAll(list2);
+            list2.clear();
+        }
+
+        return ret;
+    }
+
+    public int maxCandies2(int[] status, int[] candies, int[][] keys, int[][] containedBoxes, int[] initialBoxes) {
+        return 0;
+    }
+
+    /**
      * 子串的最大出现次数
      * 给你一个字符串 s ，请你返回满足以下条件且出现次数最大的 任意 子串的出现次数：
      * 子串中不同字母的数目必须小于等于 maxLetters 。
      * 子串的长度必须大于等于 minSize 且小于等于 maxSize 。
      *  
-     *
+     * <p>
      * 示例 1：
      * 输入：s = "aababcaab", maxLetters = 2, minSize = 3, maxSize = 4
      * 输出：2
      * 解释：子串 "aab" 在原字符串中出现了 2 次。
      * 它满足所有的要求：2 个不同的字母，长度为 3 （在 minSize 和 maxSize 范围内）。
-     *
+     * <p>
      * 示例 2：
      * 输入：s = "aaaa", maxLetters = 1, minSize = 3, maxSize = 3
      * 输出：2
      * 解释：子串 "aaa" 在原字符串中出现了 2 次，且它们有重叠部分。
-     *
+     * <p>
      * 示例 3：
      * 输入：s = "aabcabcab", maxLetters = 2, minSize = 2, maxSize = 3
      * 输出：3
-     *
+     * <p>
      * 示例 4：
      * 输入：s = "abcde", maxLetters = 2, minSize = 3, maxSize = 3
      * 输出：0
@@ -37,14 +324,15 @@ public class Solution2 {
      * 1 <= maxLetters <= 26
      * 1 <= minSize <= maxSize <= min(26, s.length)
      * s 只包含小写英文字母。
-     *
+     * <p>
      * 来源：力扣（LeetCode）
      * 链接：https://leetcode-cn.com/problems/maximum-number-of-occurrences-of-a-substring
      * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
-     * @param s 字符串
+     *
+     * @param s          字符串
      * @param maxLetters 不同字母的最大数量
-     * @param minSize 子串最小长度
-     * @param maxSize 子串最大长度
+     * @param minSize    子串最小长度
+     * @param maxSize    子串最大长度
      * @return 满足条件子串的出现数目最大值
      */
     public int maxFreq(String s, int maxLetters, int minSize, int maxSize) {
@@ -119,18 +407,19 @@ public class Solution2 {
 
         return true;
     }
+
     /**
      * 1293. 网格中的最短路径
      * 给你一个 m * n 的网格，其中每个单元格不是 0（空）就是 1（障碍物）。每一步，您都可以在空白单元格中上、下、左、右移动。
-     *
+     * <p>
      * 如果您 最多 可以消除 k 个障碍物，请找出从左上角 (0, 0) 到右下角 (m-1, n-1) 的最短路径，并返回通过该路径所需的步数。如果找不到这样的路径，则返回 -1。
-     *
+     * <p>
      * 来源：力扣（LeetCode）
      * 链接：https://leetcode-cn.com/problems/shortest-path-in-a-grid-with-obstacles-elimination
      * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
      *
      * @param grid 网格
-     * @param k 穿墙道具数量
+     * @param k    穿墙道具数量
      * @return 最短路径长度
      */
     public int shortestPath(int[][] grid, int k) {
@@ -189,7 +478,8 @@ public class Solution2 {
         int x;
         int y;
         int k;
-        public Node(int x, int y, int k){
+
+        public Node(int x, int y, int k) {
             this.x = x;
             this.y = y;
             this.k = k;
@@ -199,14 +489,14 @@ public class Solution2 {
     /**
      * 1292. 元素和小于等于阈值的正方形的最大边长
      * 给你一个大小为 m x n 的矩阵 mat 和一个整数阈值 threshold。
-     *
+     * <p>
      * 请你返回元素总和小于或等于阈值的正方形区域的最大边长；如果没有这样的正方形区域，则返回 0 。
-     *
+     * <p>
      * 来源：力扣（LeetCode）
      * 链接：https://leetcode-cn.com/problems/maximum-side-length-of-a-square-with-sum-less-than-or-equal-to-threshold
      * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
      *
-     * @param mat 矩形
+     * @param mat       矩形
      * @param threshold 阈值
      * @return 最大边长
      */
@@ -216,7 +506,7 @@ public class Solution2 {
 
         // 长度 + 1，就不用考虑第一行、第一列的特殊情况了，真棒！
         // 矩形元素和：以(0, 0), (i - 1, j - 1)为顶点的矩形的元素之和
-        int[][] sum  = new int[m + 1][n + 1];
+        int[][] sum = new int[m + 1][n + 1];
         int minLen = 0;
 
         for (int i = 1; i <= m; i++) {
@@ -265,24 +555,25 @@ public class Solution2 {
 
         return minLen;
     }
+
     /**
      * 1291. 顺次数
      * 我们定义「顺次数」为：每一位上的数字都比前一位上的数字大 1 的整数。
      * 请你返回由 [low, high] 范围内所有顺次数组成的 有序 列表（从小到大排序）。
-     *
+     * <p>
      * 示例 1：
      * 输出：low = 100, high = 300
      * 输出：[123,234]
-     *
+     * <p>
      * 示例 2：
      * 输出：low = 1000, high = 13000
      * 输出：[1234,2345,3456,4567,5678,6789,12345]
-     *
+     * <p>
      * 来源：力扣（LeetCode）
      * 链接：https://leetcode-cn.com/problems/sequential-digits
      * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
      *
-     * @param low 下限
+     * @param low  下限
      * @param high 上限
      * @return 区间内的所有顺次数
      */
@@ -329,14 +620,14 @@ public class Solution2 {
      * 有一个长度为 arrLen 的数组，开始有一个指针在索引 0 处。
      * 每一步操作中，你可以将指针向左或向右移动 1 步，或者停在原地（指针不能被移动到数组范围外）。
      * 给你两个整数 steps 和 arrLen ，请你计算并返回：在恰好执行 steps 次操作以后，指针仍然指向索引 0 处的方案数。
-     *
+     * <p>
      * 由于答案可能会很大，请返回方案数 模 10^9 + 7 后的结果。
-     *
+     * <p>
      * 来源：力扣（LeetCode）
      * 链接：https://leetcode-cn.com/problems/number-of-ways-to-stay-in-the-same-place-after-some-steps
      * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
      *
-     * @param steps 操作步数
+     * @param steps  操作步数
      * @param arrLen 数组长度
      * @return 停在原地的方案数
      */
@@ -374,18 +665,18 @@ public class Solution2 {
         }
 
 
-        return (int)ans[0];
+        return (int) ans[0];
     }
 
     /**
      * 5273. 搜索推荐系统
      * 给你一个产品数组 products 和一个字符串 searchWord ，products  数组中每个产品都是一个字符串。
-     *
+     * <p>
      * 请你设计一个推荐系统，在依次输入单词 searchWord 的每一个字母后，推荐 products 数组中前缀与 searchWord 相同的最多三个产品。如果前缀相同的可推荐产品超过三个，请按字典序返回最小的三个。
-     *
+     * <p>
      * 请你以二维列表的形式，返回在输入 searchWord 每个字母后相应的推荐产品的列表。
      *
-     * @param products 产品
+     * @param products   产品
      * @param searchWord 检索关键字
      * @return 推荐产品列表
      */
@@ -428,26 +719,26 @@ public class Solution2 {
     /**
      * 1262. 可被三整除的最大和
      * 给你一个整数数组 nums，请你找出并返回能被三整除的元素最大和。
-     *
+     * <p>
      * 示例 1：
      * 输入：nums = [3,6,5,1,8]
      * 输出：18
      * 解释：选出数字 3, 6, 1 和 8，它们的和是 18（可被 3 整除的最大和）。
-     *
+     * <p>
      * 示例 2：
      * 输入：nums = [4]
      * 输出：0
      * 解释：4 不能被 3 整除，所以无法选出数字，返回 0。
-     *
+     * <p>
      * 示例 3：
      * 输入：nums = [1,2,3,4,4]
      * 输出：12
      * 解释：选出数字 1, 3, 4 以及 4，它们的和是 12（可被 3 整除的最大和）。
-     *
+     * <p>
      * 提示：
      * 1 <= nums.length <= 4 * 10^4
      * 1 <= nums[i] <= 10^4
-     *
+     * <p>
      * 来源：力扣（LeetCode）
      * 链接：https://leetcode-cn.com/problems/greatest-sum-divisible-by-three
      * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
@@ -507,9 +798,9 @@ public class Solution2 {
     /**
      * 5263. 二维网格迁移
      * 给你一个 n 行 m 列的二维网格 grid 和一个整数 k。你需要将 grid 迁移 k 次。
-     *
+     * <p>
      * 每次「迁移」操作将会引发下述活动：
-     *
+     * <p>
      * 位于 grid[i][j] 的元素将会移动到 grid[i][j + 1]。
      * 位于 grid[i][m - 1] 的元素将会移动到 grid[i + 1][0]。
      * 位于 grid[n - 1][m - 1] 的元素将会移动到 grid[0][0]。
@@ -582,10 +873,10 @@ public class Solution2 {
             if (c[i] >= '0' && c[i] <= '9') {
                 // still digits
                 if (digits == 10) {
-                    ret = (long)Integer.MAX_VALUE + 2;
+                    ret = (long) Integer.MAX_VALUE + 2;
                     break;
                 } else {
-                    ret = ret * 10 + ((long)c[i] - (long)'0');
+                    ret = ret * 10 + ((long) c[i] - (long) '0');
                     digits++;
                 }
             } else {
@@ -648,7 +939,6 @@ public class Solution2 {
     }
 
     /**
-     *
      * @param n
      * @param m
      * @param indices
@@ -693,18 +983,18 @@ public class Solution2 {
      * 17. 电话号码的字母组合
      * 给定一个仅包含数字 2-9 的字符串，返回所有它能表示的字母组合。
      * 给出数字到字母的映射如下（与电话按键相同）。注意 1 不对应任何字母。
-     *
+     * <p>
      * 示例:
      * 输入："23"
      * 输出：["ad", "ae", "af", "bd", "be", "bf", "cd", "ce", "cf"].
-     *
-     *  说明:
+     * <p>
+     * 说明:
      * 尽管上面的答案是按字典序排列的，但是你可以任意选择答案输出的顺序。
-     *
+     * <p>
      * 来源：力扣（LeetCode）
      * 链接：https://leetcode-cn.com/problems/letter-combinations-of-a-phone-number
      * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
-     * 
+     *
      * @param digits 一串仅包含2-9的字符串
      * @return 所有的字母组合
      */
@@ -730,9 +1020,10 @@ public class Solution2 {
             list.add(prefix.toString());
         }
     }
-    
+
     /**
      * Test if a binary tree is binary search tree.
+     *
      * @param root root
      * @return true if it is a binary search tree.
      */
@@ -764,14 +1055,14 @@ public class Solution2 {
         if (r.right != null && r.right.val < r.val) {
             return false;
         }
-        
+
         return true;
     }
-    
+
     public String smallestStringWithSwaps(String s, List<List<Integer>> pairs) {
         return "";
     }
-    
+
     public int nthUglyNumber(int n, int a, int b, int c) {
         long ret = 0;
 
@@ -792,9 +1083,9 @@ public class Solution2 {
             }
         }
 
-        return ((Long)ret).intValue();
+        return ((Long) ret).intValue();
     }
-    
+
     public List<List<Integer>> minimumAbsDifference(int[] arr) {
         Arrays.sort(arr);
 
@@ -820,10 +1111,10 @@ public class Solution2 {
 
         return ret;
     }
-    
+
     /**
      * reverse the ListNode.
-     * 
+     *
      * @param head
      * @return
      */
@@ -836,28 +1127,28 @@ public class Solution2 {
             a = b;
             b = tmp;
         }
-        
+
         return a;
     }
-    
+
     /**
      * Microsoft | Phone Screen | Reverse Only Alphabet Characters in a String
      * Question encountered while interviewing for a contract software engineering position. Interviewer gave 15 Minutes to solve it.
-     *
+     * <p>
      * Reverse Only Alphabet Characters in a String
-     *
-     *
+     * <p>
+     * <p>
      * Example 1:
-     * Input: "ab-cd-ef" 
+     * Input: "ab-cd-ef"
      * Output: "fe-dc-ba"
-     *
+     * <p>
      * Example 2:
      * Input: "abcd-EF-ga"
      * Output: "agFE-dc-ba"
-     *
+     * <p>
      * Related problems:
      * https://leetcode.com/problems/reverse-vowels-of-a-string/
-     * 
+     *
      * @param s
      * @return
      */
@@ -879,29 +1170,29 @@ public class Solution2 {
             left++;
             right--;
         }
-        
+
         return new String(cs);
     }
-    
+
     /**
      * 45. 跳跃游戏 II
      * 给定一个非负整数数组，你最初位于数组的第一个位置。
      * 数组中的每个元素代表你在该位置可以跳跃的最大长度。
      * 你的目标是使用最少的跳跃次数到达数组的最后一个位置。
-     *
+     * <p>
      * 示例:
      * 输入: [2,3,1,1,4]
      * 输出: 2
      * 解释: 跳到最后一个位置的最小跳跃数是 2。
      *      从下标为 0 跳到下标为 1 的位置，跳 1 步，然后跳 3 步到达数组的最后一个位置。
-     *
+     * <p>
      * 说明:
      * 假设你总是可以到达数组的最后一个位置。
-     *
+     * <p>
      * 来源：力扣（LeetCode）
      * 链接：https://leetcode-cn.com/problems/jump-game-ii
      * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
-     * 
+     *
      * @param nums 跳跃距离数组
      * @return 跳跃至最后一个位置的最小步数
      */
@@ -909,7 +1200,7 @@ public class Solution2 {
         int steps = 0;
         int len = nums.length;
 
-        for (int i = 0; i < len - 1;) {
+        for (int i = 0; i < len - 1; ) {
             int nextIdx = i + nums[i];
 
             if (nextIdx >= len - 1) {
@@ -925,36 +1216,36 @@ public class Solution2 {
                     maxIdx = j + nums[j];
                 }
             }
-            
+
             i = nextIdx;
             steps++;
         }
 
         return steps;
     }
-    
+
     /**
      * 55. 跳跃游戏
      * 给定一个非负整数数组，你最初位于数组的第一个位置。
-     *
+     * <p>
      * 数组中的每个元素代表你在该位置可以跳跃的最大长度。
-     *
+     * <p>
      * 判断你是否能够到达最后一个位置。
-     *
+     * <p>
      * 示例 1:
      * 输入: [2,3,1,1,4]
      * 输出: true
      * 解释: 从位置 0 到 1 跳 1 步, 然后跳 3 步到达最后一个位置。
-     *
+     * <p>
      * 示例 2:
      * 输入: [3,2,1,0,4]
      * 输出: false
      * 解释: 无论怎样，你总会到达索引为 3 的位置。但该位置的最大跳跃长度是 0 ， 所以你永远不可能到达最后一个位置。
-     *
+     * <p>
      * 来源：力扣（LeetCode）
      * 链接：https://leetcode-cn.com/problems/jump-game
      * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
-     * 
+     *
      * @param nums 跳跃距离数组
      * @return 能否到达最后一个位置
      */
@@ -971,11 +1262,11 @@ public class Solution2 {
             return true;
         }
         maxi = i;
-        
+
         while (0 < i && i < len - 1) {
             int j = i;
             j += nums[j];
-            
+
             if (j > maxi) {
                 maxi = i = j;
             } else {
@@ -985,79 +1276,79 @@ public class Solution2 {
 
         return i >= len - 1;
     }
-    
+
     /**
      * 1094. 拼车
      * 假设你是一位顺风车司机，车上最初有 capacity 个空座位可以用来载客。由于道路的限制，车 只能 向一个方向行驶（也就是说，不允许掉头或改变方向，你可以将其想象为一个向量）。
-     *
+     * <p>
      * 这儿有一份行程计划表 trips[][]，其中 trips[i] = [num_passengers, start_location, end_location] 包含了你的第 i 次行程信息：
-     *
+     * <p>
      * 必须接送的乘客数量；
      * 乘客的上车地点；
      * 以及乘客的下车地点。
      * 这些给出的地点位置是从你的 初始 出发位置向前行驶到这些地点所需的距离（它们一定在你的行驶方向上）。
-     *
+     * <p>
      * 请你根据给出的行程计划表和车子的座位数，来判断你的车是否可以顺利完成接送所用乘客的任务（当且仅当你可以在所有给定的行程中接送所有乘客时，返回 true，否则请返回 false）。
-     *
+     * <p>
      *  
      * 示例 1：
      * 输入：trips = [[2,1,5],[3,3,7]], capacity = 4
      * 输出：false
-     *
+     * <p>
      * 示例 2：
      * 输入：trips = [[2,1,5],[3,3,7]], capacity = 5
      * 输出：true
-     *
+     * <p>
      * 示例 3：
      * 输入：trips = [[2,1,5],[3,5,7]], capacity = 3
      * 输出：true
-     *
+     * <p>
      * 示例 4：
      * 输入：trips = [[3,2,7],[3,7,9],[8,3,9]], capacity = 11
      * 输出：true
-     *
+     * <p>
      * 来源：力扣（LeetCode）
      * 链接：https://leetcode-cn.com/problems/car-pooling
      * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
-     * 
+     *
      * @param trips
      * @param capacity
      * @return
      */
     public boolean carPooling(int[][] trips, int capacity) {
-        
-        
+
+
         return false;
     }
-    
+
     /**
      * 1171. 从链表中删去总和值为零的连续节点
      * 给你一个链表的头节点 head，请你编写代码，反复删去链表中由 总和 值为 0 的连续节点组成的序列，直到不存在这样的序列为止。
-     *
+     * <p>
      * 删除完毕后，请你返回最终结果链表的头节点。
-     *
+     * <p>
      *  
      * 你可以返回任何满足题目要求的答案。
-     *
+     * <p>
      * （注意，下面示例中的所有序列，都是对 ListNode 对象序列化的表示。）
-     *
+     * <p>
      * 示例 1：
      * 输入：head = [1,2,-3,3,1]
      * 输出：[3,1]
      * 提示：答案 [1,2,1] 也是正确的。
-     * 
+     * <p>
      * 示例 2：
      * 输入：head = [1,2,3,-3,4]
      * 输出：[1,2,4]
-     * 
+     * <p>
      * 示例 3：
      * 输入：head = [1,2,3,-3,-2]
      * 输出：[1]
-     *
+     * <p>
      * 来源：力扣（LeetCode）
      * 链接：https://leetcode-cn.com/problems/remove-zero-sum-consecutive-nodes-from-linked-list
      * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
-     * 
+     *
      * @param head 链表头
      * @return 删除和为0的连续节点后的链表的头节点
      */
@@ -1097,37 +1388,37 @@ public class Solution2 {
 
         return head;
     }
-    
+
     /**
      * 1170. 比较字符串最小字母出现频次
      * 我们来定义一个函数 f(s)，其中传入参数 s 是一个非空字符串；该函数的功能是统计 s  中（按字典序比较）最小字母的出现频次。
-     *
+     * <p>
      * 例如，若 s = "dcce"，那么 f(s) = 2，因为最小的字母是 "c"，它出现了 2 次。
-     *
+     * <p>
      * 现在，给你两个字符串数组待查表 queries 和词汇表 words，请你返回一个整数数组 answer 作为答案，其中每个 answer[i] 是满足 f(queries[i]) < f(W) 的词的数目，W 是词汇表 words 中的词。
-     *
-     *
+     * <p>
+     * <p>
      * 示例 1：
      * 输入：queries = ["cbd"], words = ["zaaaz"]
      * 输出：[1]
      * 解释：查询 f("cbd") = 1，而 f("zaaaz") = 3 所以 f("cbd") < f("zaaaz")。
-     * 
+     * <p>
      * 示例 2：
      * 输入：queries = ["bbb","cc"], words = ["a","aa","aaa","aaaa"]
      * 输出：[1,2]
      * 解释：第一个查询 f("bbb") < f("aaaa")，第二个查询 f("aaa") 和 f("aaaa") 都 > f("cc")。
      *  
-     *
+     * <p>
      * 提示：
      * 1 <= queries.length <= 2000
      * 1 <= words.length <= 2000
      * 1 <= queries[i].length, words[i].length <= 10
      * queries[i][j], words[i][j] 都是小写英文字母
-     *
+     * <p>
      * 来源：力扣（LeetCode）
      * 链接：https://leetcode-cn.com/problems/compare-strings-by-frequency-of-the-smallest-character
      * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
-     * 
+     *
      * @param queries
      * @param words
      * @return
@@ -1198,20 +1489,20 @@ public class Solution2 {
             return len - mid;
         }
     }
-    
+
     /**
      * 357. 计算各个位数不同的数字个数
      * 给定一个非负整数 n，计算各位数字都不同的数字 x 的个数，其中 0 ≤ x < 10n 。
-     *
+     * <p>
      * 示例:
      * 输入: 2
-     * 输出: 91 
+     * 输出: 91
      * 解释: 答案应为除去 11,22,33,44,55,66,77,88,99 外，在 [0,100) 区间内的所有数字。
-     *
+     * <p>
      * 来源：力扣（LeetCode）
      * 链接：https://leetcode-cn.com/problems/count-numbers-with-unique-digits
      * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
-     * 
+     *
      * @param n 数字长度
      * @return 各位数字都不同的数字 x 的个数
      */
@@ -1228,27 +1519,27 @@ public class Solution2 {
 
         return cnt;
     }
-    
+
     /**
      * 264. 丑数 II
      * 编写一个程序，找出第 n 个丑数。
-     *
+     * <p>
      * 丑数就是只包含质因数 2, 3, 5 的正整数。
-     *
+     * <p>
      * 示例:
-     *
+     * <p>
      * 输入: n = 10
      * 输出: 12
      * 解释: 1, 2, 3, 4, 5, 6, 8, 9, 10, 12 是前 10 个丑数。
      * 说明:  
-     *
+     * <p>
      * 1 是丑数。
      * n 不超过1690。
-     *
+     * <p>
      * 来源：力扣（LeetCode）
      * 链接：https://leetcode-cn.com/problems/ugly-number-ii
      * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
-     * 
+     *
      * @param n 需要返回的丑数序号（从1开始）
      * @return 第 n 个丑数
      */
@@ -1279,26 +1570,26 @@ public class Solution2 {
     /**
      * 313. 超级丑数
      * 编写一段程序来查找第 n 个超级丑数。
-     *
+     * <p>
      * 超级丑数是指其所有质因数都是长度为 k 的质数列表 primes 中的正整数。
-     *
+     * <p>
      * 示例:
-     *
+     * <p>
      * 输入: n = 12, primes = [2,7,13,19]
-     * 输出: 32 
+     * 输出: 32
      * 解释: 给定长度为 4 的质数列表 primes = [2,7,13,19]，前 12 个超级丑数序列为：[1,2,4,7,8,13,14,16,19,26,28,32] 。
-     * 
+     * <p>
      * 说明:
      * - 1 是任何给定 primes 的超级丑数。
      * - 给定 primes 中的数字以升序排列。
      * - 0 < k ≤ 100, 0 < n ≤ 106, 0 < primes[i] < 1000 。
      * - 第 n 个超级丑数确保在 32 位有符整数范围内。
-     *
+     * <p>
      * 来源：力扣（LeetCode）
      * 链接：https://leetcode-cn.com/problems/super-ugly-number
      * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
-     * 
-     * @param n 第 N 个超级丑数
+     *
+     * @param n      第 N 个超级丑数
      * @param primes 质数列表
      * @return 第 N 个超级丑数
      */
@@ -1319,7 +1610,7 @@ public class Solution2 {
             for (int j = 1; j < k; j++) {
                 minMul = minMul <= mul[j] ? minMul : mul[j];
             }
-            
+
             ret[i] = minMul;
 
             for (int j = 0; j < k; j++) {
@@ -1330,9 +1621,9 @@ public class Solution2 {
             }
         }
 
-        return ret[n-1];
+        return ret[n - 1];
     }
-    
+
     /**
      * 493. 翻转对
      * 给定一个数组 nums ，如果 i < j 且 nums[i] > 2*nums[j] 我们就将 (i, j) 称作一个重要翻转对。
@@ -1360,10 +1651,10 @@ public class Solution2 {
      * @return 给定数组中的翻转对数量
      */
     public int reversePairsII(int[] nums) {
-        
+
         return 0;
     }
-    
+
     public int reversePairs(int[] nums) {
         int ret = 0;
 
@@ -1389,24 +1680,24 @@ public class Solution2 {
 
         return ret;
     }
-    
+
     /**
      * 541. 反转字符串 II
      * 给定一个字符串和一个整数 k，你需要对从字符串开头算起的每个 2k 个字符的前k个字符进行反转。如果剩余少于 k 个字符，则将剩余的所有全部反转。如果有小于 2k 但大于或等于 k 个字符，则反转前 k 个字符，并将剩余的字符保持原样。
-     *
+     * <p>
      * 示例:
-     *
+     * <p>
      * 输入: s = "abcdefg", k = 2
      * 输出: "bacdfeg"
      * 要求:
-     *
+     * <p>
      * 该字符串只包含小写的英文字母。
      * 给定字符串的长度和 k 在[1, 10000]范围内。
-     *
+     * <p>
      * 来源：力扣（LeetCode）
      * 链接：https://leetcode-cn.com/problems/reverse-string-ii
      * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
-     * 
+     *
      * @param s 给定字符串
      * @param k 反转长度
      * @return 反转后的字符串
@@ -1414,7 +1705,7 @@ public class Solution2 {
     public String reverseStr(String s, int k) {
         int len = s.length();
         StringBuilder sb = new StringBuilder(len);
-        
+
         // 当前段要反转的子串开始下标，无须反转的k个字符的开始下标，当前段的结束下标（不包含）
         int l = 0, m = k, r = 2 * k;
         do {
@@ -1430,33 +1721,33 @@ public class Solution2 {
             for (int i = m - 1; i >= l; i--) {
                 sb.append(s.charAt(i));
             }
-            
+
             // 不反转的部分
             sb.append(s, m, r);
-            
+
             l = r;
             m = l + k;
             r = l + 2 * k;
-            
+
         } while (l < len);
-        
+
         return sb.toString();
     }
-    
+
     /**
      * 32. 最长有效括号
      * 给定一个只包含 '(' 和 ')' 的字符串，找出最长的包含有效括号的子串的长度。
-     *
+     * <p>
      * 示例 1:
      * 输入: "(()"
      * 输出: 2
      * 解释: 最长有效括号子串为 "()"
-     * 
+     * <p>
      * 示例 2:
      * 输入: ")()())"
      * 输出: 4
      * 解释: 最长有效括号子串为 "()()"
-     *
+     * <p>
      * 来源：力扣（LeetCode）
      * 链接：https://leetcode-cn.com/problems/longest-valid-parentheses
      * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
@@ -1468,12 +1759,12 @@ public class Solution2 {
         int len = s.length();
         int[] c = new int[len];
         int maxLen = 0;
-        
+
         for (int i = 1; i < len; i++) {
             if (s.charAt(i) == ')') {
                 if (s.charAt(i - 1) == '(') {
                     c[i] = (i >= 2 ? c[i - 2] : 0) + 2;
-                } else if (i - c[i - 1] > 0 && s.charAt(i - c[i - 1] -1) == '(') {
+                } else if (i - c[i - 1] > 0 && s.charAt(i - c[i - 1] - 1) == '(') {
                     c[i] = (i - c[i - 1] >= 2 ? c[i - c[i - 1] - 2] : 0) + c[i - 1] + 2;
                 }
 
@@ -1482,7 +1773,7 @@ public class Solution2 {
                 }
             }
         }
-        
+
         return maxLen;
     }
 
@@ -1534,9 +1825,9 @@ public class Solution2 {
     /**
      * 23. 合并K个排序链表
      * 合并 k 个排序链表，返回合并后的排序链表。请分析和描述算法的复杂度。
-     *
+     * <p>
      * 示例:
-     *
+     * <p>
      * 输入:
      * [
      *   1->4->5,
@@ -1544,7 +1835,7 @@ public class Solution2 {
      *   2->6
      * ]
      * 输出: 1->1->2->3->4->4->5->6
-     *
+     * <p>
      * 来源：力扣（LeetCode）
      * 链接：https://leetcode-cn.com/problems/merge-k-sorted-lists
      * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
@@ -1556,10 +1847,10 @@ public class Solution2 {
         if (lists == null || lists.length == 0) {
             return null;
         }
-        
+
         int len = lists.length;
-        
-        for (int i = 0; i < len;) {
+
+        for (int i = 0; i < len; ) {
             // 神经病吧，居然会有lists中元素是null的情形。。。
             if (lists[i] == null) {
                 lists[i] = lists[--len];
@@ -1567,14 +1858,14 @@ public class Solution2 {
                 i++;
             }
         }
-        
+
         // 1 最小堆化
         int minIdx;
         for (int i = (len >>> 1) - 1; i >= 0; i--) {
-            for (int j = i; j < len >>> 1;) {
+            for (int j = i; j < len >>> 1; ) {
                 int left = (j << 1) + 1;
                 int right = (j << 1) + 2;
-                
+
                 if (right >= len) {
                     // 这种情况只会出现在第一次
                     right = left;
@@ -1598,7 +1889,7 @@ public class Solution2 {
                 }
             }
         }
-        
+
         // 2 合并链表
         ListNode root, cur;
         root = cur = lists[0];
@@ -1642,14 +1933,14 @@ public class Solution2 {
             cur.next = lists[0];
             cur = cur.next;
         }
-        
+
         return root;
     }
 
     /**
      * 21. 合并两个有序链表
      * 优化的更简洁一点
-     * 
+     *
      * @param l1 有序链表1
      * @param l2 有序链表2
      * @return 合并后的有序链表首节点
@@ -1669,16 +1960,16 @@ public class Solution2 {
                 l2 = l2.next;
             }
         }
-        
+
         if (l1 == null) {
             cur.next = l2;
         } else {
             cur.next = l1;
         }
-        
+
         return head.next;
     }
-    
+
     /**
      * 21. 合并两个有序链表
      *
@@ -1728,13 +2019,13 @@ public class Solution2 {
     /**
      * 20. 有效的括号
      * 给定一个只包括 '('，')'，'{'，'}'，'['，']' 的字符串，判断字符串是否有效。
-     *
+     * <p>
      * 有效字符串需满足：
-     *
+     * <p>
      * 左括号必须用相同类型的右括号闭合。
      * 左括号必须以正确的顺序闭合。
      * 注意空字符串可被认为是有效字符串。
-     *
+     * <p>
      * 来源：力扣（LeetCode）
      * 链接：https://leetcode-cn.com/problems/valid-parentheses
      * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
@@ -1778,11 +2069,11 @@ public class Solution2 {
     /**
      * 16. 最接近的三数之和
      * 给定一个包括 n 个整数的数组 nums 和 一个目标值 target。找出 nums 中的三个整数，使得它们的和与 target 最接近。返回这三个数的和。假定每组输入只存在唯一答案。
-     *
+     * <p>
      * 例如，给定数组 nums = [-1，2，1，-4], 和 target = 1.
-     *
+     * <p>
      * 与 target 最接近的三个数的和为 2. (-1 + 2 + 1 = 2).
-     *
+     * <p>
      * 来源：力扣（LeetCode）
      * 链接：https://leetcode-cn.com/problems/3sum-closest
      * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
@@ -1800,17 +2091,17 @@ public class Solution2 {
     /**
      * 15. 三数之和
      * 给定一个包含 n 个整数的数组 nums，判断 nums 中是否存在三个元素 a，b，c ，使得 a + b + c = 0 ？找出所有满足条件且不重复的三元组。
-     *
+     * <p>
      * 注意：答案中不可以包含重复的三元组。
-     *
+     * <p>
      * 例如, 给定数组 nums = [-1, 0, 1, 2, -1, -4]，
-     *
+     * <p>
      * 满足要求的三元组集合为：
      * [
-     *   [-1, 0, 1],
-     *   [-1, -1, 2]
+     * [-1, 0, 1],
+     * [-1, -1, 2]
      * ]
-     *
+     * <p>
      * 来源：力扣（LeetCode）
      * 链接：https://leetcode-cn.com/problems/3sum
      * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
@@ -1833,7 +2124,7 @@ public class Solution2 {
             }
 
             // 另外两数之和
-            int sum = - nums[i];
+            int sum = -nums[i];
             int l = i + 1, r = len - 1;
             int curSum;
 
@@ -1872,33 +2163,33 @@ public class Solution2 {
     /**
      * 494.目标和
      * 给定一个非负整数数组，a1, a2, ..., an, 和一个目标数，S。现在你有两个符号 + 和 -。对于数组中的任意一个整数，你都可以从 + 或 -中选择一个符号添加在前面。
-     *
+     * <p>
      * 返回可以使最终数组和为目标数 S 的所有添加符号的方法数。
-     *
+     * <p>
      * 示例 1:
      * 输入: nums: [1, 1, 1, 1, 1], S: 3
      * 输出: 5
      * 解释:
-     *
+     * <p>
      * -1+1+1+1+1 = 3
      * +1-1+1+1+1 = 3
      * +1+1-1+1+1 = 3
      * +1+1+1-1+1 = 3
      * +1+1+1+1-1 = 3
-     *
+     * <p>
      * 一共有5种方法让最终目标和为3。
      * 注意:
-     *
+     * <p>
      * 数组的长度不会超过20，并且数组中的值全为正数。
      * 初始的数组的和不会超过1000。
      * 保证返回的最终结果为32位整数。
-     *
+     * <p>
      * 来源：力扣（LeetCode）
      * 链接：https://leetcode-cn.com/problems/target-sum
      * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
      *
      * @param nums 非负整数组
-     * @param S 目标和
+     * @param S    目标和
      * @return 可计算出目标和的组合数量
      */
     public int findTargetSumWays(int[] nums, int S) {
@@ -1922,7 +2213,7 @@ public class Solution2 {
      * 动态规划解法。
      *
      * @param nums 非负整数组
-     * @param S 目标和
+     * @param S    目标和
      * @return 可计算出目标和的组合数量
      */
     public int findTargetSumWaysII(int[] nums, int S) {
@@ -1933,9 +2224,9 @@ public class Solution2 {
     /**
      * 1161. 最大层内元素和
      * 给你一个二叉树的根节点 root。设根节点位于二叉树的第 1 层，而根节点的子节点位于第 2 层，依此类推。
-     *
+     * <p>
      * 请你找出层内元素之和 最大 的那几层（可能只有一层）的层号，并返回其中 最小 的那个。
-     *
+     * <p>
      * 来源：力扣（LeetCode）
      * 链接：https://leetcode-cn.com/problems/maximum-level-sum-of-a-binary-tree
      * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。

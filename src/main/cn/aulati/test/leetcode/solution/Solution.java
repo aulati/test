@@ -36,7 +36,7 @@ public class Solution {
      * @return 可拼出的所有单词的长度之和
      */
     public int countCharacters(String[] words, String chars) {
-        HashSet t = new HashSet();
+        HashSet<Character> t = new HashSet<>();
         for (char c: chars.toCharArray()) {
             t.add(c);
         }

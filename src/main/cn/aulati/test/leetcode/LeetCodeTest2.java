@@ -18,7 +18,18 @@ public class LeetCodeTest2 implements ITest {
     @Override
     public void runTest() {
         _solution = new Solution2();
-        testMaxFreq();
+        testCanReach();
+    }
+
+    private void testCanReach() {
+        int[] arr = {0,3,0,6,3,3,4};
+        int start = 6;
+        System.out.println("arr  : " + Arrays.toString(arr));
+        System.out.println("start: " + start);
+
+        boolean ret = _solution.canReach(arr, start);
+
+        System.out.println("Output: " + ret);
     }
 
     private void testMaxFreq() {
