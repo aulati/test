@@ -1,9 +1,13 @@
 package cn.aulati.test.leetcode;
 
+import cn.aulati.test.util.Utils;
+import jdk.jshell.execution.Util;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -18,6 +22,27 @@ public class NightWorkTest {
     }
 
     @Test
+    void testGroupThePeople1() {
+        int[] groupSizes = { 3,3,3,3,3,1,3 };
+
+        List<List<Integer>> ret = nightWork.groupThePeople(groupSizes);
+
+        String s = Utils.listOfListToString(ret);
+        assertEquals("[[5], [0, 1, 2], [3, 4, 6]]", s);
+    }
+
+    @Test
+    void testGroupThePeople2() {
+        int[] groupSizes = { 2,1,3,3,3,2 };
+
+        List<List<Integer>> ret = nightWork.groupThePeople(groupSizes);
+
+        String s = Utils.listOfListToString(ret);
+        assertEquals("[[1], [0, 5], [2, 3, 4]]", s);
+    }
+
+    @Disabled
+    @Test
     void testSmallestDivisor1() {
         int[] nums = {1, 2, 5, 9};
         int threshold = 6;
@@ -27,6 +52,7 @@ public class NightWorkTest {
         assertEquals(5, ret);
     }
 
+    @Disabled
     @Test
     void testSmallestDivisor2() {
         int[] nums = { 2,3,5,7,11 };
@@ -37,6 +63,7 @@ public class NightWorkTest {
         assertEquals(3, ret);
     }
 
+    @Disabled
     @Test
     void testSmallestDivisor3() {
         int[] nums = {19};
