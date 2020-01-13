@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -22,6 +23,67 @@ public class NightWorkTest {
     }
 
     @Test
+    void testXorQueries1() {
+        int[] arr = {1,3,4,8};
+        int[][] queries = {{0, 1}, {1, 2}, {0, 3}, {3, 3}};
+
+        int[] ret = nightWork.xorQueries(arr, queries);
+
+        assertEquals("[2, 7, 14, 8]", Arrays.toString(ret));
+    }
+
+    @Test
+    void testXorQueries2() {
+        int[] arr = {4,8,2,10};
+        int[][] queries = {{2, 3}, {1, 3}, {0, 0}, {0, 3}};
+
+        int[] ret = nightWork.xorQueries(arr, queries);
+
+        assertEquals("[8, 0, 4, 4]", Arrays.toString(ret));
+    }
+
+    @Disabled
+    @Test
+    void testFreqAlphabets1() {
+        String s = "10#11#12";
+
+        String ret = nightWork.freqAlphabets(s);
+
+        assertEquals("jkab", ret);
+    }
+
+    @Disabled
+    @Test
+    void testFreqAlphabets2() {
+        String s = "1326#";
+
+        String ret = nightWork.freqAlphabets(s);
+
+        assertEquals("acz", ret);
+    }
+
+    @Disabled
+    @Test
+    void testFreqAlphabets3() {
+        String s = "25#";
+
+        String ret = nightWork.freqAlphabets(s);
+
+        assertEquals("y", ret);
+    }
+
+    @Disabled
+    @Test
+    void testFreqAlphabets4() {
+        String s = "12345678910#11#12#13#14#15#16#17#18#19#20#21#22#23#24#25#26#";
+
+        String ret = nightWork.freqAlphabets(s);
+
+        assertEquals("abcdefghijklmnopqrstuvwxyz", ret);
+    }
+
+    @Disabled
+    @Test
     void testGroupThePeople1() {
         int[] groupSizes = { 3,3,3,3,3,1,3 };
 
@@ -31,6 +93,7 @@ public class NightWorkTest {
         assertEquals("[[5], [0, 1, 2], [3, 4, 6]]", s);
     }
 
+    @Disabled
     @Test
     void testGroupThePeople2() {
         int[] groupSizes = { 2,1,3,3,3,2 };
