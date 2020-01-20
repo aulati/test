@@ -23,6 +23,34 @@ public class NightWorkTest {
     }
 
     @Test
+    void testDistinctEchoSubstrings1() {
+        String text = "abcabcabc";
+
+        int ret = nightWork.distinctEchoSubstrings(text);
+
+        assertEquals(3, ret);
+    }
+
+    @Test
+    void testDistinctEchoSubstrings2() {
+        String text = "leetcodeleetcode";
+
+        int ret = nightWork.distinctEchoSubstrings(text);
+
+        assertEquals(2, ret);
+    }
+
+    @Test
+    void testDistinctEchoSubstrings3() {
+        String text = "tiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtiduxtidux";
+
+        int ret = nightWork.distinctEchoSubstrings(text);
+
+        assertEquals(316, ret);
+    }
+
+    @Disabled
+    @Test
     void testXorQueries1() {
         int[] arr = {1,3,4,8};
         int[][] queries = {{0, 1}, {1, 2}, {0, 3}, {3, 3}};
@@ -32,6 +60,7 @@ public class NightWorkTest {
         assertEquals("[2, 7, 14, 8]", Arrays.toString(ret));
     }
 
+    @Disabled
     @Test
     void testXorQueries2() {
         int[] arr = {4,8,2,10};
