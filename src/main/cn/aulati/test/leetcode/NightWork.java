@@ -404,9 +404,9 @@ public class NightWork {
      * 输出：4
      *  
      * 提示：
-     * 1 <= nums.length <= 5 * 10^4
-     * 1 <= nums[i] <= 10^6
-     * nums.length <= threshold <= 10^6
+     * ·1 <= nums.length <= 5 * 10^4
+     * ·1 <= nums[i] <= 10^6
+     * ·nums.length <= threshold <= 10^6
      * <p>
      * 来源：力扣（LeetCode）
      * 链接：https://leetcode-cn.com/problems/find-the-smallest-divisor-given-a-threshold
