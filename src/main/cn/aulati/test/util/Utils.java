@@ -59,4 +59,16 @@ public class Utils {
         sb.append("]");
         return sb.toString();
     }
+
+    /**
+     * Swap the elements under specified indexes.
+     * @param nums Array
+     * @param i element index
+     * @param j another element index
+     */
+    public static void swap(int[] nums, int i, int j) {
+        int tmp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = tmp;
+    }
 }
