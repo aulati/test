@@ -18,6 +18,28 @@ public class Solution2Test {
     }
 
     @Test
+    void testCanJumpII1() {
+        int[] a = { 0, 1, 2, 3, 4 };
+        boolean ret = _solution.canJumpII(a);
+        assertFalse(ret);
+    }
+
+    @Test
+    void testCanJumpII2() {
+        int[] a = { 2, 3, 1, 1, 4 };
+        boolean ret = _solution.canJumpII(a);
+        assertTrue(ret);
+    }
+
+    @Test
+    void testCanJumpII3() {
+        int[] a = { 3, 2, 1, 0, 4 };
+        boolean ret = _solution.canJumpII(a);
+        assertFalse(ret);
+    }
+
+    @Test
+    @Disabled
     void testFindBestValue1() {
         int[] a = {4, 9, 3};
         int target = 10;
@@ -28,6 +50,7 @@ public class Solution2Test {
     }
 
     @Test
+    @Disabled
     void testFindBestValue2() {
         int[] a = {2, 3, 5};
         int target = 10;
@@ -38,6 +61,7 @@ public class Solution2Test {
     }
 
     @Test
+    @Disabled
     void testFindBestValue3() {
         int[] a = {60864,25176,27249,21296,20204};
         int target = 56803;

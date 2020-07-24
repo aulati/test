@@ -1277,6 +1277,34 @@ public class Solution2 {
         return i >= len - 1;
     }
 
+    public boolean canJumpII(int[] nums) {
+        int n = nums.length;
+        if (n <= 1) {
+            return true;
+        }
+
+        int i = 0, maxi = 0;
+        boolean[] hasTested = new boolean[n];
+
+        while (0 <= i && i < n - 1) {
+            if (hasTested[i]) {
+                i--;
+                continue;
+            }
+
+            hasTested[i] = true;
+            int j = i + nums[i];
+
+            if (j > maxi) {
+                maxi = i = j;
+            } else {
+                i--;
+            }
+        }
+
+        return i >= n - 1;
+    }
+
     /**
      * 1094. 拼车
      * 假设你是一位顺风车司机，车上最初有 capacity 个空座位可以用来载客。由于道路的限制，车 只能 向一个方向行驶（也就是说，不允许掉头或改变方向，你可以将其想象为一个向量）。
