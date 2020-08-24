@@ -32,10 +32,36 @@ public class Utils {
         return sb.toString();
     }
 
+    /**
+     * Convert a List of List to String.
+     * example:
+     *   list: [
+     *          [1, 2, 3],
+     *          [4, 5, 6]
+     *         ]
+ *       result:
+     *       "[[1, 2, 3], [4, 5, 6]]"
+     *
+     * @param list List of List
+     * @return String representation
+     */
     public static String listOfListToString(List<List<Integer>> list) {
         return listOfListToString(list, false);
     }
 
+    /**
+     * Convert a List of List to String, with each inner list on one row.
+     * example:
+     *   list: [
+     *          [1, 2, 3],
+     *          [4, 5, 6]
+     *         ]
+     *   result:
+     *       "[[1, 2, 3]\n, [4, 5, 6]]"
+     *
+     * @param list List of List
+     * @return String representation
+     */
     public static String listOfListToString(List<List<Integer>> list, boolean oneRowOneLine) {
         if (list == null) {
             return "";
@@ -58,5 +84,17 @@ public class Utils {
         }
         sb.append("]");
         return sb.toString();
+    }
+
+    /**
+     * Swap the elements under specified indexes.
+     * @param nums Array
+     * @param i element index
+     * @param j another element index
+     */
+    public static void swap(int[] nums, int i, int j) {
+        int tmp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = tmp;
     }
 }
