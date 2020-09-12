@@ -11,19 +11,37 @@ public class RotateImage {
      * Input: matrix = [[1,2,3],[4,5,6],[7,8,9]]
      * Output: [[7,4,1],[8,5,2],[9,6,3]]
      * 
-     * @param a a n x n 2D matrix
+     * @param matrix a n x n 2D matrix
      */
-    public void rotate(int[][] a) {
-        int m = a.length;
+    public void rotate(int[][] matrix) {
+        int m = matrix.length;
         for (int i = 0; i < m / 2; i++) {
             for (int j = i; j < m - 1 - i; j++) {
-                int tmp = a[i][j];
-                a[i][j] = a[m - 1 - j][i];
-                a[m - 1 - j][i] = a[m - 1 - i][m - 1 - j];
-                a[m - 1 - i][m - 1 - j] = a[j][m - 1 - i];
-                a[j][m - 1 - i] = tmp;
+                int tmp = matrix[i][j];
+                matrix[i][j] = matrix[m - 1 - j][i];
+                matrix[m - 1 - j][i] = matrix[m - 1 - i][m - 1 - j];
+                matrix[m - 1 - i][m - 1 - j] = matrix[j][m - 1 - i];
+                matrix[j][m - 1 - i] = tmp;
             }
         }
+    }
 
+    /**
+     * My solution.
+     * 
+     * @param matrix a n x n 2D matrix
+     */
+    public void rotateMine(int[][] matrix) {
+        int n = matrix.length;
+        
+        for (int i = 0; i < n / 2; i++) {
+            for (int j = 0; j < (n + 1) / 2; j++) {
+                int tmp = matrix[i][j];
+                matrix[i][j] = matrix[n - 1 - j][i];
+                matrix[n - 1 - j][i] = matrix[n - 1 - i][n - 1 - j];
+                matrix[n - 1 - i][n - 1 - j] = matrix[j][n - 1 - i];
+                matrix[j][n - 1 - i] = tmp;
+            }
+        }
     }
 }
