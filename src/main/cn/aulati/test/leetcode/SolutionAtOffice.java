@@ -92,15 +92,14 @@ public class SolutionAtOffice {
      */
     public int guessNumber(int n) {
         int low = 1, high = n;
-        int mid;
         while (low < high) {
-            mid = low + (high - low) / 2;
+            int mid = low + (high - low) / 2;
 
             int ret = guess(mid);
             if (ret < 0) {
-                low = mid + 1;
-            } else if (ret > 0) {
                 high = mid - 1;
+            } else if (ret > 0) {
+                low = mid + 1;
             } else {
                 low = high = mid;
             }
@@ -111,7 +110,7 @@ public class SolutionAtOffice {
 
     static int guessTarget = 1702766719;
     private static int guess(int num) {
-        return Integer.compare(num, guessTarget);
+        return Integer.compare(guessTarget, num);
     }
 
     /**

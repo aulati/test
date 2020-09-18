@@ -22,6 +22,7 @@ public class SolutionAtOfficeTest {
         _solution = new SolutionAtOffice();
     }
 
+    @Disabled
     @Test
     void testExist1() {
         char[][] board = {{'A','B','C','E'}
@@ -34,6 +35,7 @@ public class SolutionAtOfficeTest {
         assertTrue(ret);
     }
 
+    @Disabled
     @Test
     void testExist2() {
         char[][] board = {{'A','B','C','E'}
@@ -46,12 +48,20 @@ public class SolutionAtOfficeTest {
         assertTrue(ret);
     }
 
-    @Disabled
     @Test
     void testGuessNumber1() {
-        boolean x = false;
         int n = 2126753390;
         int target = 1702766719;
+
+        SolutionAtOffice.guessTarget = target;
+        int ret = _solution.guessNumber(n);
+        assertEquals(target, ret);
+    }
+
+    @Test
+    void testGuessNumber4() {
+        int n = 10;
+        int target = 6;
 
         SolutionAtOffice.guessTarget = target;
         int ret = _solution.guessNumber(n);
