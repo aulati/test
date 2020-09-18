@@ -39,7 +39,6 @@ public class Solution2Test {
     }
 
     @Test
-    @Disabled
     void testFindBestValue1() {
         int[] a = {4, 9, 3};
         int target = 10;
@@ -50,7 +49,6 @@ public class Solution2Test {
     }
 
     @Test
-    @Disabled
     void testFindBestValue2() {
         int[] a = {2, 3, 5};
         int target = 10;
@@ -61,7 +59,6 @@ public class Solution2Test {
     }
 
     @Test
-    @Disabled
     void testFindBestValue3() {
         int[] a = {60864,25176,27249,21296,20204};
         int target = 56803;
@@ -72,7 +69,6 @@ public class Solution2Test {
     }
 
     @Test
-    @Disabled
     void testMaxFreq1() {
         String s = "aaaa";
 
@@ -82,7 +78,6 @@ public class Solution2Test {
     }
 
     @Test
-    @Disabled
     void testMaxFreq2() {
         String s = "aabcabcab";
 
@@ -92,7 +87,6 @@ public class Solution2Test {
     }
 
     @Test
-    @Disabled
     void testMaxFreq3() {
         String s = "abcde";
 
@@ -102,7 +96,6 @@ public class Solution2Test {
     }
 
     @Test
-    @Disabled
     void testIsPossibleDivide1() {
         int[] nums = { 1,2,3,3,4,4,5,6 };
         int k = 4;
@@ -113,7 +106,6 @@ public class Solution2Test {
     }
 
     @Test
-    @Disabled
     void testIsPossibleDivide2() {
         int[] nums = { 3,2,1,2,3,4,3,4,5,9,10,11 };
         int k = 3;
@@ -124,7 +116,6 @@ public class Solution2Test {
     }
 
     @Test
-    @Disabled
     void testIsPossibleDivide3() {
         int[] nums = { 1,2,3,4 };
         int k = 3;
