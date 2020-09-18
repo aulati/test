@@ -49,7 +49,6 @@ public class NightWorkTest {
         assertEquals(316, ret);
     }
 
-    @Disabled
     @Test
     void testXorQueries1() {
         int[] arr = {1,3,4,8};
@@ -60,7 +59,6 @@ public class NightWorkTest {
         assertEquals("[2, 7, 14, 8]", Arrays.toString(ret));
     }
 
-    @Disabled
     @Test
     void testXorQueries2() {
         int[] arr = {4,8,2,10};
@@ -71,7 +69,6 @@ public class NightWorkTest {
         assertEquals("[8, 0, 4, 4]", Arrays.toString(ret));
     }
 
-    @Disabled
     @Test
     void testFreqAlphabets1() {
         String s = "10#11#12";
@@ -81,7 +78,6 @@ public class NightWorkTest {
         assertEquals("jkab", ret);
     }
 
-    @Disabled
     @Test
     void testFreqAlphabets2() {
         String s = "1326#";
@@ -91,7 +87,6 @@ public class NightWorkTest {
         assertEquals("acz", ret);
     }
 
-    @Disabled
     @Test
     void testFreqAlphabets3() {
         String s = "25#";
@@ -101,7 +96,6 @@ public class NightWorkTest {
         assertEquals("y", ret);
     }
 
-    @Disabled
     @Test
     void testFreqAlphabets4() {
         String s = "12345678910#11#12#13#14#15#16#17#18#19#20#21#22#23#24#25#26#";
@@ -111,7 +105,6 @@ public class NightWorkTest {
         assertEquals("abcdefghijklmnopqrstuvwxyz", ret);
     }
 
-    @Disabled
     @Test
     void testGroupThePeople1() {
         int[] groupSizes = { 3,3,3,3,3,1,3 };
@@ -122,7 +115,6 @@ public class NightWorkTest {
         assertEquals("[[5], [0, 1, 2], [3, 4, 6]]", s);
     }
 
-    @Disabled
     @Test
     void testGroupThePeople2() {
         int[] groupSizes = { 2,1,3,3,3,2 };
@@ -133,7 +125,6 @@ public class NightWorkTest {
         assertEquals("[[1], [0, 5], [2, 3, 4]]", s);
     }
 
-    @Disabled
     @Test
     void testSmallestDivisor1() {
         int[] nums = {1, 2, 5, 9};
@@ -144,7 +135,6 @@ public class NightWorkTest {
         assertEquals(5, ret);
     }
 
-    @Disabled
     @Test
     void testSmallestDivisor2() {
         int[] nums = { 2,3,5,7,11 };
@@ -155,7 +145,6 @@ public class NightWorkTest {
         assertEquals(3, ret);
     }
 
-    @Disabled
     @Test
     void testSmallestDivisor3() {
         int[] nums = {19};
@@ -166,7 +155,6 @@ public class NightWorkTest {
         assertEquals(4, ret);
     }
 
-    @Disabled
     @Test
     void testRemoveCoveredIntervals1() {
         int[][] intervals = {{1, 4}, {3, 6}, {2, 8}};
@@ -176,7 +164,6 @@ public class NightWorkTest {
         assertEquals(2, ret);
     }
 
-    @Disabled
     @Test
     void testRemoveCoveredIntervals2() {
         int[][] intervals = {{3,10},{4,10},{5,11}};
@@ -186,7 +173,6 @@ public class NightWorkTest {
         assertEquals(2, ret);
     }
 
-    @Disabled
     @Test
     void testRemoveCoveredIntervals3() {
         int[][] intervals = {{3,10}};

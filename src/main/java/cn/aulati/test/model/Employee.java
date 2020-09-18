@@ -1,6 +1,8 @@
 package cn.aulati.test.model;
 
 
+import java.util.Objects;
+
 /**
  * Employee class.
  * <p>extends from the {@link Person} class.
@@ -66,5 +68,19 @@ public class Employee extends Person {
 	 */
 	public static void setbaseClassName(String baseClassName) {
 		_baseClassName = baseClassName;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Employee employee = (Employee) o;
+		return _age == employee._age &&
+				Objects.equals(_dateOfEntry, employee._dateOfEntry);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(_dateOfEntry, _age);
 	}
 }
