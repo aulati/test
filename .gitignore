@@ -24,6 +24,7 @@ hs_err_pid*
 
 # customize
 .idea/
+.settings/
 .vscode/
 out/
 target/
