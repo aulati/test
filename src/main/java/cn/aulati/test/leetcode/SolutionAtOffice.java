@@ -5,6 +5,60 @@ import cn.aulati.test.util.Utils;
 import java.util.*;
 
 public class SolutionAtOffice {
+
+    List<List<Integer>> ret = new ArrayList<>();
+
+    /**
+     * 40. Combination Sum II
+     * Given a collection of candidate numbers (candidates) and a target number (target), find all unique combinations
+     * in candidates where the candidate numbers sums to target.
+     *
+     * Each number in candidates may only be used once in the combination.
+     *
+     * Note:
+     * All numbers (including target) will be positive integers.
+     * The solution set must not contain duplicate combinations.
+     *
+     * @param candidates candidate numbers
+     * @param target target sum
+     * @return all unique combinations that sums to target
+     */
+    public List<List<Integer>> combinationSum2(int[] candidates, int target) {
+        Arrays.sort(candidates);
+
+        combinationSum2Helper(candidates, -1, target, new LinkedList<Integer>());
+
+        return ret;
+    }
+
+    private void combinationSum2Helper(int[] candidates, int k, int target, LinkedList<Integer> list) {
+        // we are starting at the (k + 1)th elements, as each number may only be used once
+        for (int i = k + 1; i < candidates.length;) {
+            if (candidates[i] == target) {
+                addToResult(list, target);
+                break;
+            } else if (candidates[i] > target) {
+                // end the loop as target - candidates[i] < 0
+                // this requires pre-sorting of candidates
+                break;
+            }
+
+            list.add(candidates[i]);
+            combinationSum2Helper(candidates, i, target - candidates[i], list);
+            list.removeLast();
+
+            // jump the same numbers
+            while (++i < candidates.length && candidates[i] == candidates[i - 1]);
+        }
+    }
+
+    private void addToResult(List<Integer> list, int target) {
+        List<Integer> newList = new ArrayList(list);
+        newList.add(target);
+        ret.add(newList);
+    }
+
+
     // move step toward 4 directions
     static int[][] move = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
     char[][] board;

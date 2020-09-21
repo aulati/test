@@ -2,6 +2,8 @@ package cn.aulati.test.leetcode;
 
 import org.junit.jupiter.api.*;
 
+import cn.aulati.test.util.Utils;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -20,6 +22,18 @@ public class SolutionAtOfficeTest {
     @BeforeAll
     void init() {
         _solution = new SolutionAtOffice();
+    }
+
+    @Test
+    void testCombinationSum21() {
+        int[] candidates = {10, 1, 2, 7, 6, 1, 5};
+        int target = 8;
+
+        List<List<Integer>> ret = _solution.combinationSum2(candidates, target);
+
+        String retStr = Utils.listOfListToString(ret);
+        String expected = "[[1, 1, 6], [1, 2, 5], [1, 7], [2, 6]]";
+        assertEquals(expected, retStr);
     }
 
     @Test
