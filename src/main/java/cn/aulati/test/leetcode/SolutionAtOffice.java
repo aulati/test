@@ -5,8 +5,57 @@ import cn.aulati.test.util.Utils;
 import java.util.*;
 
 public class SolutionAtOffice {
+    /**
+     * 22. Generate Parentheses
+     * Given n pairs of parentheses, write a function to generate all combinations of well-formed parentheses.
+     * For example, given n = 3, a solution set is:
+     * [
+     * "((()))",
+     * "(()())",
+     * "(())()",
+     * "()(())",
+     * "()()()"
+     * ]
+     * 
+     * @param n Using n pairs of parentheses
+     * @return All combinations of well-formed parentheses.
+     */
+    public List<String> generateParenthesis(int n) {
+        List<String> ret = new ArrayList<>();
+        
+        generateParenthesisHelper(n, 0, 0, ret, new StringBuilder());
+        
+        return ret;
+    }
+    
+    /**
+     * Backtracking helper method to generate parentheses.
+     * @param n Using n pairs of parentheses
+     * @param left Count of left parentheses that have been used.
+     * @param right Count of right parentheses that have been used.
+     * @param list Result list of all combinations.
+     * @param sb A StringBuilder to hold the char sequences.
+     */
+    private void generateParenthesisHelper(int n, int left, int right, List<String> list, StringBuilder sb) {
+        if (left == n && right == n) {
+            list.add(sb.toString());
+            return;
+        }
 
-    List<List<Integer>> ret = new ArrayList<>();
+        if (left < n) {
+            sb.append('(');
+            generateParenthesisHelper(n, left + 1, right, list, sb);
+            sb.deleteCharAt(sb.length() - 1);
+        }
+        
+        if (right < left) {
+            sb.append(')');
+            generateParenthesisHelper(n, left, right + 1, list, sb);
+            sb.deleteCharAt(sb.length() - 1);
+        }
+    }
+
+    List<List<Integer>> combinationSum2Ret = new ArrayList<>();
 
     /**
      * 40. Combination Sum II
@@ -28,7 +77,7 @@ public class SolutionAtOffice {
 
         combinationSum2Helper(candidates, -1, target, new LinkedList<Integer>());
 
-        return ret;
+        return combinationSum2Ret;
     }
 
     private void combinationSum2Helper(int[] candidates, int k, int target, LinkedList<Integer> list) {
@@ -55,7 +104,7 @@ public class SolutionAtOffice {
     private void addToResult(List<Integer> list, int target) {
         List<Integer> newList = new ArrayList(list);
         newList.add(target);
-        ret.add(newList);
+        combinationSum2Ret.add(newList);
     }
 
 
