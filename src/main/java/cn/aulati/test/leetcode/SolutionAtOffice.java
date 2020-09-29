@@ -5,8 +5,57 @@ import cn.aulati.test.util.Utils;
 import java.util.*;
 
 public class SolutionAtOffice {
+    /**
+     * 22. Generate Parentheses
+     * Given n pairs of parentheses, write a function to generate all combinations of well-formed parentheses.
+     * For example, given n = 3, a solution set is:
+     * [
+     * "((()))",
+     * "(()())",
+     * "(())()",
+     * "()(())",
+     * "()()()"
+     * ]
+     * 
+     * @param n Using n pairs of parentheses
+     * @return All combinations of well-formed parentheses.
+     */
+    public List<String> generateParenthesis(final int n) {
+        final List<String> ret = new ArrayList<>();
+        
+        generateParenthesisHelper(n, 0, 0, ret, new StringBuilder());
+        
+        return ret;
+    }
+    
+    /**
+     * Backtracking helper method to generate parentheses.
+     * @param n Using n pairs of parentheses
+     * @param left Count of left parentheses that have been used.
+     * @param right Count of right parentheses that have been used.
+     * @param list Result list of all combinations.
+     * @param sb A StringBuilder to hold the char sequences.
+     */
+    private void generateParenthesisHelper(final int n, final int left, final int right, final List<String> list, final StringBuilder sb) {
+        if (left == n && right == n) {
+            list.add(sb.toString());
+            return;
+        }
 
-    List<List<Integer>> ret = new ArrayList<>();
+        if (left < n) {
+            sb.append('(');
+            generateParenthesisHelper(n, left + 1, right, list, sb);
+            sb.deleteCharAt(sb.length() - 1);
+        }
+        
+        if (right < left) {
+            sb.append(')');
+            generateParenthesisHelper(n, left, right + 1, list, sb);
+            sb.deleteCharAt(sb.length() - 1);
+        }
+    }
+
+    List<List<Integer>> combinationSum2Ret = new ArrayList<>();
 
     /**
      * 40. Combination Sum II
@@ -23,15 +72,15 @@ public class SolutionAtOffice {
      * @param target target sum
      * @return all unique combinations that sums to target
      */
-    public List<List<Integer>> combinationSum2(int[] candidates, int target) {
+    public List<List<Integer>> combinationSum2(final int[] candidates, final int target) {
         Arrays.sort(candidates);
 
         combinationSum2Helper(candidates, -1, target, new LinkedList<Integer>());
 
-        return ret;
+        return combinationSum2Ret;
     }
 
-    private void combinationSum2Helper(int[] candidates, int k, int target, LinkedList<Integer> list) {
+    private void combinationSum2Helper(final int[] candidates, final int k, final int target, final LinkedList<Integer> list) {
         // we are starting at the (k + 1)th elements, as each number may only be used once
         for (int i = k + 1; i < candidates.length;) {
             if (candidates[i] == target) {
@@ -52,10 +101,10 @@ public class SolutionAtOffice {
         }
     }
 
-    private void addToResult(List<Integer> list, int target) {
-        List<Integer> newList = new ArrayList(list);
+    private void addToResult(final List<Integer> list, final int target) {
+        final List<Integer> newList = new ArrayList(list);
         newList.add(target);
-        ret.add(newList);
+        combinationSum2Ret.add(newList);
     }
 
 
@@ -66,7 +115,7 @@ public class SolutionAtOffice {
     int len;
     int n, m;
 
-    public boolean exist(char[][] board, String word) {
+    public boolean exist(final char[][] board, final String word) {
         wc = word.toCharArray();
         this.board = board;
         len = wc.length;
@@ -75,9 +124,9 @@ public class SolutionAtOffice {
 
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
-                boolean[][] steps = new boolean[n][m];
+                final boolean[][] steps = new boolean[n][m];
 
-                boolean ret = existInternal(0, i, j, steps);
+                final boolean ret = existInternal(0, i, j, steps);
 
                 if (ret) {
                     return true;
@@ -88,7 +137,7 @@ public class SolutionAtOffice {
         return false;
     }
 
-    private boolean existInternal(int i, int x, int y, boolean[][] steps) {
+    private boolean existInternal(final int i, final int x, final int y, final boolean[][] steps) {
         // this path is not a match
         if (board[x][y] != wc[i]) {
             return false;
@@ -102,8 +151,8 @@ public class SolutionAtOffice {
         // test 4 directions with recursive calls
         steps[x][y] = true;
         for (int j = 0; j < 4; j++) {
-            int xx = x + move[j][0];
-            int yy = y + move[j][1];
+            final int xx = x + move[j][0];
+            final int yy = y + move[j][1];
 
             // bound test
             if (0 <= xx && xx < n && 0 <= yy && yy < m) {
@@ -112,7 +161,7 @@ public class SolutionAtOffice {
                     continue;
                 }
 
-                boolean ret = existInternal(i + 1, xx, yy, steps);
+                final boolean ret = existInternal(i + 1, xx, yy, steps);
                 if (ret) {
                     return true;
                 }
@@ -144,12 +193,12 @@ public class SolutionAtOffice {
      * @param n
      * @return
      */
-    public int guessNumber(int n) {
+    public int guessNumber(final int n) {
         int low = 1, high = n;
         while (low < high) {
-            int mid = low + (high - low) / 2;
+            final int mid = low + (high - low) / 2;
 
-            int ret = guess(mid);
+            final int ret = guess(mid);
             if (ret < 0) {
                 high = mid - 1;
             } else if (ret > 0) {
@@ -163,7 +212,7 @@ public class SolutionAtOffice {
     }
 
     static int guessTarget = 1702766719;
-    private static int guess(int num) {
+    private static int guess(final int num) {
         return Integer.compare(guessTarget, num);
     }
 
@@ -179,8 +228,8 @@ public class SolutionAtOffice {
      * @param target target sum
      * @return closest sum
      */
-    public int threeSumClosest(int[] nums, int target) {
-        int n = nums.length;
+    public int threeSumClosest(final int[] nums, final int target) {
+        final int n = nums.length;
         Arrays.sort(nums);
 
         int sum, curSum, diff, curDiff;
@@ -233,11 +282,11 @@ public class SolutionAtOffice {
      * @param nums array of integers
      * @return triplets that sums to 0
      */
-    public List<List<Integer>> threeSum(int[] nums) {
-        int n = nums.length;
+    public List<List<Integer>> threeSum(final int[] nums) {
+        final int n = nums.length;
         Arrays.sort(nums);
 
-        List<List<Integer>> ret = new ArrayList<>();
+        final List<List<Integer>> ret = new ArrayList<>();
         List<Integer> list = null;
 
         for (int i = 0; i < n - 2; i++) {
@@ -251,10 +300,10 @@ public class SolutionAtOffice {
                 continue;
             }
 
-            int target = - nums[i];
+            final int target = - nums[i];
             int l = i + 1, r = n - 1;
             while (l < r) {
-                int cur = nums[l] + nums[r];
+                final int cur = nums[l] + nums[r];
                 if (cur > target) {
                     r--;
 
@@ -281,13 +330,13 @@ public class SolutionAtOffice {
         return ret;
     }
 
-    private void addToResult(int[] g, List<List<Integer>> ret, HashSet<String> set) {
+    private void addToResult(final int[] g, final List<List<Integer>> ret, final HashSet<String> set) {
         Arrays.sort(g);
-        String key = Arrays.toString(g);
+        final String key = Arrays.toString(g);
         if (!set.contains(key)) {
             set.add(key);
 
-            List<Integer> list = new ArrayList<>(3);
+            final List<Integer> list = new ArrayList<>(3);
             list.add(g[0]);
             list.add(g[1]);
             list.add(g[2]);
@@ -312,7 +361,7 @@ public class SolutionAtOffice {
      *
      * @param nums 数组
      */
-    public void nextPermutation(int[] nums) {
+    public void nextPermutation(final int[] nums) {
         int i = nums.length - 2;
         for (; i >= 0; i--) {
             if (nums[i] < nums[i + 1]) {
@@ -332,7 +381,7 @@ public class SolutionAtOffice {
         reverse(nums, i + 1);
     }
 
-    private void reverse(int[] nums, int start) {
+    private void reverse(final int[] nums, int start) {
         int end = nums.length - 1;
         while (start < end) {
             Utils.swap(nums, start, end);
@@ -368,7 +417,7 @@ public class SolutionAtOffice {
      * @param divisor 除数
      * @return 结果
      */
-    public int divide(int dividend, int divisor) {
+    public int divide(final int dividend, final int divisor) {
         boolean isNeg = false;
         long de = dividend, ds = divisor;
 
@@ -413,7 +462,7 @@ public class SolutionAtOffice {
      * @param nums
      * @return
      */
-    public int findNumbers(int[] nums) {
+    public int findNumbers(final int[] nums) {
         int ret = 0;
 
         for (int i : nums) {
