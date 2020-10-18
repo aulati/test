@@ -1,8 +1,12 @@
 package cn.aulati.test.leetcode.solution;
 
+import cn.aulati.test.util.Utils;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+
+import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -96,6 +100,18 @@ public class Solution2Test {
     }
 
     @Test
+    void testMaxFreq4() {
+        String s = "bekdfggeafgajehfjkeaifchakbhfkgbegbghdfihkigdiiaichckkjfhcicejciegdbhejbfcjccaiehhdbaeaikjgjdfefiheegbh";
+        int maxLetters = 7,
+            minSize = 4,
+            maxSize = 23;
+
+        int ret = _solution.maxFreq(s, maxLetters, minSize, maxSize);
+
+        assertEquals(1, ret);
+    }
+
+    @Test
     void testIsPossibleDivide1() {
         int[] nums = { 1,2,3,3,4,4,5,6 };
         int k = 4;
@@ -123,5 +139,75 @@ public class Solution2Test {
         boolean ret = _solution.isPossibleDivide(nums, k);
 
         assertFalse(ret);
+    }
+
+    @Test
+    void testIsPossibleDivide4() {
+        int[] nums = { 3,2,1,2,3,1 };
+        int k = 3;
+
+        boolean ret = _solution.isPossibleDivide(nums, k);
+
+        assertTrue(ret);
+    }
+
+    @Test
+    void testShortestpath() {
+        int[][] grid = {{0}};
+        int k = 1;
+
+        int ret = _solution.shortestPath(grid, k);
+
+        assertEquals(0, ret);
+    }
+
+    @Test
+    void testCanReach() {
+        int[] arr = {0,3,0,6,3,3,4};
+        int start = 6;
+
+        boolean ret = _solution.canReach(arr, start);
+
+        assertTrue(ret);
+    }
+
+    @Test
+    void testMaxSideLength() {
+        int[][] input = {{2,2,2,2,2},{2,2,2,2,2},{2,2,2,2,2},{2,2,2,2,2},{2,2,2,2,2}};
+        int threshold = 18000;
+
+        int ret = _solution.maxSideLength(input, threshold);
+
+        assertEquals(5, ret);
+    }
+
+    @Test
+    void testSequentialDigits() {
+        int low = 58, high = 155;
+
+        List<Integer> ret = _solution.sequentialDigits(low, high);
+
+        int[] retToInt = ret.stream().mapToInt(Integer::intValue).toArray();
+        int[] ans = { 67, 78, 89, 123 };
+
+        assertArrayEquals(ans, retToInt);
+    }
+
+    @Test
+    void testNumWays() {
+        int steps = 27, arrLen = 7;
+
+        int ret = _solution.numWays(steps, arrLen);
+
+        assertEquals(127784505, ret);
+    }
+
+    @Test
+    void testMaxSumDivThree() {
+        int[] nums = {1, 2, 3, 4, 4};
+
+        int ret = _solution.maxSumDivThree(nums);
+
+        assertEquals(12, ret);
     }
 }
