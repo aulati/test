@@ -123,7 +123,7 @@ public class Solution {
      *
      * 示例 5：
      * 输入：d = 30, f = 30, target = 500
-     * 输出：222616187
+     * 输出：357173588
      *
      * @param d 骰子数量
      * @param f 骰子的面数量
@@ -160,9 +160,19 @@ public class Solution {
     }
 
     /**
-     *
-     * @param text
-     * @return
+     * 1156. Swap For Longest Repeated Character Substring
+     * <p>Given a string text, we are allowed to swap two of the characters in the string.
+     * Find the length of the longest substring with repeated characters.
+     * <p>
+     * Example 1:
+     * <p>  Input: text = "ababa"
+     * <p>  Output: 3
+     * <p>  Explanation: We can swap the first 'b' with the last 'a', or the last 'b' with
+     * the first 'a'. Then, the longest repeated character substring is "aaa", which
+     * its length is 3.
+
+     * @param text A String text.
+     * @return Longgest length after at most one swap.
      */
     public int maxRepOpt1(String text) {
         if (text == null || text.length() == 0) {
@@ -237,9 +247,17 @@ public class Solution {
         int len;
     }
     /**
-     * 5141. 最大的以 1 为边界的正方形
+     * 1139. 最大的以 1 为边界的正方形
      * 给你一个由若干 0 和 1 组成的二维网格 grid，请你找出边界全部由 1 组成的最大 正方形 子网格，并返回该子网格中的元素数量。如果不存在，则返回 0。
      *
+     * Example 1:
+     * Input: grid = [[1,1,1],[1,0,1],[1,1,1]]
+     * Output: 9
+     *
+     * Example 2:
+     * Input: grid = [[1,1,0,0]]
+     * Output: 1
+     * 
      * @param grid 网格数组
      * @return 最大正方形中的元素数量
      */
@@ -302,7 +320,7 @@ public class Solution {
     }
 
     /**
-     * 5140. 字母板上的路径
+     * 1138. 字母板上的路径
      * 我们从一块字母板上的位置 (0, 0) 出发，该坐标对应的字符为 board[0][0]。
      *
      * 在本题里，字母板为board = ["abcde", "fghij", "klmno", "pqrst", "uvwxy", "z"].

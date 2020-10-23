@@ -1,6 +1,6 @@
 package cn.aulati.test;
 
-import cn.aulati.test.leetcode.LeetCodeTest2;
+import cn.aulati.test.leetcode.LeetCodeTest;
 
 /**
  * The main class of this test project.
@@ -22,7 +22,7 @@ public class TestMain {
 //        tc = new ExtendsAndImplements();
 //        tc = new DynamicDelegateTest();
 //        tc = new SortTestMain();
-        tc = new LeetCodeTest2();
+        tc = new LeetCodeTest();
 //        tc = new ClassInsideAnotherClassTest();
 //        tc = new AlgorithmTest();
 //        tc = new InnerClassTest();
