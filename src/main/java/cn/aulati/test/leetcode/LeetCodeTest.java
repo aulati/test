@@ -23,6 +23,13 @@ public class LeetCodeTest implements ITest {
     public void runTest() {
         _solution = new Solution();
         testNumRollsToTarget();
+        testMaxRepOpt1();
+        testLargest1BorderedSquare();
+        testAlphabetBoardPath();
+        testLongestSubstring();
+        testRadixSort();
+        testBuildTreeII();
+        testBuildTree();
     }
 
     private void testNumRollsToTarget() {
