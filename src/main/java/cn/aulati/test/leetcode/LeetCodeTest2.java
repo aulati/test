@@ -3,7 +3,6 @@ package cn.aulati.test.leetcode;
 import cn.aulati.test.ITest;
 import cn.aulati.test.leetcode.solution.Solution2;
 import cn.aulati.test.model.ListNode;
-import cn.aulati.test.util.Utils;
 
 import java.util.Arrays;
 import java.util.List;
