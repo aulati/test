@@ -18,14 +18,31 @@ public class LeetCodeTest2 implements ITest {
     @Override
     public void runTest() {
         _solution = new Solution2();
+        testShiftGrid();
         testMyAtoi();
+        testLetterCombinations();
+        testNthUglyNumberContest();
+        testMinimumAbsDifference();
+        testReverseLists();
+        testReverseAlphabets();
+        testCanJump();
+        testNumSmallerByFrequency();
+        testCountNumbersWithUniqueDigits();
+        testNthUglyNumber();
+        testMergeKLists();
+        testMergeKLists2();
+        testReverseStr();
+        testLongestValidParentheses();
+        testMergeTwoLists();
+        testThreeSum();
+        testFindTargetSumWays();
     }
 
     private void testShiftGrid() {
         int[][] grid = {{1}};
         int k = 100;
 
-        System.out.println("grid: " + grid + ", k: " + k);
+        System.out.println("grid: " + Arrays.toString(grid) + ", k: " + k);
 
         List<List<Integer>> ret = _solution.shiftGrid(grid, k);
 
@@ -60,16 +77,6 @@ public class LeetCodeTest2 implements ITest {
         }
     }
 
-    private void testHuaweiOnlineTest() {
-        int[] a = {1000000000, 2, 217983653, 336916467};
-        System.out.println("Input: " + Arrays.toString(a));
-
-        int ret = _solution.nthUglyNumber(a[0], a[1], a[2], a[3]);
-
-        System.out.println("Output: " + ret);
-        System.out.println("-----------------------------");
-    }
-
     private void testNthUglyNumberContest() {
         int[] a = {1000000000, 2, 217983653, 336916467};
         System.out.println("Input: " + Arrays.toString(a));
@@ -97,7 +104,7 @@ public class LeetCodeTest2 implements ITest {
 
     private void testReverseLists() {
         int[] a = {1, 2, 3, 4, 5};
-        ListNode h = createListNode(a);
+        ListNode h = ListNode.fromArray(a);
         System.out.println("Input: " + ListNode.printString(h));
 
         ListNode ret = _solution.reverseLists(h);
@@ -168,22 +175,12 @@ public class LeetCodeTest2 implements ITest {
      */
     private void testMergeKLists() {
         ListNode[] lists = new ListNode[3];
-
-//        int[] a0 = {-8,-7,-6,-3,-2,-2,0,3};
-//        lists[0] = createListNode(a0);
-//        int[] a1 = {-10,-6,-4,-4,-4,-2,-1,4};
-//        lists[1] = createListNode(a1);
-//        int[] a2 = {-10,-9,-8,-8,-6};
-//        lists[2] = createListNode(a2);
-//        int[] a3 = {-10,0,4};
-//        lists[3] = createListNode(a3);
-
         int[] a0 = {-1, 1};
-        lists[0] = createListNode(a0);
+        lists[0] = ListNode.fromArray(a0);
         int[] a1 = {-3,1,4};
-        lists[1] = createListNode(a1);
+        lists[1] = ListNode.fromArray(a1);
         int[] a2 = {-2,-1,0,2};
-        lists[2] = createListNode(a2);
+        lists[2] = ListNode.fromArray(a2);
 
         System.out.println("Input: [" + Arrays.toString(a0)
                 + ", " + Arrays.toString(a1)
@@ -195,16 +192,27 @@ public class LeetCodeTest2 implements ITest {
         System.out.println("-----------------------------");
     }
 
-    private ListNode createListNode(int[] nums) {
-        ListNode root, cur;
-        root = cur = new ListNode(0);
+    private void testMergeKLists2() {
+        ListNode[] lists = new ListNode[4];
 
-        for (int i = 0; i < nums.length; i++) {
-            cur.next = new ListNode(nums[i]);
-            cur = cur.next;
-        }
+        int[] a0 = {-8,-7,-6,-3,-2,-2,0,3};
+        lists[0] = ListNode.fromArray(a0);
+        int[] a1 = {-10,-6,-4,-4,-4,-2,-1,4};
+        lists[1] = ListNode.fromArray(a1);
+        int[] a2 = {-10,-9,-8,-8,-6};
+        lists[2] = ListNode.fromArray(a2);
+        int[] a3 = {-10,0,4};
+        lists[3] = ListNode.fromArray(a3);
 
-        return root.next;
+        System.out.println("Input: [" + Arrays.toString(a0)
+                + ", " + Arrays.toString(a1)
+                + ", " + Arrays.toString(a2)
+                + ", " + Arrays.toString(a3) + "]");
+
+        ListNode ret = _solution.mergeKLists(lists);
+
+        System.out.println("Output: " + ListNode.printString(ret));
+        System.out.println("-----------------------------");
     }
 
     /**
@@ -253,10 +261,10 @@ public class LeetCodeTest2 implements ITest {
      */
     private void testMergeTwoLists() {
         int[] a1 = {1, 2, 4};
-        ListNode l1 = createListNode(a1);
+        ListNode l1 = ListNode.fromArray(a1);
 
         int[] a2 = {1, 3, 4};
-        ListNode l2 = createListNode(a2);
+        ListNode l2 = ListNode.fromArray(a2);
 
         System.out.println("Input: " + Arrays.toString(a1) + ", " + Arrays.toString(a2));
 
@@ -294,19 +302,6 @@ public class LeetCodeTest2 implements ITest {
         int ret = _solution.findTargetSumWays(nums, s);
 
         System.out.println("Output: " + ret);
-        System.out.println("-----------------------------");
-    }
-
-    /**
-     * 1161. 最大层内元素和
-     */
-    private void testMaxLevelSum() {
-        System.out.println("Input: ");
-//        TreeNode root;
-//
-//        int ret = _solution.maxLevelSum(root);
-
-//        System.out.println("Output: " + ret);
         System.out.println("-----------------------------");
     }
 }
