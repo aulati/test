@@ -12,6 +12,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
 import cn.aulati.test.model.TreeNode;
+import cn.aulati.test.util.Utils;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class SolutionTest {
@@ -25,6 +26,56 @@ public class SolutionTest {
     @BeforeAll
     private void init() {
         _solution = new Solution();
+    }
+
+    @Test
+    void testMerge1() {
+        int[][] arr = { { 1, 3 }, { 2, 6 }, { 8, 10 }, { 15, 18 } };
+
+        int[][] ret = _solution.merge(arr);
+        String retStr = Utils.matrixToString(ret);
+
+        assertEquals("[[1, 6], [8, 10], [15, 18]]", retStr);
+    }
+
+    @Test
+    void testMerge2() {
+        int[][] arr = { { 1, 6 }, { 2, 4 } };
+
+        int[][] ret = _solution.merge(arr);
+        String retStr = Utils.matrixToString(ret);
+
+        assertEquals("[[1, 6]]", retStr);
+    }
+
+    @Test
+    void testMerge3() {
+        int[][] arr = { { 1, 4 }, { 4, 5 } };
+
+        int[][] ret = _solution.merge(arr);
+        String retStr = Utils.matrixToString(ret);
+
+        assertEquals("[[1, 5]]", retStr);
+    }
+
+    @Test
+    void testMerge4() {
+        int[][] arr = { { 6, 7 }, { 1, 6 }, { 7, 10 } };
+
+        int[][] ret = _solution.merge(arr);
+        String retStr = Utils.matrixToString(ret);
+
+        assertEquals("[[1, 10]]", retStr);
+    }
+
+    @Test
+    void testMerge5() {
+        int[][] arr = { { 4, 5 }, { 1, 4 }, { 0, 1 } };
+
+        int[][] ret = _solution.merge(arr);
+        String retStr = Utils.matrixToString(ret);
+
+        assertEquals("[[0, 5]]", retStr);
     }
 
     @Test

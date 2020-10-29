@@ -721,39 +721,54 @@ public class Solution {
     }
 
     /**
-     * 56.合并区间
+     * 56. Merge Intervals
+     * Given a collection of intervals, merge all overlapping intervals.
      *
-     * @param intervals 区间的集合
-     * @return 合并所有重叠区间后的数组
+     * Example 1:
+     *  Input: intervals = [[1,3],[2,6],[8,10],[15,18]]
+     *  Output: [[1,6],[8,10],[15,18]]
+     *  Explanation: Since intervals [1,3] and [2,6] overlaps, merge them into [1,6].
+     *
+     * Example 2:
+     *  Input: intervals = [[1,4],[4,5]]
+     *  Output: [[1,5]]
+     *  Explanation: Intervals [1,4] and [4,5] are considered overlapping.
+     *
+     * https://leetcode.com/problems/merge-intervals/
+     *
+     * Constraints: intervals[i][0] <= intervals[i][1]
+     *
+     * @param intervals Intervals collection
+     * @return Intervals collection that all overlappings had been merged.
      */
     public int[][] merge(int[][] intervals) {
         if (intervals.length <= 1) {
             return intervals;
         }
 
-        List<int[]> sorted = new LinkedList<>();
+        // // 1 insertion sort, by the first number of each interval
+        // int pos;
+        // for (int i = 0; i < intervals.length; i++) {
+        //     pos = 0;
+        //     for (; pos < sorted.size(); pos++) {
+        //         if (sorted.get(pos)[0] >= intervals[i][0]) {
+        //             break;
+        //         }
+        //     }
+        //     sorted.add(pos, intervals[i]);
+        // }
+        // 1 sort
+        Arrays.sort(intervals, (o1, o2) -> o1[0] - o2[0]);
 
-        // 1 用插入排序，将区间数组按 区间开始数字 进行排序
-        int pos;
-        for (int i = 0; i < intervals.length; i++) {
-            pos = 0;
-            for (; pos < sorted.size(); pos++) {
-                if (sorted.get(pos)[0] >= intervals[i][0]) {
-                    break;
-                }
-            }
-            sorted.add(pos, intervals[i]);
-        }
-
-        // 2 按顺序合并区间
+        // 2 Merge Intervals
         List<int[]> ans = new ArrayList<>();
-        ans.add(sorted.get(0));
+        ans.add(intervals[0]);
         int[] pre = ans.get(0);
         int[] cur;
-        for (int i = 1; i < sorted.size(); i++) {
-            cur = sorted.get(i);
+        for (int i = 1; i < intervals.length; i++) {
+            cur = intervals[i];
             if (cur[0] <= pre[1]) {
-                // 当前区间与前一个区间有重叠
+                // overlaps with previous interval
                 pre[1] = Math.max(cur[1], pre[1]);
             } else {
                 ans.add(cur);
