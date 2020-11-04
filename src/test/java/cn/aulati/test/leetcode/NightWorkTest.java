@@ -1,9 +1,7 @@
 package cn.aulati.test.leetcode;
 
 import cn.aulati.test.util.Utils;
-import jdk.jshell.execution.Util;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
@@ -11,15 +9,47 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class NightWorkTest {
 
+    /** Solution class instance. */
     private NightWork nightWork;
 
     @BeforeAll
     void init() {
         nightWork = new NightWork();
+    }
+
+    @Test
+    void testGenerateMatrix1() {
+        int n = 1;
+        int[][] matrix = nightWork.generateMatrix(n);
+
+        int[][] expected = {{1}};
+
+        assertTrue(Utils.compareMatrix(expected, matrix));
+    }
+
+    @Test
+    void testGenerateMatrix2() {
+        int n = 2;
+        int[][] matrix = nightWork.generateMatrix(n);
+
+        int[][] expected = {{1, 2}, {4, 3}};
+
+        assertTrue(Utils.compareMatrix(expected, matrix));
+    }
+
+    @Test
+    void testGenerateMatrix3() {
+        int n = 3;
+        int[][] matrix = nightWork.generateMatrix(n);
+
+        int[][] expected = {{1, 2, 3}, {8, 9, 4}, {7, 6, 5}};
+
+        assertTrue(Utils.compareMatrix(expected, matrix));
     }
 
     @Test
