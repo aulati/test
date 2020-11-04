@@ -1,5 +1,6 @@
 package cn.aulati.test.leetcode;
 
+import cn.aulati.test.model.ListNode;
 import cn.aulati.test.util.Utils;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -20,6 +21,60 @@ public class NightWorkTest {
     @BeforeAll
     void init() {
         nightWork = new NightWork();
+    }
+
+    @Test
+    void testRotateRight1() {
+        int[] a = { 1, 2, 3, 4, 5};
+        ListNode list = ListNode.fromArray(a);
+
+        ListNode ret = nightWork.rotateRight(list, 2);
+
+        assertEquals("4->5->1->2->3", ListNode.printString(ret));
+    }
+    
+    @Test
+    void testRotateRight2() {
+        int[] a = { 1, 2, 3};
+        int k = 4;
+        ListNode list = ListNode.fromArray(a);
+
+        ListNode ret = nightWork.rotateRight(list, k);
+
+        assertEquals("3->1->2", ListNode.printString(ret));
+    }
+    
+    @Test
+    void testRotateRight3() {
+        int[] a = { 1 };
+        int k = 1;
+        ListNode list = ListNode.fromArray(a);
+
+        ListNode ret = nightWork.rotateRight(list, k);
+
+        assertEquals("1", ListNode.printString(ret));
+    }
+    
+    @Test
+    void testRotateRight4() {
+        int[] a = { 1 };
+        int k = 3;
+        ListNode list = ListNode.fromArray(a);
+
+        ListNode ret = nightWork.rotateRight(list, k);
+
+        assertEquals("1", ListNode.printString(ret));
+    }
+    
+    @Test
+    void testRotateRight5() {
+        int[] a = { 1, 2, 3, 4};
+        int k = 4;
+        ListNode list = ListNode.fromArray(a);
+
+        ListNode ret = nightWork.rotateRight(list, k);
+
+        assertEquals("1->2->3->4", ListNode.printString(ret));
     }
 
     @Test

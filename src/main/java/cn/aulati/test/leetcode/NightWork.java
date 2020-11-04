@@ -1,5 +1,6 @@
 package cn.aulati.test.leetcode;
 
+import cn.aulati.test.model.ListNode;
 import cn.aulati.test.model.TreeNode;
 import cn.aulati.test.model.WatchedVideo;
 import cn.aulati.test.util.ArrayFirstElementComparator;
@@ -7,6 +8,66 @@ import cn.aulati.test.util.ArrayFirstElementComparator;
 import java.util.*;
 
 public class NightWork {
+
+    /**
+     * 61. Rotate List
+     * Given a linked list, rotate the list to the right by k places, where k is non-negative.
+     * Example 1:
+     *   Input: 1->2->3->4->5->NULL, k = 2
+     *   Output: 4->5->1->2->3->NULL
+     * 
+     * Explanation:
+     *   rotate 1 steps to the right: 5->1->2->3->4->NULL
+     *   rotate 2 steps to the right: 4->5->1->2->3->NULL
+     * 
+     * 
+     * Example 2:
+     *   Input: 0->1->2->NULL, k = 4
+     *   Output: 2->0->1->NULL
+     * 
+     * Explanation:
+     *   rotate 1 steps to the right: 2->0->1->NULL
+     *   rotate 2 steps to the right: 1->2->0->NULL
+     *   rotate 3 steps to the right: 0->1->2->NULL
+     *   rotate 4 steps to the right: 2->0->1->NULL
+     * 
+     * @param head A linked list.
+     * @param k rotate steps
+     * @return New head of the linked list after rotating k steps to the right.
+     */
+    public ListNode rotateRight(ListNode head, int k) {
+        if (k < 0) {
+            throw new IllegalArgumentException();
+        }
+        if (head == null || head.next == null || k == 0) {
+            return head;
+        }
+        
+        int cnt = 0;
+        ListNode cur = head;
+        while (cur != null) {
+            cnt++;
+            cur = cur.next;
+        }
+        
+        k = k % cnt;
+        cur = head;
+        while (k > 0) {
+            cur = cur.next;
+            k--;
+        }
+        
+        ListNode h = head;
+        while (cur.next != null) {
+            cur = cur.next;
+            h = h.next;
+        }
+        
+        cur.next = head;
+        head = h.next;
+        h.next = null;
+        return head;
+    }
 
     /**
      * 59 Spiral Matrix II
