@@ -117,4 +117,9 @@ public class UtilsTest {
         int[][] b = {{3, 4, 4}, {0, 1, 2}};
         assertFalse(Utils.compareMatrix(a, b));
     }
+
+    @Test
+    void testCompareListOfList1() {
+
+    }
 }

@@ -2,6 +2,7 @@ package cn.aulati.test.util;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Function;
 
 public class Utils {
     /**
@@ -161,5 +162,52 @@ public class Utils {
         }
         
         return true;
+    }
+
+    /**
+     * Compare two given lists of integer lists. The two lists are deemed equal if
+     * they are comprised of the same integer lists, even if the lists are in different
+     * order.
+     * 
+     * @param a One list of integer lists.
+     * @param b Another list of integer lists.
+     * @return True if the two lists of integer lists have the same lists, even the lists'
+     * order differs.
+     */
+    public static boolean compareListOfList(List<List<Integer>> a, List<List<Integer>> b) {
+        if (a == b) return true;
+
+        // a is null or b is null, but a != b
+        if (a == null || b == null) return false;
+
+        if (a.size() == 0 && b.size() == 0) return true;
+        if (a.size() != b.size()) return false;
+
+        String[] as = Utils.convertListToStringArray(a, Utils::integerListToString);
+        Arrays.sort(as);
+        String[] bs = Utils.convertListToStringArray(b, Utils::integerListToString);
+        Arrays.sort(bs);
+
+        return Arrays.compare(as, bs) == 0;
+    }
+
+    public static <T> String[] convertListToStringArray(List<T> list, Function<T, String> function) {
+        int n = list.size();
+        String[] ret = new String[n];
+
+        for (int i = 0; i < n; i++) {
+            ret[i] = function.apply(list.get(i));
+        }
+
+        return ret;
+    }
+
+    public static String integerListToString(List<Integer> list) {
+        if (list == null) {
+            return "";
+        }
+
+        int[] tmp = list.stream().mapToInt(Integer::intValue).toArray();
+        return Arrays.toString(tmp);
     }
 }
