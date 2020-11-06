@@ -1,9 +1,8 @@
 package cn.aulati.test.leetcode;
 
+import cn.aulati.test.model.ListNode;
 import cn.aulati.test.util.Utils;
-import jdk.jshell.execution.Util;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
@@ -11,15 +10,101 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class NightWorkTest {
 
+    /** Solution class instance. */
     private NightWork nightWork;
 
     @BeforeAll
     void init() {
         nightWork = new NightWork();
+    }
+
+    @Test
+    void testRotateRight1() {
+        int[] a = { 1, 2, 3, 4, 5};
+        ListNode list = ListNode.fromArray(a);
+
+        ListNode ret = nightWork.rotateRight(list, 2);
+
+        assertEquals("4->5->1->2->3", ListNode.printString(ret));
+    }
+    
+    @Test
+    void testRotateRight2() {
+        int[] a = { 1, 2, 3};
+        int k = 4;
+        ListNode list = ListNode.fromArray(a);
+
+        ListNode ret = nightWork.rotateRight(list, k);
+
+        assertEquals("3->1->2", ListNode.printString(ret));
+    }
+    
+    @Test
+    void testRotateRight3() {
+        int[] a = { 1 };
+        int k = 1;
+        ListNode list = ListNode.fromArray(a);
+
+        ListNode ret = nightWork.rotateRight(list, k);
+
+        assertEquals("1", ListNode.printString(ret));
+    }
+    
+    @Test
+    void testRotateRight4() {
+        int[] a = { 1 };
+        int k = 3;
+        ListNode list = ListNode.fromArray(a);
+
+        ListNode ret = nightWork.rotateRight(list, k);
+
+        assertEquals("1", ListNode.printString(ret));
+    }
+    
+    @Test
+    void testRotateRight5() {
+        int[] a = { 1, 2, 3, 4};
+        int k = 4;
+        ListNode list = ListNode.fromArray(a);
+
+        ListNode ret = nightWork.rotateRight(list, k);
+
+        assertEquals("1->2->3->4", ListNode.printString(ret));
+    }
+
+    @Test
+    void testGenerateMatrix1() {
+        int n = 1;
+        int[][] matrix = nightWork.generateMatrix(n);
+
+        int[][] expected = {{1}};
+
+        assertTrue(Utils.compareMatrix(expected, matrix));
+    }
+
+    @Test
+    void testGenerateMatrix2() {
+        int n = 2;
+        int[][] matrix = nightWork.generateMatrix(n);
+
+        int[][] expected = {{1, 2}, {4, 3}};
+
+        assertTrue(Utils.compareMatrix(expected, matrix));
+    }
+
+    @Test
+    void testGenerateMatrix3() {
+        int n = 3;
+        int[][] matrix = nightWork.generateMatrix(n);
+
+        int[][] expected = {{1, 2, 3}, {8, 9, 4}, {7, 6, 5}};
+
+        assertTrue(Utils.compareMatrix(expected, matrix));
     }
 
     @Test

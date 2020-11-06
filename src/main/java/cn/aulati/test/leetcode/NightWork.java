@@ -1,5 +1,6 @@
 package cn.aulati.test.leetcode;
 
+import cn.aulati.test.model.ListNode;
 import cn.aulati.test.model.TreeNode;
 import cn.aulati.test.model.WatchedVideo;
 import cn.aulati.test.util.ArrayFirstElementComparator;
@@ -7,6 +8,112 @@ import cn.aulati.test.util.ArrayFirstElementComparator;
 import java.util.*;
 
 public class NightWork {
+
+    /**
+     * 61. Rotate List
+     * Given a linked list, rotate the list to the right by k places, where k is non-negative.
+     * Example 1:
+     *   Input: 1->2->3->4->5->NULL, k = 2
+     *   Output: 4->5->1->2->3->NULL
+     * 
+     * Explanation:
+     *   rotate 1 steps to the right: 5->1->2->3->4->NULL
+     *   rotate 2 steps to the right: 4->5->1->2->3->NULL
+     * 
+     * 
+     * Example 2:
+     *   Input: 0->1->2->NULL, k = 4
+     *   Output: 2->0->1->NULL
+     * 
+     * Explanation:
+     *   rotate 1 steps to the right: 2->0->1->NULL
+     *   rotate 2 steps to the right: 1->2->0->NULL
+     *   rotate 3 steps to the right: 0->1->2->NULL
+     *   rotate 4 steps to the right: 2->0->1->NULL
+     * 
+     * @param head A linked list.
+     * @param k rotate steps
+     * @return New head of the linked list after rotating k steps to the right.
+     */
+    public ListNode rotateRight(ListNode head, int k) {
+        if (k < 0) {
+            throw new IllegalArgumentException();
+        }
+        if (head == null || head.next == null || k == 0) {
+            return head;
+        }
+        
+        int cnt = 0;
+        ListNode cur = head;
+        while (cur != null) {
+            cnt++;
+            cur = cur.next;
+        }
+        
+        k = k % cnt;
+        cur = head;
+        while (k > 0) {
+            cur = cur.next;
+            k--;
+        }
+        
+        ListNode h = head;
+        while (cur.next != null) {
+            cur = cur.next;
+            h = h.next;
+        }
+        
+        cur.next = head;
+        head = h.next;
+        h.next = null;
+        return head;
+    }
+
+    /**
+     * 59 Spiral Matrix II
+     * <p>
+     * Given a positive integer {@code n}, generate a square matrix filled with elements from 1 to n^2 in spiral order.
+     * <p>
+     * Example:<br/>
+     * Input: 3
+     * Output:
+     * [
+     * [ 1, 2, 3 ],
+     * [ 8, 9, 4 ],
+     * [ 7, 6, 5 ]
+     * ]
+     * 
+     * @param n Given postive integer.
+     * @return A spiral matrix with elements from 1 to n^2
+     */
+    public int[][] generateMatrix(int n) {
+        int[][] ret = new int[n][n];
+        
+        int cur = 1;
+        int layer = n / 2;
+        for (int i = 0; i < layer; i++) {
+            // the i-th row
+            for (int col = i; col < n - i; col++) ret[i][col] = cur++;
+            
+            for (int row = i + 1; row < n - i; row++) ret[row][n - 1 - i] = cur++;
+            
+            for (int col = n - 2 - i; col >= i; col--) ret[n - 1 - i][col] = cur++;
+            
+            for (int row = n - 2 - i; row > i; row--) ret[row][i] = cur++;
+        }
+        
+        if (n % 2 == 1) {
+            ret[n / 2][n / 2] = cur;
+        }
+        
+        return ret;
+    }
+
+    public int[][] generateMatrixII(int n) {
+        int[][] ret = new int[n][n];
+        return ret;
+    }
+
     /**
      * 1316. 不同的循环子字符串
      * 给你一个字符串 text ，请你返回满足下述条件的 不同 非空子字符串的数目：
@@ -449,21 +556,22 @@ public class NightWork {
      * 1288. 删除被覆盖区间
      * 给你一个区间列表，请你删除列表中被其他区间所覆盖的区间。
      * <p>
-     * 只有当 c <= a 且 b <= d 时，我们才认为区间 [a,b) 被区间 [c,d) 覆盖。
+     * 只有当 {@code c <= a} 且 {@code b <= d} 时，我们才认为区间 [a,b) 被区间 [c,d) 覆盖。
      * <p>
      * 在完成所有删除操作后，请你返回列表中剩余区间的数目。
      * <p>
      *  
-     * 示例：
-     * 输入：intervals = [[1,4],[3,6],[2,8]]
+     * 示例：<p>
+     * 输入：{@code intervals = [[1,4],[3,6],[2,8]]}
      * 输出：2
      * 解释：区间 [3,6] 被区间 [2,8] 覆盖，所以它被删除了。
      *  
      * <p>
      * 提示：
-     * 1 <= intervals.length <= 1000
-     * 0 <= intervals[i][0] < intervals[i][1] <= 10^5
-     * 对于所有的 i != j：intervals[i] != intervals[j]
+     * <quotedblock><pre> (1) 1 <= intervals.length <= 1000
+     * (2) 0 <= intervals[i][0] < intervals[i][1] <= 10^5
+     * (3) 对于所有的 i != j：intervals[i] != intervals[j]
+     * </pre></quotedblock>
      * <p>
      * 来源：力扣（LeetCode）
      * 链接：https://leetcode-cn.com/problems/remove-covered-intervals
@@ -480,8 +588,6 @@ public class NightWork {
 //                return o1[0] - o2[0];
 //            }
 //        });
-
-        int n = intervals.length;
 
         int cnt = 0;
         int right = -1;
