@@ -2,6 +2,8 @@ package cn.aulati.test.util;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
+import java.util.function.Function;
 
 public class Utils {
     /**
@@ -161,5 +163,77 @@ public class Utils {
         }
         
         return true;
+    }
+
+    /**
+     * Compare two given lists of integer lists. The two lists are deemed equal if
+     * they are comprised of the same integer lists, even if the lists are in different
+     * order.
+     * 
+     * @param a One list of integer lists.
+     * @param b Another list of integer lists.
+     * @return True if the two lists of integer lists have the same lists, even the lists'
+     * order differs.
+     */
+    public static boolean compareListOfList(List<List<Integer>> a, List<List<Integer>> b) {
+        if (a == b) return true;
+
+        // a is null or b is null, but a != b
+        if (a == null || b == null) return false;
+
+        if (a.isEmpty() && b.isEmpty()) return true;
+        if (a.size() != b.size()) return false;
+
+        String[] as = Utils.convertListToStringArray(a, Utils::integerListToString);
+        Arrays.sort(as);
+        String[] bs = Utils.convertListToStringArray(b, Utils::integerListToString);
+        Arrays.sort(bs);
+
+        return Arrays.compare(as, bs) == 0;
+    }
+
+    /**
+     * Converts a list of {@code T} to an array. If no convert function is provided, the default {@link Object#toString() toString}
+     * would be used.
+     * 
+     * @param <T> Type parameter.
+     * @param list The list to be converted.
+     * @param function Convert function, could be {@code null}
+     * @return A String array.
+     */
+    public static <T> String[] convertListToStringArray(List<T> list, Function<T, String> function) {
+        int n = list.size();
+        String[] ret = new String[n];
+
+        if (function == null) {
+            // use the default toString() method
+            for (int i = 0; i < n; i++) {
+                ret[i] = Objects.toString(list.get(i));
+            }
+        } else {
+            for (int i = 0; i < n; i++) {
+                ret[i] = function.apply(list.get(i));
+            }
+        }
+
+        return ret;
+    }
+
+    /**
+     * Convert a list to a {@code String}. A blank String is returned
+     * if {@code list} is null or is an empty list. In other cases,
+     * The {@code Integer} list will be converted to an {@code int[]} array,
+     * and {@link Arrays#toString(int[]) Arrays.toString} will be applied.
+     * 
+     * @param list A list of Integers.
+     * @return String representation of these Integers.
+     */
+    public static String integerListToString(List<Integer> list) {
+        if (list == null || list.isEmpty()) {
+            return "";
+        }
+
+        int[] tmp = list.stream().mapToInt(Integer::intValue).toArray();
+        return Arrays.toString(tmp);
     }
 }
