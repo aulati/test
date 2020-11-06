@@ -194,4 +194,30 @@ public class SolutionTest {
 
         assertEquals("[9, 3, 15, 20, 7]", Arrays.toString(list.toArray(new Integer[0])));
     }
+
+    @ParameterizedTest(name="testUniquePaths{index}")
+    @CsvSource({
+        "3,7,28",
+        "7,3,28",
+        "3,2,3",
+        "3,3,6",
+        "51,9,1916797311"
+    })
+    void testUniquePaths(int m, int n, int expected) {
+        int ret = _solution.uniquePaths(m, n);
+        assertEquals(expected, ret);
+    }
+
+    @ParameterizedTest(name="testUniquePathsMath{index}")
+    @CsvSource({
+        "3,7,28",
+        "7,3,28",
+        "3,2,3",
+        "3,3,6",
+        "51,9,1916797311"
+    })
+    void testUniquePathsMath(int m, int n, int expected) {
+        int ret = _solution.uniquePathsMath(m, n);
+        assertEquals(expected, ret);
+    }
 }

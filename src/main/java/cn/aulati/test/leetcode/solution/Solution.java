@@ -1062,4 +1062,56 @@ public class Solution {
 
         return ans[m - 1][n - 1];
     }
+
+    /**
+     * 62. Unique Paths
+     * 
+     * A robot is located at the top-left corner of a m x n grid (marked 'Start' in the diagram below).
+     * The robot can only move either down or right at any point in time. The robot is trying to reach
+     * the bottom-right corner of the grid (marked 'Finish' in the diagram below).
+     * 
+     * How many possible unique paths are there?
+     * 
+     * https://leetcode.com/problems/unique-paths/
+     * 
+     * @param m Rows of the grid.
+     * @param n Columns of the grid.
+     * @return Unique paths' number.
+     */
+    public int uniquePathsMath(int m, int n) {
+        // the path is made of (m - 1) step-downs and (n - 1) step-rights
+        // so the answer is the total combinations of these two type of moves
+        // answer = C(a, b); a = m + n - 2, b = (m - 1) or (n - 1)
+        // answer = (m + n - 2) ! / (m - 1)! / (n - 1)!
+        // ensure m <= n
+        if (m > n) {
+            int tmp = m;
+            m = n;
+            n = tmp;
+        }
+        
+        m--;
+        n--;
+        
+        long a = fac(n + 1L, m + n);
+        long b = fac(1L, m);
+        return ((Long)(a / b)).intValue();
+    }
+    
+    /**
+     * Helper method of {@link #uniquePathsMath(int, int) uniquePathsMath}.
+     * <p>
+     * This method will calculate the result of {@code a * (a + 1) * (a + 2) * ... * b}.
+     * 
+     * @param a Start integer
+     * @param b End integer.
+     * @return Product result of a to b.
+     */
+    private long fac(long a, long b) {
+        long ret = 1L;
+        while (a <= b) {
+            ret *= a++;
+        }
+        return ret;
+    }
 }
