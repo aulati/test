@@ -2,6 +2,7 @@ package cn.aulati.test.util;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Function;
 
 public class Utils {
@@ -180,7 +181,7 @@ public class Utils {
         // a is null or b is null, but a != b
         if (a == null || b == null) return false;
 
-        if (a.size() == 0 && b.size() == 0) return true;
+        if (a.isEmpty() && b.isEmpty()) return true;
         if (a.size() != b.size()) return false;
 
         String[] as = Utils.convertListToStringArray(a, Utils::integerListToString);
@@ -191,19 +192,44 @@ public class Utils {
         return Arrays.compare(as, bs) == 0;
     }
 
+    /**
+     * Converts a list of {@code T} to an array. If no convert function is provided, the default {@link Object#toString() toString}
+     * would be used.
+     * 
+     * @param <T> Type parameter.
+     * @param list The list to be converted.
+     * @param function Convert function, could be {@code null}
+     * @return A String array.
+     */
     public static <T> String[] convertListToStringArray(List<T> list, Function<T, String> function) {
         int n = list.size();
         String[] ret = new String[n];
 
-        for (int i = 0; i < n; i++) {
-            ret[i] = function.apply(list.get(i));
+        if (function == null) {
+            // use the default toString() method
+            for (int i = 0; i < n; i++) {
+                ret[i] = Objects.toString(list.get(i));
+            }
+        } else {
+            for (int i = 0; i < n; i++) {
+                ret[i] = function.apply(list.get(i));
+            }
         }
 
         return ret;
     }
 
+    /**
+     * Convert a list to a {@code String}. A blank String is returned
+     * if {@code list} is null or is an empty list. In other cases,
+     * The {@code Integer} list will be converted to an {@code int[]} array,
+     * and {@link Arrays#toString(int[]) Arrays.toString} will be applied.
+     * 
+     * @param list A list of Integers.
+     * @return String representation of these Integers.
+     */
     public static String integerListToString(List<Integer> list) {
-        if (list == null) {
+        if (list == null || list.isEmpty()) {
             return "";
         }
 
