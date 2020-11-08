@@ -7,13 +7,13 @@ import java.util.*;
 public class Solution {
     /**
      * 1160. 拼写单词
-     * 给你一份『词汇表』（字符串数组） words 和一张『字母表』（字符串） chars。
+     * 给你一份『词汇表』（字符串数组） words 和一张『字母表』（字符串） chars。
      *
-     * 假如你可以用 chars 中的『字母』（字符）拼写出 words 中的某个『单词』（字符串），那么我们就认为你掌握了这个单词。
+     * 假如你可以用 chars 中的『字母』（字符）拼写出 words 中的某个『单词』（字符串），那么我们就认为你掌握了这个单词。
      *
      * 注意：每次拼写时，chars 中的每个字母都只能用一次。
      *
-     * 返回词汇表 words 中你掌握的所有单词的 长度之和。
+     * 返回词汇表 words 中你掌握的所有单词的 长度之和。
      *
      * 示例 1：
      * 输入：words = ["cat","bt","hat","tree"], chars = "atach"
@@ -625,9 +625,9 @@ public class Solution {
      * 34. 在排序数组中查找元素的第一个和最后一个位置
      * 给定一个按照升序排列的整数数组 nums，和一个目标值 target。找出给定目标值在数组中的开始位置和结束位置。
      * <p>
-     * 你的算法时间复杂度必须是 O(log n) 级别。
+     * 你的算法时间复杂度必须是 O(log n) 级别。
      * <p>
-     * 如果数组中不存在目标值，返回 [-1, -1]。
+     * 如果数组中不存在目标值，返回 [-1, -1]。
      * <p>
      * 来源：力扣（LeetCode）
      * 链接：https://leetcode-cn.com/problems/find-first-and-last-position-of-element-in-sorted-array

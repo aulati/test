@@ -24,6 +24,62 @@ public class NightWorkTest {
     }
 
     @Test
+    void testLongestWPI0() {
+        int[] a = { 6, 6, 9 };
+        int ret = nightWork.longestWPI(a);
+        assertEquals(1, ret);
+    }
+
+    @Test
+    void testLongestWPI1() {
+        int[] a = { 6, 9, 9 };
+        int ret = nightWork.longestWPI(a);
+        assertEquals(3, ret);
+    }
+
+    @Test
+    void testLongestWPI2() {
+        int[] a = { 9, 9, 6 };
+        int ret = nightWork.longestWPI(a);
+        assertEquals(3, ret);
+    }
+
+    @Test
+    void testLongestWPI3() {
+        int[] a = { 9, 9, 6, 0, 6, 6, 9 };
+        int ret = nightWork.longestWPI(a);
+        assertEquals(3, ret);
+    }
+
+    @Test
+    void testLongestWPI4() {
+        int[] a = { 6 };
+        int ret = nightWork.longestWPI(a);
+        assertEquals(0, ret);
+    }
+
+    @Test
+    void testLongestWPI5() {
+        int[] a = { 6, 6 };
+        int ret = nightWork.longestWPI(a);
+        assertEquals(0, ret);
+    }
+
+    @Test
+    void testLongestWPI6() {
+        int[] a = { 9 };
+        int ret = nightWork.longestWPI(a);
+        assertEquals(1, ret);
+    }
+
+    @Test
+    void testLongestWPI7() {
+        int[] a = { 9, 9 };
+        int ret = nightWork.longestWPI(a);
+        assertEquals(2, ret);
+    }
+
+    @Test
     void testRotateRight1() {
         int[] a = { 1, 2, 3, 4, 5};
         ListNode list = ListNode.fromArray(a);

@@ -8,6 +8,45 @@ import cn.aulati.test.util.ArrayFirstElementComparator;
 import java.util.*;
 
 public class NightWork {
+    /**
+     * 1124. Longest Well-Performing Interval
+     * We are given hours, a list of the number of hours worked per day for a given employee.
+     * A day is considered to be a tiring day if and only if the number of hours worked is (strictly) greater than 8.
+     * A well-performing interval is an interval of days for which the number of tiring days is strictly larger than the number of non-tiring days.
+     * Return the length of the longest well-performing interval.
+     *
+     * Example 1:
+     *  Input: hours = [9,9,6,0,6,6,9]
+     *  Output: 3
+     *  Explanation: The longest well-performing interval is [9,9,6].
+     *
+     * Constraints:
+     * a) 1 <= hours.length <= 10000
+     * b) 0 <= hours[i] <= 16
+     *
+     * @param hours A list of worked hours per day.
+     * @return The length of the longest well-performing interval.
+     */
+    public int longestWPI(int[] hours) {
+        int sum = 0, max = 0;
+        HashMap<Integer, Integer> map = new HashMap<>();
+
+        for (int i = 0; i < hours.length; i++) {
+            sum += hours[i] > 8 ? 1 : -1;
+
+            if (sum > 0) {
+                max = i + 1;
+            } else {
+                if (map.containsKey(sum - 1)) {
+                    max = Math.max(max, i - map.get(sum - 1));
+                }
+            }
+
+            map.putIfAbsent(sum, i);
+        }
+
+        return max;
+    }
 
     /**
      * 61. Rotate List
@@ -116,24 +155,24 @@ public class NightWork {
 
     /**
      * 1316. 不同的循环子字符串
-     * 给你一个字符串 text ，请你返回满足下述条件的 不同 非空子字符串的数目：
+     * 给你一个字符串 text ，请你返回满足下述条件的 不同 非空子字符串的数目：
      * 可以写成某个字符串与其自身相连接的形式。
-     * 例如，abcabc 就是 abc 和它自身连接形成的。
+     * 例如，abcabc 就是 abc 和它自身连接形成的。
      *
      * 示例 1：
      * 输入：text = "abcabcabc"
      * 输出：3
-     * 解释：3 个子字符串分别为 "abcabc" ， "bcabca" 和 "cabcab" 。
+     * 解释：3 个子字符串分别为 "abcabc"， "bcabca" 和 "cabcab"。
      *
      * 示例 2：
      * 输入：text = "leetcodeleetcode"
      * 输出：2
      * 解释：2 个子字符串为 "ee" 和 "leetcodeleetcode" 。
-     *  
+     *  
      *
      * 提示：
      * ·1 <= text.length <= 2000
-     * ·text 只包含小写英文字母。
+     * ·text 只包含小写英文字母。
      *
      * 来源：力扣（LeetCode）
      * 链接：https://leetcode-cn.com/problems/distinct-echo-substrings
@@ -175,7 +214,7 @@ public class NightWork {
      * 1315. 祖父节点值为偶数的节点和
      * 给你一棵二叉树，请你返回满足以下条件的所有节点的值之和：
      * 该节点的祖父节点的值为偶数。（一个节点的祖父节点是指该节点的父节点的父节点。）
-     * 如果不存在祖父节点值为偶数的节点，那么返回 0 。
+     * 如果不存在祖父节点值为偶数的节点，那么返回 0 。
      *
      *
      * 提示：
@@ -210,9 +249,9 @@ public class NightWork {
 
     /**
      * 1314. 矩阵区域和
-     * 给你一个 m * n 的矩阵 mat 和一个整数 K ，请你返回一个矩阵 answer ，其中每个 answer[i][j] 是所有满足下述条件的元素 mat[r][c] 的和： 
-     * - i - K <= r <= i + K, j - K <= c <= j + K 
-     * - (r, c) 在矩阵内。
+     * 给你一个 m * n 的矩阵 mat 和一个整数 K ，请你返回一个矩阵 answer ，其中每个 answer[i][j] 是所有满足下述条件的元素 mat[r][c] 的和： 
+     * a) i - K <= r <= i + K, j - K <= c <= j + K
+     * b) (r, c) 在矩阵内。
      *
      * 示例 1：
      * 输入：mat = [[1,2,3],[4,5,6],[7,8,9]], K = 1
@@ -221,11 +260,11 @@ public class NightWork {
      * 示例 2：
      * 输入：mat = [[1,2,3],[4,5,6],[7,8,9]], K = 2
      * 输出：[[45,45,45],[45,45,45],[45,45,45]]
-     *  
+     *  
      *
      * 提示：
-     * m == mat.length
-     * n == mat[i].length
+     * m == mat.length
+     * n == mat[i].length
      * 1 <= m, n, K <= 100
      * 1 <= mat[i][j] <= 100
      *
@@ -265,10 +304,10 @@ public class NightWork {
 
     /**
      * 1311. 获取你好友已观看的视频
-     *有 n 个人，每个人都有一个  0 到 n-1 的唯一 id 。
-     * 给你数组 watchedVideos  和 friends ，其中 watchedVideos[i]  和 friends[i] 分别表示 id = i 的人观看过的视频列表和他的好友列表。
-     * Level 1 的视频包含所有你好友观看过的视频，level 2 的视频包含所有你好友的好友观看过的视频，以此类推。一般的，Level 为 k 的视频包含所有从你出发，最短距离为 k 的好友观看过的视频。
-     * 给定你的 id  和一个 level 值，请你找出所有指定 level 的视频，并将它们按观看频率升序返回。如果有频率相同的视频，请将它们按名字字典序从小到大排列。
+     *有 n 个人，每个人都有一个  0 到 n-1 的唯一 id 。
+     * 给你数组 watchedVideos  和 friends ，其中 watchedVideos[i]  和 friends[i] 分别表示 id = i 的人观看过的视频列表和他的好友列表。
+     * Level 1 的视频包含所有你好友观看过的视频，level 2 的视频包含所有你好友的好友观看过的视频，以此类推。一般的，Level 为 k 的视频包含所有从你出发，最短距离为 k 的好友观看过的视频。
+     * 给定你的 id  和一个 level 值，请你找出所有指定 level 的视频，并将它们按观看频率升序返回。如果有频率相同的视频，请将它们按名字字典序从小到大排列。
      *
      * 来源：力扣（LeetCode）
      * 链接：https://leetcode-cn.com/problems/get-watched-videos-by-your-friends
@@ -331,9 +370,9 @@ public class NightWork {
 
     /**
      * 1310. 子数组异或查询
-     * 有一个正整数数组 arr，现给你一个对应的查询数组 queries，其中 queries[i] = [Li, Ri]。
-     * 对于每个查询 i，请你计算从 Li 到 Ri 的 XOR 值（即 arr[Li] xor arr[Li+1] xor ... xor arr[Ri]）作为本次查询的结果。
-     * 并返回一个包含给定查询 queries 所有结果的数组。
+     * 有一个正整数数组 arr，现给你一个对应的查询数组 queries，其中 queries[i] = [Li, Ri]。
+     * 对于每个查询 i，请你计算从 Li 到 Ri 的 XOR 值（即 arr[Li] xor arr[Li+1] xor ... xor arr[Ri]）作为本次查询的结果。
+     * 并返回一个包含给定查询 queries 所有结果的数组。
      * <p>
      * 示例 1：
      * 输入：arr = [1,3,4,8], queries = [[0,1],[1,2],[0,3],[3,3]]
@@ -353,10 +392,10 @@ public class NightWork {
      * 示例 2：
      * 输入：arr = [4,8,2,10], queries = [[2,3],[1,3],[0,0],[0,3]]
      * 输出：[8,0,4,4]
-     *  
+     *  
      * <p>
      * 提示：
-     * 1 <= arr.length <= 3 * 10^4
+     * 1 <= arr.length <= 3 * 10^4
      * 1 <= arr[i] <= 10^9
      * 1 <= queries.length <= 3 * 10^4
      * queries[i].length == 2
@@ -389,14 +428,14 @@ public class NightWork {
 
     /**
      * 1309. 解码字母到整数映射
-     * 给你一个字符串 s，它由数字（'0' - '9'）和 '#' 组成。我们希望按下述规则将 s 映射为一些小写英文字符：
-     * 字符（'a' - 'i'）分别用（'1' - '9'）表示。
-     * 字符（'j' - 'z'）分别用（'10#' - '26#'）表示。 
+     * 给你一个字符串 s，它由数字（'0' - '9'）和 '#' 组成。我们希望按下述规则将 s 映射为一些小写英文字符：
+     * 字符（'a' - 'i'）分别用（'1' - '9'）表示。
+     * 字符（'j' - 'z'）分别用（'10#' - '26#'）表示。 
      * 返回映射之后形成的新字符串。
      * <p>
      * 题目数据保证映射始终唯一。
      * <p>
-     *  
+     *  
      * 示例 1：
      * 输入：s = "10#11#12"
      * 输出："jkab"
@@ -440,7 +479,7 @@ public class NightWork {
 
     /**
      * 1282. 用户分组
-     * 有 n 位用户参加活动，他们的 ID 从 0 到 n - 1，每位用户都 恰好 属于某一用户组。给你一个长度为 n 的数组 groupSizes，其中包含每位用户所处的用户组的大小，请你返回用户分组情况（存在的用户组以及每个组中用户的 ID）。
+     * 有 n 位用户参加活动，他们的 ID 从 0 到 n - 1，每位用户都 恰好 属于某一用户组。给你一个长度为 n 的数组 groupSizes，其中包含每位用户所处的用户组的大小，请你返回用户分组情况（存在的用户组以及每个组中用户的 ID）。
      * 你可以任何顺序返回解决方案，ID 的顺序也不受限制。此外，题目给出的数据保证至少存在一种解决方案。
      * <p>
      * 示例 1：
@@ -453,11 +492,11 @@ public class NightWork {
      * 示例 2：
      * 输入：groupSizes = [2,1,3,3,3,2]
      * 输出：[[1],[0,5],[2,3,4]]
-     *  
+     *  
      * 提示：
      * groupSizes.length == n
-     * 1 <= n <= 500
-     * 1 <= groupSizes[i] <= n
+     * 1 <= n <= 500
+     * 1 <= groupSizes[i] <= n
      * <p>
      * 来源：力扣（LeetCode）
      * 链接：https://leetcode-cn.com/problems/group-the-people-given-the-group-size-they-belong-to
@@ -491,8 +530,8 @@ public class NightWork {
 
     /**
      * 1283. 使结果不超过阈值的最小除数
-     * 给你一个整数数组 nums 和一个正整数 threshold  ，你需要选择一个正整数作为除数，然后将数组里每个数都除以它，并对除法结果求和。
-     * 请你找出能够使上述结果小于等于阈值 threshold 的除数中 最小 的那个。
+     * 给你一个整数数组 nums 和一个正整数 threshold  ，你需要选择一个正整数作为除数，然后将数组里每个数都除以它，并对除法结果求和。
+     * 请你找出能够使上述结果小于等于阈值 threshold 的除数中 最小 的那个。
      * 每个数除以除数后都向上取整，比方说 7/3 = 3 ， 10/2 = 5 。
      * 题目保证一定有解。
      * <p>
@@ -509,7 +548,7 @@ public class NightWork {
      * 示例 3：
      * 输入：nums = [19], threshold = 5
      * 输出：4
-     *  
+     *  
      * 提示：
      * ·1 <= nums.length <= 5 * 10^4
      * ·1 <= nums[i] <= 10^6
@@ -556,21 +595,21 @@ public class NightWork {
      * 1288. 删除被覆盖区间
      * 给你一个区间列表，请你删除列表中被其他区间所覆盖的区间。
      * <p>
-     * 只有当 {@code c <= a} 且 {@code b <= d} 时，我们才认为区间 [a,b) 被区间 [c,d) 覆盖。
+     * 只有当 {@code c <= a} 且 {@code b <= d} 时，我们才认为区间 [a,b) 被区间 [c,d) 覆盖。
      * <p>
      * 在完成所有删除操作后，请你返回列表中剩余区间的数目。
      * <p>
-     *  
+     *  
      * 示例：<p>
      * 输入：{@code intervals = [[1,4],[3,6],[2,8]]}
      * 输出：2
      * 解释：区间 [3,6] 被区间 [2,8] 覆盖，所以它被删除了。
-     *  
+     *  
      * <p>
      * 提示：
      * <quotedblock><pre> (1) 1 <= intervals.length <= 1000
-     * (2) 0 <= intervals[i][0] < intervals[i][1] <= 10^5
-     * (3) 对于所有的 i != j：intervals[i] != intervals[j]
+     * (2) 0 <= intervals[i][0] < intervals[i][1] <= 10^5
+     * (3) 对于所有的 i != j：intervals[i] != intervals[j]
      * </pre></quotedblock>
      * <p>
      * 来源：力扣（LeetCode）
