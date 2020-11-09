@@ -1250,49 +1250,14 @@ public class Solution2 {
      * @return 能否到达最后一个位置
      */
     public boolean canJump(int[] nums) {
-        int len = nums.length;
-        if (len <= 1) {
-            return true;
-        }
-
-        // i: current index; maxi: max index reached.
-        int i = 0, maxi = 0;
-        i += nums[0];
-        if (i >= len - 1) {
-            return true;
-        }
-        maxi = i;
-
-        while (0 < i && i < len - 1) {
-            int j = i;
-            j += nums[j];
-
-            if (j > maxi) {
-                maxi = i = j;
-            } else {
-                i--;
-            }
-        }
-
-        return i >= len - 1;
-    }
-
-    public boolean canJumpII(int[] nums) {
         int n = nums.length;
         if (n <= 1) {
             return true;
         }
 
+        // i: current index; maxi: max index reached.
         int i = 0, maxi = 0;
-        boolean[] hasTested = new boolean[n];
-
         while (0 <= i && i < n - 1) {
-            if (hasTested[i]) {
-                i--;
-                continue;
-            }
-
-            hasTested[i] = true;
             int j = i + nums[i];
 
             if (j > maxi) {

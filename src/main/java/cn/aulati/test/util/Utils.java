@@ -184,6 +184,7 @@ public class Utils {
         if (a.isEmpty() && b.isEmpty()) return true;
         if (a.size() != b.size()) return false;
 
+        // String[] as = a.stream().map(list -> Arrays.toString(list.stream().mapToInt(Integer::intValue).toArray())).toArray(String[]::new);
         String[] as = Utils.convertListToStringArray(a, Utils::integerListToString);
         Arrays.sort(as);
         String[] bs = Utils.convertListToStringArray(b, Utils::integerListToString);

@@ -293,23 +293,23 @@ public class Solution2Test {
     }
 
     @Test
-    void testCanJumpII1() {
+    void testCanJump1() {
         int[] a = { 0, 1, 2, 3, 4 };
-        boolean ret = _solution.canJumpII(a);
+        boolean ret = _solution.canJump(a);
         assertFalse(ret);
     }
 
     @Test
-    void testCanJumpII2() {
+    void testCanJump2() {
         int[] a = { 2, 3, 1, 1, 4 };
-        boolean ret = _solution.canJumpII(a);
+        boolean ret = _solution.canJump(a);
         assertTrue(ret);
     }
 
     @Test
-    void testCanJumpII3() {
+    void testCanJump3() {
         int[] a = { 3, 2, 1, 0, 4 };
-        boolean ret = _solution.canJumpII(a);
+        boolean ret = _solution.canJump(a);
         assertFalse(ret);
     }
 
