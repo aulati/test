@@ -1,4 +1,4 @@
-package cn.aulati.test.leetcode.solution;
+package cn.aulati.test.leetcode;
 
 /**
  * 最长回文子字符串

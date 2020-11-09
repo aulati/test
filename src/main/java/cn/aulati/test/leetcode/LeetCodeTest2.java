@@ -1,7 +1,6 @@
 package cn.aulati.test.leetcode;
 
 import cn.aulati.test.ITest;
-import cn.aulati.test.leetcode.solution.Solution2;
 import cn.aulati.test.model.ListNode;
 
 import java.util.Arrays;
