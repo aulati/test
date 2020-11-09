@@ -1,4 +1,4 @@
-package cn.aulati.test.leetcode.solution;
+package cn.aulati.test.leetcode;
 
 import cn.aulati.test.model.TreeNode;
 
