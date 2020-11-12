@@ -237,4 +237,62 @@ public class Utils {
         int[] tmp = list.stream().mapToInt(Integer::intValue).toArray();
         return Arrays.toString(tmp);
     }
+
+    /**
+     * Detect if a long number is a palindrome number.
+     *
+     * @param num A long number.
+     * @return True if the given parameter is a palindrome number.
+     */
+    public static boolean isPalindrome(long num) {
+        long ret = 0, i = num;
+
+        while (i > 0) {
+            ret = ret * 10 + i % 10;
+            i /= 10;
+        }
+
+        return ret == num;
+    }
+
+    /**
+     * Detect if a int number is a palindrome number.
+     *
+     * @param num A int number.
+     * @return True if the given parameter is a palindrome number.
+     */
+    public static boolean isPalindrome(int num) {
+        int ret = 0, i = num;
+
+        while (i > 0) {
+            ret = ret * 10 + i % 10;
+            i /= 10;
+        }
+
+        return ret == num;
+    }
+
+    /**
+     * Detect if a int number is a palindrome number.
+     *
+     * @param num A int number.
+     * @return True if the given parameter is a palindrome number.
+     */
+    public static boolean isPalindrome(String num) {
+        char[] c = num.toCharArray();
+
+        int i = 0, j = c.length - 1;
+
+        while (i < j) {
+            if (c[i] == c[j]) {
+                i++;
+                j--;
+
+            } else {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }

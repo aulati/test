@@ -6,6 +6,42 @@ import java.util.*;
 
 public class SolutionAtOffice {
     /**
+     * 906. Super Palindromes
+     * Let's say a positive integer is a superpalindrome if it is a palindrome,
+     * and it is also the square of a palindrome.
+     * <p>
+     * Now, given two positive integers L and R (represented as strings),
+     * return the number of superpalindromes in the inclusive range [L, R].
+     *
+     * @param L Left of the range.
+     * @param R Right of the Range.
+     * @return numbers of superpalindromes inside the given range.
+     */
+    public int superpalindromesInRange(String L, String R) {
+        long l = Long.parseLong(L);
+        long r = Long.parseLong(R);
+
+        long ll = Double.valueOf(Math.sqrt(l)).longValue();
+        long rl = Double.valueOf(Math.sqrt(r)).longValue();
+        if (ll * ll < l) {
+            ll++;
+        }
+        if (rl * rl <= r) {
+            rl++;
+        }
+
+        int cnt = 0;
+
+        for (long i = ll; i < rl; i++) {
+            if (Utils.isPalindrome(String.valueOf(i)) && Utils.isPalindrome(String.valueOf(i * i))) {
+                cnt++;
+            }
+        }
+
+        return cnt;
+    }
+
+    /**
      * 22. Generate Parentheses
      * Given n pairs of parentheses, write a function to generate all combinations of well-formed parentheses.
      * For example, given n = 3, a solution set is:

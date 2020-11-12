@@ -3,6 +3,8 @@ package cn.aulati.test.leetcode;
 import org.junit.jupiter.api.*;
 
 import cn.aulati.test.util.Utils;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import java.util.Arrays;
 import java.util.List;
@@ -22,6 +24,17 @@ public class SolutionAtOfficeTest {
     @BeforeAll
     void init() {
         _solution = new SolutionAtOffice();
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            "4,1000,4",
+            "1,2,1",
+            "103966815,201619847391450,32"
+    })
+    void testSuperpalindromesInRange(String L, String R, int expected) {
+        int ret = _solution.superpalindromesInRange(L, R);
+        assertEquals(expected, ret);
     }
 
     @Test
