@@ -103,11 +103,11 @@ public class LeetCodeTest2 implements ITest {
     private void testReverseLists() {
         int[] a = {1, 2, 3, 4, 5};
         ListNode h = ListNode.fromArray(a);
-        System.out.println("Input: " + ListNode.printString(h));
+        System.out.println("Input: " + h);
 
         ListNode ret = _solution.reverseLists(h);
 
-        System.out.println("Output: " + ListNode.printString(ret));
+        System.out.println("Output: " + ret);
         System.out.println("-----------------------------");
     }
 
@@ -186,7 +186,7 @@ public class LeetCodeTest2 implements ITest {
 
         ListNode ret = _solution.mergeKLists(lists);
 
-        System.out.println("Output: " + ListNode.printString(ret));
+        System.out.println("Output: " + ret);
         System.out.println("-----------------------------");
     }
 
@@ -209,7 +209,7 @@ public class LeetCodeTest2 implements ITest {
 
         ListNode ret = _solution.mergeKLists(lists);
 
-        System.out.println("Output: " + ListNode.printString(ret));
+        System.out.println("Output: " + ret);
         System.out.println("-----------------------------");
     }
 
@@ -268,7 +268,7 @@ public class LeetCodeTest2 implements ITest {
 
         ListNode ret = _solution.mergeTwoLists(l1, l2);
 
-        System.out.println("Output: " + ListNode.printString(ret));
+        System.out.println("Output: " + ret);
         System.out.println("-----------------------------");
     }
 

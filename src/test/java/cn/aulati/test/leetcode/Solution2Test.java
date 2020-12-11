@@ -259,7 +259,7 @@ public class Solution2Test {
 
         ListNode ret = _solution.reverseLists(h);
         
-        assertEquals("1", ListNode.printString(ret));
+        assertEquals("1", ret.toString());
     }
 
     @Test
@@ -269,7 +269,7 @@ public class Solution2Test {
 
         ListNode ret = _solution.reverseLists(h);
         
-        assertEquals("3->1", ListNode.printString(ret));
+        assertEquals("3->1", ret.toString());
     }
 
     @Test
@@ -279,7 +279,7 @@ public class Solution2Test {
 
         ListNode ret = _solution.reverseLists(h);
         
-        assertEquals("5->4->3->2->1", ListNode.printString(ret));
+        assertEquals("5->4->3->2->1", ret.toString());
     }
 
     @ParameterizedTest(name = "testReverseAlphabets{index}")
@@ -355,7 +355,7 @@ public class Solution2Test {
 
         ListNode ret = _solution.mergeTwoLists(l1, l2);
 
-        assertEquals("1->1->2->3->4->4", ListNode.printString(ret));
+        assertEquals("1->1->2->3->4->4", ret.toString());
     }
 
     @Test
@@ -365,7 +365,7 @@ public class Solution2Test {
 
         ListNode ret = _solution.mergeTwoLists(l1, null);
 
-        assertEquals("1->2->4", ListNode.printString(ret));
+        assertEquals("1->2->4", ret.toString());
     }
 
     @Test
@@ -375,7 +375,7 @@ public class Solution2Test {
 
         ListNode ret = _solution.mergeTwoLists(null, l1);
 
-        assertEquals("1->2->4", ListNode.printString(ret));
+        assertEquals("1->2->4", ret.toString());
     }
 
     @Test
@@ -394,7 +394,7 @@ public class Solution2Test {
         ListNode ret = _solution.mergeKLists(lists);
 
         assertEquals("-10->-10->-10->-9->-8->-8->-8->-7->-6->-6->-6->-4->-4->-4->-3->-2->-2->-2->-1->0->0->3->4->4"
-            , ListNode.printString(ret));
+            , ret.toString());
     }
 
     @Test
@@ -409,7 +409,7 @@ public class Solution2Test {
 
         ListNode ret = _solution.mergeKLists(lists);
 
-        assertEquals("-3->-2->-1->-1->0->1->1->2->4", ListNode.printString(ret));
+        assertEquals("-3->-2->-1->-1->0->1->1->2->4", ret.toString());
     }
 
     @ParameterizedTest(name = "testReverseStr{index}")

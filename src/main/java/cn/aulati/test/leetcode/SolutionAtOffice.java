@@ -1,10 +1,47 @@
 package cn.aulati.test.leetcode;
 
 import cn.aulati.test.util.Utils;
+import cn.aulati.test.model.ListNode;
 
 import java.util.*;
 
 public class SolutionAtOffice {
+    /**
+     * 82. Remove Duplicates from Sorted List II
+     * Given a sorted linked list, delete all nodes that have duplicate numbers, leaving only distinct numbers from the original list.
+     * Return the linked list sorted as well.
+     * 
+     * https://leetcode.com/problems/remove-duplicates-from-sorted-list-ii/
+     * 
+     * @param head A ListNode head.
+     * @return Head of the List after removing duplicates.
+     */
+    public ListNode deleteDuplicates(ListNode head) {
+        if (head == null || head.next == null) return head;
+        
+        int curVal = head.val + 1;
+        head = new ListNode(curVal, head);
+        ListNode cur = head, nex = head.next, forerunner = null;
+        
+        while (nex != null && nex.next != null) {
+            if (nex.val != nex.next.val) {
+                cur = nex;
+                nex = nex.next;
+                continue;
+            }
+            
+            // cur.val == cur.next.val
+            curVal = nex.val;
+            forerunner = nex.next;
+            while (forerunner != null && forerunner.val == curVal) forerunner = forerunner.next;
+            
+            cur.next = forerunner;
+            nex = forerunner;
+        }
+        
+        return head.next;
+    }
+
     /**
      * 906. Super Palindromes
      * Let's say a positive integer is a superpalindrome if it is a palindrome,

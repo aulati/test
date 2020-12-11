@@ -11,6 +11,11 @@ public class ListNode {
         val = x;
     }
 
+    public ListNode(int x, ListNode next) {
+        val = x;
+        this.next = next;
+    }
+
     /**
      * Create a list from given int array.
      */
@@ -31,17 +36,13 @@ public class ListNode {
      * @param r 链表的根节点
      * @return 拼接成的字符串
      */
-    public static String printString(ListNode r) {
-        if (r == null) {
-            return "";
-        }
+    @Override
+    public String toString() {
         StringBuilder sb = new StringBuilder();
-        ListNode cur = r;
-        sb.append(cur.val);
-        cur = cur.next;
+        sb.append(this.val);
+        ListNode cur = this.next;
         while (cur != null) {
-            sb.append("->");
-            sb.append(cur.val);
+            sb.append("->").append(cur.val);
             cur = cur.next;
         }
 

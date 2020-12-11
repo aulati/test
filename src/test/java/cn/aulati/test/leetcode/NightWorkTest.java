@@ -86,7 +86,7 @@ public class NightWorkTest {
 
         ListNode ret = nightWork.rotateRight(list, 2);
 
-        assertEquals("4->5->1->2->3", ListNode.printString(ret));
+        assertEquals("4->5->1->2->3", ret.toString());
     }
     
     @Test
@@ -97,7 +97,7 @@ public class NightWorkTest {
 
         ListNode ret = nightWork.rotateRight(list, k);
 
-        assertEquals("3->1->2", ListNode.printString(ret));
+        assertEquals("3->1->2", ret.toString());
     }
     
     @Test
@@ -108,7 +108,7 @@ public class NightWorkTest {
 
         ListNode ret = nightWork.rotateRight(list, k);
 
-        assertEquals("1", ListNode.printString(ret));
+        assertEquals("1", ret.toString());
     }
     
     @Test
@@ -119,7 +119,7 @@ public class NightWorkTest {
 
         ListNode ret = nightWork.rotateRight(list, k);
 
-        assertEquals("1", ListNode.printString(ret));
+        assertEquals("1", ret.toString());
     }
     
     @Test
@@ -130,7 +130,7 @@ public class NightWorkTest {
 
         ListNode ret = nightWork.rotateRight(list, k);
 
-        assertEquals("1->2->3->4", ListNode.printString(ret));
+        assertEquals("1->2->3->4", ret.toString());
     }
 
     @Test

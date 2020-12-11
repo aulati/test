@@ -2,6 +2,7 @@ package cn.aulati.test.leetcode;
 
 import org.junit.jupiter.api.*;
 
+import cn.aulati.test.model.ListNode;
 import cn.aulati.test.util.Utils;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -10,6 +11,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -24,6 +26,50 @@ public class SolutionAtOfficeTest {
     @BeforeAll
     void init() {
         _solution = new SolutionAtOffice();
+    }
+
+    @Test
+    void testDeleteDuplicates1() {
+        // test null
+        ListNode ret = _solution.deleteDuplicates(null);
+        assertNull(ret);
+        
+        // test one node
+        ListNode head = new ListNode(10);
+        ret = _solution.deleteDuplicates(head);
+        assertEquals("10", ret.toString());
+    }
+
+    @Test
+    void testDeleteDuplicates2() {
+        int[] arr = { 1, 1, 1, 2, 3 };
+        ListNode head = ListNode.fromArray(arr);
+        ListNode ret = _solution.deleteDuplicates(head);
+        assertEquals("2->3", ret.toString());
+    }
+
+    @Test
+    void testDeleteDuplicates3() {
+        int[] arr = { 1, 2, 3, 3, 4, 4, 5 };
+        ListNode head = ListNode.fromArray(arr);
+        ListNode ret = _solution.deleteDuplicates(head);
+        assertEquals("1->2->5", ret.toString());
+    }
+
+    @Test
+    void testDeleteDuplicates4() {
+        int[] arr = { 1, 1 };
+        ListNode head = ListNode.fromArray(arr);
+        ListNode ret = _solution.deleteDuplicates(head);
+        assertNull(ret);
+    }
+
+    @Test
+    void testDeleteDuplicates5() {
+        int[] arr = { 1, 1, 2, 3, 4, 4, 5, 5 };
+        ListNode head = ListNode.fromArray(arr);
+        ListNode ret = _solution.deleteDuplicates(head);
+        assertEquals("2->3", ret.toString());
     }
 
     @ParameterizedTest
