@@ -1113,10 +1113,13 @@ public class Solution2 {
     }
 
     /**
-     * reverse the ListNode.
-     *
-     * @param head
-     * @return
+     * 206. Reverse Linked List
+     * Reverse a singly linked list.
+     * 
+     * https://leetcode.com/problems/reverse-linked-list/
+     * 
+     * @param head A linked list.
+     * @return Reversed list.
      */
     public ListNode reverseLists(ListNode head) {
         ListNode a = null, b = head;
@@ -1128,6 +1131,62 @@ public class Solution2 {
             b = tmp;
         }
 
+        return a;
+    }
+
+    /**
+     * 92. Reverse Linked List II
+     * Reverse a linked list from position m to n. Do it in one-pass.
+     * Note: 1 ≤ m ≤ n ≤ length of list.
+     * 
+     * Example:
+     * Input: 1->2->3->4->5->NULL, m = 2, n = 4
+     * Output: 1->4->3->2->5->NULL
+     * 
+     * https://leetcode.com/problems/reverse-linked-list-ii/
+     * 
+     * @param head Linked list
+     * @param m Start position of the reverse part.
+     * @param n End position of the reverse part.
+     * @return Reversed list.
+     */
+    public ListNode reverseBetween(ListNode head, int m, int n) {
+        if (m == 1) {
+            return reverseTopNNodes(head, n);
+        }
+
+        // n: number of nodes to be reversed
+        n = n - m + 1;
+
+        // make a point to the nodes at position m - 1
+        --m;
+        ListNode a = head;
+        while (--m > 0) a = a.next;
+        a.next = reverseTopNNodes(a.next, n);
+
+        return head;
+    }
+
+    /**
+     * Reverse top n ListNodes of the given linked list.
+     * 
+     * @param head A linked list.
+     * @param n Number of nodes to reverse.
+     * @return A linked list with top n nodes reversed.
+     */
+    public ListNode reverseTopNNodes(ListNode head, int n) {
+        ListNode a, b, tmp;
+
+        a = null;
+        b = head;
+        while (n-- > 0) {
+            tmp = b.next;
+            b.next = a;
+            a = b;
+            b = tmp;
+        }
+
+        head.next = b;
         return a;
     }
 
@@ -1158,17 +1217,15 @@ public class Solution2 {
         while (left < right) {
             if (cs[left] == '-') {
                 left++;
-                continue;
-            }
-            if (cs[right] == '-') {
+            } else if (cs[right] == '-') {
                 right--;
-                continue;
+            } else {
+                char tmp = cs[left];
+                cs[left] = cs[right];
+                cs[right] = tmp;
+                left++;
+                right--;
             }
-            char tmp = cs[left];
-            cs[left] = cs[right];
-            cs[right] = tmp;
-            left++;
-            right--;
         }
 
         return new String(cs);
