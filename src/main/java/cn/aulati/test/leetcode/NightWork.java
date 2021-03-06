@@ -9,17 +9,209 @@ import java.util.*;
 
 public class NightWork {
     /**
+     * 102. Binary Tree Level Order Traversal
+     * Given the root of a binary tree, return the level order traversal of its nodes' values.
+     * (i.e., from left to right, level by level).
+     *
+     * @param root Root of the binary tree.
+     * @return List of values in level order traversal.
+     */
+    public List<List<Integer>> levelOrder(TreeNode root) {
+        List<List<Integer>> result = new ArrayList<>();
+
+        LinkedList<TreeNode> row = new LinkedList<>();
+        if (root != null) {
+            row.add(root);
+        }
+
+        while (!row.isEmpty()) {
+            List<Integer> list = new ArrayList<>();
+
+            int cnt = row.size();
+            while (cnt-- > 0) {
+                TreeNode node = row.poll();
+                list.add(node.val);
+
+                if (node.left != null) row.add(node.left);
+                if (node.right != null) row.add(node.right);
+            }
+
+            result.add(list);
+        }
+
+        return result;
+    }
+
+    /**
+     * 107. Binary Tree Level Order Traversal II
+     * Given the root of a binary tree, return the bottom-up level order traversal of its nodes' values.
+     * (i.e., from left to right, level by level from leaf to root).
+     *
+     * @param root Root of the binary tree.
+     * @return List of values in bottom-up level order traversal.
+     */
+    public List<List<Integer>> levelOrderBottom(TreeNode root) {
+        List<List<Integer>> result = this.levelOrder(root);
+        Collections.reverse(result);
+        return result;
+    }
+
+    private List<String> restoreIpAddressesResult;
+
+    /**
+     * 93. Restore IP Addresses
+     * Given a string s containing only digits, return all possible valid IP addresses that can be obtained from s.
+     * You can return them in any order.
+     *
+     * A valid IP address consists of exactly four integers, each integer is between 0 and 255, separated by single dots
+     * and cannot have leading zeros. For example, "0.1.2.201" and "192.168.1.1" are valid IP addresses and
+     * "0.011.255.245", "192.168.1.312" and "192.168@1.1" are invalid IP addresses.
+     *
+     * @param s An input String.
+     * @return all possible valid IP addresses.
+     */
+    public List<String> restoreIpAddresses(String s) {
+        restoreIpAddressesResult = new ArrayList<>();
+        if (s == null || s.length() < 4 || s.length() > 12) {
+            return restoreIpAddressesResult;
+        }
+
+        restoreIpAddressesHelper(s, 0, 0, new StringBuilder());
+
+        return restoreIpAddressesResult;
+    }
+
+    private void restoreIpAddressesHelper(String s, int i, int ipPartIndex, StringBuilder ip) {
+        if (i >= s.length()) {
+            return;
+        }
+
+        String ipPart;
+        if (ipPartIndex < 3) {
+            for (int j = i + 1; j < s.length() && j <= i + 3; j++) {
+                ipPart = s.substring(i, j);
+                if (isValidIpPart(ipPart)) {
+                    int length = ip.length();
+                    ip.append(ipPart).append('.');
+                    restoreIpAddressesHelper(s, j, ipPartIndex + 1, ip);
+                    ip.delete(length, ip.length());
+                }
+            }
+        } else {
+            ipPart = s.substring(i);
+            if (isValidIpPart(ipPart)) {
+                int length = ip.length();
+                ip.append(ipPart);
+                this.restoreIpAddressesResult.add(ip.toString());
+                ip.delete(length, ip.length());
+            }
+        }
+    }
+
+    private boolean isValidIpPart(String ipPart) {
+        boolean ans = false;
+        switch (ipPart.length()) {
+            case 1:
+                // valid range: 0 ~ 9
+                ans = true;
+                break;
+            case 2:
+                // valid range: 10 ~ 99
+                ans = ("10".compareTo(ipPart) <= 0);
+                break;
+            case 3:
+                // valid range: 100 ~ 255
+                ans = ("100".compareTo(ipPart) <= 0 && "255".compareTo(ipPart) >= 0);
+                break;
+            default:
+        }
+
+        return ans;
+    }
+
+    /**
+     * 78. Subsets
+     * Given an integer array nums of unique elements, return all possible subsets (the power set).
+     * The solution set must not contain duplicate subsets. Return the solution in any order.
+     *
+     * Example 1:
+     * Input: nums = [1,2,3]
+     * Output: [[],[1],[2],[1,2],[3],[1,3],[2,3],[1,2,3]]
+     *
+     * @param nums An integer array nums of unique elements
+     * @return The power set
+     */
+    public List<List<Integer>> subsets(int[] nums) {
+        if (nums == null || nums.length == 0) {
+            return new ArrayList<List<Integer>>();
+        }
+
+        int len = nums.length;
+        int maxVal = (int)Math.pow(2, len);
+
+        List<List<Integer>> result = new ArrayList<List<Integer>>(maxVal);
+
+        for (int i = 0; i < maxVal; i++) {
+            List<Integer> cur = new ArrayList<Integer>();
+
+            // Think of i as bit representation, for each number in the array,
+            // we add it to current list if the j-th bit of i is 1.
+            int k = i;
+            for (int j = 0; j < len; j++) {
+                if (k % 2 == 1) {
+                    cur.add(nums[j]);
+                }
+
+                k /= 2;
+            }
+
+            result.add(cur);
+        }
+
+        return result;
+    }
+
+    private List<List<Integer>> subsetsResult;
+
+    public List<List<Integer>> subsetsRecursive(int[] nums) {
+        subsetsResult = new ArrayList<List<Integer>>();
+
+        if (nums == null || nums.length == 0) {
+            return subsetsResult;
+        }
+
+        subsetsHelper(nums, 0, new ArrayList<Integer>());
+
+        return subsetsResult;
+    }
+
+    private void subsetsHelper(int[] nums, int i, List<Integer> curList) {
+        if (i == nums.length) {
+            subsetsResult.add(new ArrayList<Integer>(curList));
+            return;
+        }
+
+        // one without this number
+        subsetsHelper(nums, i + 1, curList);
+
+        // one with this number
+        curList.add(nums[i]);
+        subsetsHelper(nums, i + 1, curList);
+        curList.remove(curList.size() - 1);
+    }
+
+    /**
      * 1124. Longest Well-Performing Interval
      * We are given hours, a list of the number of hours worked per day for a given employee.
      * A day is considered to be a tiring day if and only if the number of hours worked is (strictly) greater than 8.
-     * A well-performing interval is an interval of days for which the number of tiring days is strictly larger than the number of non-tiring days.
-     * Return the length of the longest well-performing interval.
-     *
+     * A well-performing interval is an interval of days for which the number of tiring days is strictly larger than
+     * the number of non-tiring days. Return the length of the longest well-performing interval.
+     * <p>
      * Example 1:
-     *  Input: hours = [9,9,6,0,6,6,9]
-     *  Output: 3
-     *  Explanation: The longest well-performing interval is [9,9,6].
-     *
+     * Input: hours = [9,9,6,0,6,6,9]
+     * Output: 3
+     * Explanation: The longest well-performing interval is [9,9,6].
+     * <p>
      * Constraints:
      * a) 1 <= hours.length <= 10000
      * b) 0 <= hours[i] <= 16
@@ -52,26 +244,26 @@ public class NightWork {
      * 61. Rotate List
      * Given a linked list, rotate the list to the right by k places, where k is non-negative.
      * Example 1:
-     *   Input: 1->2->3->4->5->NULL, k = 2
-     *   Output: 4->5->1->2->3->NULL
-     * 
+     * Input: 1->2->3->4->5->NULL, k = 2
+     * Output: 4->5->1->2->3->NULL
+     * <p>
      * Explanation:
-     *   rotate 1 steps to the right: 5->1->2->3->4->NULL
-     *   rotate 2 steps to the right: 4->5->1->2->3->NULL
-     * 
-     * 
+     * rotate 1 steps to the right: 5->1->2->3->4->NULL
+     * rotate 2 steps to the right: 4->5->1->2->3->NULL
+     * <p>
+     * <p>
      * Example 2:
-     *   Input: 0->1->2->NULL, k = 4
-     *   Output: 2->0->1->NULL
-     * 
+     * Input: 0->1->2->NULL, k = 4
+     * Output: 2->0->1->NULL
+     * <p>
      * Explanation:
-     *   rotate 1 steps to the right: 2->0->1->NULL
-     *   rotate 2 steps to the right: 1->2->0->NULL
-     *   rotate 3 steps to the right: 0->1->2->NULL
-     *   rotate 4 steps to the right: 2->0->1->NULL
-     * 
+     * rotate 1 steps to the right: 2->0->1->NULL
+     * rotate 2 steps to the right: 1->2->0->NULL
+     * rotate 3 steps to the right: 0->1->2->NULL
+     * rotate 4 steps to the right: 2->0->1->NULL
+     *
      * @param head A linked list.
-     * @param k rotate steps
+     * @param k    rotate steps
      * @return New head of the linked list after rotating k steps to the right.
      */
     public ListNode rotateRight(ListNode head, int k) {
@@ -81,27 +273,27 @@ public class NightWork {
         if (head == null || head.next == null || k == 0) {
             return head;
         }
-        
+
         int cnt = 0;
         ListNode cur = head;
         while (cur != null) {
             cnt++;
             cur = cur.next;
         }
-        
+
         k = k % cnt;
         cur = head;
         while (k > 0) {
             cur = cur.next;
             k--;
         }
-        
+
         ListNode h = head;
         while (cur.next != null) {
             cur = cur.next;
             h = h.next;
         }
-        
+
         cur.next = head;
         head = h.next;
         h.next = null;
@@ -121,30 +313,30 @@ public class NightWork {
      * [ 8, 9, 4 ],
      * [ 7, 6, 5 ]
      * ]
-     * 
+     *
      * @param n Given postive integer.
      * @return A spiral matrix with elements from 1 to n^2
      */
     public int[][] generateMatrix(int n) {
         int[][] ret = new int[n][n];
-        
+
         int cur = 1;
         int layer = n / 2;
         for (int i = 0; i < layer; i++) {
             // the i-th row
             for (int col = i; col < n - i; col++) ret[i][col] = cur++;
-            
+
             for (int row = i + 1; row < n - i; row++) ret[row][n - 1 - i] = cur++;
-            
+
             for (int col = n - 2 - i; col >= i; col--) ret[n - 1 - i][col] = cur++;
-            
+
             for (int row = n - 2 - i; row > i; row--) ret[row][i] = cur++;
         }
-        
+
         if (n % 2 == 1) {
             ret[n / 2][n / 2] = cur;
         }
-        
+
         return ret;
     }
 
@@ -158,22 +350,22 @@ public class NightWork {
      * 给你一个字符串 text ，请你返回满足下述条件的 不同 非空子字符串的数目：
      * 可以写成某个字符串与其自身相连接的形式。
      * 例如，abcabc 就是 abc 和它自身连接形成的。
-     *
+     * <p>
      * 示例 1：
      * 输入：text = "abcabcabc"
      * 输出：3
      * 解释：3 个子字符串分别为 "abcabc"， "bcabca" 和 "cabcab"。
-     *
+     * <p>
      * 示例 2：
      * 输入：text = "leetcodeleetcode"
      * 输出：2
      * 解释：2 个子字符串为 "ee" 和 "leetcodeleetcode" 。
-     *  
-     *
+     * <p>
+     * <p>
      * 提示：
      * ·1 <= text.length <= 2000
      * ·text 只包含小写英文字母。
-     *
+     * <p>
      * 来源：力扣（LeetCode）
      * 链接：https://leetcode-cn.com/problems/distinct-echo-substrings
      * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
@@ -215,12 +407,12 @@ public class NightWork {
      * 给你一棵二叉树，请你返回满足以下条件的所有节点的值之和：
      * 该节点的祖父节点的值为偶数。（一个节点的祖父节点是指该节点的父节点的父节点。）
      * 如果不存在祖父节点值为偶数的节点，那么返回 0 。
-     *
-     *
+     * <p>
+     * <p>
      * 提示：
      * ·树中节点的数目在 1 到 10^4 之间。
      * ·每个节点的值在 1 到 100 之间。
-     *
+     * <p>
      * 来源：力扣（LeetCode）
      * 链接：https://leetcode-cn.com/problems/sum-of-nodes-with-even-valued-grandparent
      * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
@@ -249,30 +441,30 @@ public class NightWork {
 
     /**
      * 1314. 矩阵区域和
-     * 给你一个 m * n 的矩阵 mat 和一个整数 K ，请你返回一个矩阵 answer ，其中每个 answer[i][j] 是所有满足下述条件的元素 mat[r][c] 的和： 
+     * 给你一个 m * n 的矩阵 mat 和一个整数 K ，请你返回一个矩阵 answer ，其中每个 answer[i][j] 是所有满足下述条件的元素 mat[r][c] 的和：
      * a) i - K <= r <= i + K, j - K <= c <= j + K
      * b) (r, c) 在矩阵内。
-     *
+     * <p>
      * 示例 1：
      * 输入：mat = [[1,2,3],[4,5,6],[7,8,9]], K = 1
      * 输出：[[12,21,16],[27,45,33],[24,39,28]]
-     *
+     * <p>
      * 示例 2：
      * 输入：mat = [[1,2,3],[4,5,6],[7,8,9]], K = 2
      * 输出：[[45,45,45],[45,45,45],[45,45,45]]
-     *  
-     *
+     * <p>
+     * <p>
      * 提示：
      * m == mat.length
      * n == mat[i].length
      * 1 <= m, n, K <= 100
      * 1 <= mat[i][j] <= 100
-     *
+     * <p>
      * 来源：力扣（LeetCode）
      * 链接：https://leetcode-cn.com/problems/matrix-block-sum
      *
      * @param mat 矩阵
-     * @param K K值
+     * @param K   K值
      * @return 满足条件的区域和矩阵
      */
     public int[][] matrixBlockSum(int[][] mat, int K) {
@@ -304,19 +496,19 @@ public class NightWork {
 
     /**
      * 1311. 获取你好友已观看的视频
-     *有 n 个人，每个人都有一个  0 到 n-1 的唯一 id 。
+     * 有 n 个人，每个人都有一个  0 到 n-1 的唯一 id 。
      * 给你数组 watchedVideos  和 friends ，其中 watchedVideos[i]  和 friends[i] 分别表示 id = i 的人观看过的视频列表和他的好友列表。
      * Level 1 的视频包含所有你好友观看过的视频，level 2 的视频包含所有你好友的好友观看过的视频，以此类推。一般的，Level 为 k 的视频包含所有从你出发，最短距离为 k 的好友观看过的视频。
      * 给定你的 id  和一个 level 值，请你找出所有指定 level 的视频，并将它们按观看频率升序返回。如果有频率相同的视频，请将它们按名字字典序从小到大排列。
-     *
+     * <p>
      * 来源：力扣（LeetCode）
      * 链接：https://leetcode-cn.com/problems/get-watched-videos-by-your-friends
      * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
      *
      * @param watchedVideos 已观看的视频
-     * @param friends 朋友关系
-     * @param id 主人ID
-     * @param level 朋友层级
+     * @param friends       朋友关系
+     * @param id            主人ID
+     * @param level         朋友层级
      * @return 主人的指定层级的朋友观看过的视频
      */
     public List<String> watchedVideosByFriends(List<List<String>> watchedVideos, int[][] friends, int id, int level) {
@@ -392,7 +584,7 @@ public class NightWork {
      * 示例 2：
      * 输入：arr = [4,8,2,10], queries = [[2,3],[1,3],[0,0],[0,3]]
      * 输出：[8,0,4,4]
-     *  
+     *
      * <p>
      * 提示：
      * 1 <= arr.length <= 3 * 10^4
@@ -430,12 +622,12 @@ public class NightWork {
      * 1309. 解码字母到整数映射
      * 给你一个字符串 s，它由数字（'0' - '9'）和 '#' 组成。我们希望按下述规则将 s 映射为一些小写英文字符：
      * 字符（'a' - 'i'）分别用（'1' - '9'）表示。
-     * 字符（'j' - 'z'）分别用（'10#' - '26#'）表示。 
+     * 字符（'j' - 'z'）分别用（'10#' - '26#'）表示。
      * 返回映射之后形成的新字符串。
      * <p>
      * 题目数据保证映射始终唯一。
      * <p>
-     *  
+     * <p>
      * 示例 1：
      * 输入：s = "10#11#12"
      * 输出："jkab"
@@ -492,7 +684,7 @@ public class NightWork {
      * 示例 2：
      * 输入：groupSizes = [2,1,3,3,3,2]
      * 输出：[[1],[0,5],[2,3,4]]
-     *  
+     * <p>
      * 提示：
      * groupSizes.length == n
      * 1 <= n <= 500
@@ -548,7 +740,7 @@ public class NightWork {
      * 示例 3：
      * 输入：nums = [19], threshold = 5
      * 输出：4
-     *  
+     * <p>
      * 提示：
      * ·1 <= nums.length <= 5 * 10^4
      * ·1 <= nums[i] <= 10^6
@@ -599,12 +791,12 @@ public class NightWork {
      * <p>
      * 在完成所有删除操作后，请你返回列表中剩余区间的数目。
      * <p>
-     *  
+     * <p>
      * 示例：<p>
      * 输入：{@code intervals = [[1,4],[3,6],[2,8]]}
      * 输出：2
      * 解释：区间 [3,6] 被区间 [2,8] 覆盖，所以它被删除了。
-     *  
+     *
      * <p>
      * 提示：
      * <quotedblock><pre> (1) 1 <= intervals.length <= 1000

@@ -3,6 +3,7 @@ package cn.aulati.test.leetcode;
 import cn.aulati.test.model.ListNode;
 import cn.aulati.test.util.Utils;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
@@ -21,6 +22,64 @@ public class NightWorkTest {
     @BeforeAll
     void init() {
         nightWork = new NightWork();
+    }
+
+    @Test
+    void testRestoreIpAddresses1() {
+        String s = "0000";
+        List<String> result = nightWork.restoreIpAddresses(s);
+        assertEquals(1, result.size());
+        assertEquals("0.0.0.0", result.get(0));
+    }
+
+    @Test
+    void testRestoreIpAddresses2() {
+        String s = "255255111350";
+        List<String> result = nightWork.restoreIpAddresses(s);
+        assertEquals(0, result.size());
+    }
+
+    @Test
+    void testRestoreIpAddresses3() {
+        String s = "25525511135";
+        List<String> result = nightWork.restoreIpAddresses(s);
+
+        assertEquals("[255.255.11.135, 255.255.111.35]", result.toString());
+    }
+
+    @Test
+    void testRestoreIpAddresses4() {
+        String s = "101023";
+        List<String> result = nightWork.restoreIpAddresses(s);
+
+        assertEquals("[1.0.10.23, 1.0.102.3, 10.1.0.23, 10.10.2.3, 101.0.2.3]", result.toString());
+    }
+
+    @DisplayName("testSubsets: Single element array")
+    @Test
+    void testSubsets1() {
+        int[] nums = {5};
+        String expected = "[[], [5]]";
+        List<List<Integer>> result = nightWork.subsets(nums);
+        String resultString = Utils.listOfListToString(result);
+        assertEquals(expected, resultString);
+
+        result = nightWork.subsetsRecursive(nums);
+        resultString = Utils.listOfListToString(result);
+        assertEquals(expected, resultString);
+    }
+
+    @Test
+    void testSubsets2() {
+        int[] nums = {1, 2, 3};
+        String expected = "[[], [1], [2], [1, 2], [3], [1, 3], [2, 3], [1, 2, 3]]";
+        List<List<Integer>> result = nightWork.subsets(nums);
+        String resultString = Utils.listOfListToString(result);
+        assertEquals(expected, resultString);
+
+        result = nightWork.subsetsRecursive(nums);
+        resultString = Utils.listOfListToString(result);
+        assertEquals(expected, resultString);
     }
 
     @Test
