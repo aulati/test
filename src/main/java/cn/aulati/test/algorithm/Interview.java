@@ -14,6 +14,7 @@ public class Interview {
 
     private static Node helper(String s, int len, int i) {
         Node ret = new Node();
+        ret.type = NodeType.Number;
         ret.val = 0;
 
         loop:
@@ -61,6 +62,8 @@ public class Interview {
         int ret = 0;
 
         switch (op) {
+            case LeftParenthesis:
+                // 应对表达式开头就是 ( 的情况
             case Addition:
                 ret = a + b;
                 break;

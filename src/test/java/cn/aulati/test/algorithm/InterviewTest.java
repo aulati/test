@@ -28,8 +28,8 @@ public class InterviewTest {
 
     @Test
     void testSolve4() {
-        String s = "1+(2-5)+(2+4)";
+        String s = "(1+(4+5+2)-3)+(6+8)";
         int ret = Interview.solve(s);
-        assertEquals(4, ret);
+        assertEquals(23, ret);
     }
 }

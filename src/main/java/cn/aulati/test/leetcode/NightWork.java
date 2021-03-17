@@ -9,6 +9,52 @@ import java.util.*;
 
 public class NightWork {
     /**
+     * 402. 移掉K位数字
+     * 给定一个以字符串表示的非负整数 num，移除这个数中的 k 位数字，使得剩下的数字最小。
+     *
+     * 注意:
+     * num 的长度小于 10002 且 ≥ k。
+     * num 不会包含任何前导零。
+     *
+     * 来源：力扣（LeetCode）
+     * 链接：https://leetcode-cn.com/problems/remove-k-digits
+     * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+     *
+     * @param num 非负正数字符串
+     * @param k 移除k位
+     * @return 移除 num 中 k 位数字后的最小数字
+     */
+    public String removeKdigits(String num, int k) {
+        Deque<Character> deque = new LinkedList<>();
+        int len = num.length();
+        for (int i = 0; i < len; i++) {
+            char c = num.charAt(i);
+            while (!deque.isEmpty() && k > 0 && deque.peekLast() > c) {
+                deque.pollLast();
+                k--;
+            }
+            deque.offerLast(c);
+        }
+
+        while (k > 0) {
+            deque.pollLast();
+            k--;
+        }
+
+        StringBuilder sb = new StringBuilder(deque.size());
+        boolean leadingZero = true;
+        while (!deque.isEmpty()) {
+            char c = deque.pollFirst();
+            if (leadingZero && c == '0') {
+                continue;
+            }
+            leadingZero = false;
+            sb.append(c);
+        }
+        return sb.length() > 0 ? sb.toString() : "0";
+    }
+
+    /**
      * 102. Binary Tree Level Order Traversal
      * Given the root of a binary tree, return the level order traversal of its nodes' values.
      * (i.e., from left to right, level by level).
@@ -337,11 +383,6 @@ public class NightWork {
             ret[n / 2][n / 2] = cur;
         }
 
-        return ret;
-    }
-
-    public int[][] generateMatrixII(int n) {
-        int[][] ret = new int[n][n];
         return ret;
     }
 

@@ -6,6 +6,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.params.*;
+import org.junit.jupiter.params.provider.*;
 
 import java.util.Arrays;
 import java.util.List;
@@ -22,6 +24,18 @@ public class NightWorkTest {
     @BeforeAll
     void init() {
         nightWork = new NightWork();
+    }
+
+    @ParameterizedTest(name = "testRemoveKdigits{index} {argumentsWithNames}")
+    @CsvSource({
+        "1432219,3,1219",
+        "10200,1,200",
+        "10,2,0",
+        "10,1,0"
+    })
+    void testRemoveKdigits(String num, int k, String expected) {
+        String result = nightWork.removeKdigits(num, k);
+        assertEquals(expected, result);
     }
 
     @Test
