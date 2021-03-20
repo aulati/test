@@ -9,6 +9,75 @@ import java.util.*;
 
 public class NightWork {
     /**
+     * 1604. 警告一小时内使用相同员工卡大于等于三次的人
+     * 力扣公司的员工都使用员工卡来开办公室的门。每当一个员工使用一次他的员工卡，安保系统会记录下员工的名字和使用时间。如果一个员工在一小时时间内使用员工卡的次数大于等于三次，这个系统会自动发布一个 警告 。
+     * 给你字符串数组 keyName 和 keyTime ，其中 [keyName[i], keyTime[i]] 对应一个人的名字和他在 某一天 内使用员工卡的时间。
+     * 使用时间的格式是 24小时制 ，形如 "HH:MM" ，比方说 "23:51" 和 "09:49" 。
+     * 请你返回去重后的收到系统警告的员工名字，将它们按 字典序升序 排序后返回。
+     * 
+     * 请注意 "10:00" - "11:00" 视为一个小时时间范围内，而 "23:51" - "00:10" 不被视为一小时内，因为系统记录的是某一天内的使用情况。
+     * 
+     * 来源：力扣（LeetCode）
+     * 链接：https://leetcode-cn.com/problems/alert-using-same-key-card-three-or-more-times-in-a-one-hour-period
+     * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+     * 
+     * @param keyName
+     * @param keyTime
+     * @return
+     */
+    public List<String> alertNames(String[] keyName, String[] keyTime) {
+        // 1. add to map<name, times[]>
+        Map<String, ArrayList<String>> map = new HashMap<>();
+        for (int i = 0; i < keyName.length; i++) {
+            ArrayList<String> times = map.get(keyName[i]);
+            if (times == null) {
+                times = new ArrayList<>();
+                map.put(keyName[i], times);
+            }
+
+            times.add(keyTime[i]);
+        }
+
+        // 2. foreach name
+        ArrayList<String> warnList = new ArrayList<>();
+        for (Map.Entry<String, ArrayList<String>> entry : map.entrySet()) {
+            String name = entry.getKey();
+            ArrayList<String> times = entry.getValue();
+            if (checkIfNeedWarning(times)) {
+                warnList.add(name);
+            }
+        }
+
+        warnList.sort(null);
+        return warnList;
+    }
+
+    private boolean checkIfNeedWarning(List<String> times) {
+        if (times.size() < 3) {
+            return false;
+        }
+
+        int[] timeInMinutes = new int[times.size()];
+        int i = 0;
+        for (String time : times) {
+            // timeInMinutes[i++] = 60 * Integer.parseInt(time, 0, 2, 10) + Integer.parseInt(time, 3, 5, 10);
+            timeInMinutes[i++] = (time.charAt(0) - '0') * 10 * 60
+                + (time.charAt(1) - '0') * 60
+                + (time.charAt(3) - '0') * 10
+                + (time.charAt(4) - '0');
+        }
+
+        Arrays.sort(timeInMinutes);
+        for (i = 2; i < timeInMinutes.length; i++) {
+            if (timeInMinutes[i - 2] + 60 >= timeInMinutes[i]) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * 402. 移掉K位数字
      * 给定一个以字符串表示的非负整数 num，移除这个数中的 k 位数字，使得剩下的数字最小。
      *

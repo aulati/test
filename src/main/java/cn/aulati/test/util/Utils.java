@@ -295,4 +295,28 @@ public class Utils {
 
         return true;
     }
+    
+    /*
+     * Compare two {@see java.lang.Strings}.
+     * @param s1 A String.
+     * @param s2 Another String.
+     * @return Compare result.
+     */
+    public static int compareString(String s1, String s2) {
+        if (s1 == null) return s2 == null ? 0 : -1;
+        if (s2 == null) return 1;
+        if (s1.equals(s2)) return 0;
+
+        int n = Math.min(s1.length(), s2.length());
+        for (int i = 0; i < n; i++) {
+            int diff = s1.charAt(i) - s2.charAt(i);
+            if (diff < 0) {
+                return -1;
+            } else if (diff > 0) {
+                return 1;
+            }
+        }
+
+        return s1.length() < s2.length() ? -1 : 1;
+    }
 }
